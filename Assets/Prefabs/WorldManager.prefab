@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myGivenSeed: 0
-  myUseSeed: 0
+  myUseSeed: 1
+  myRandomSeed: 0
   myRoomPrefab: {fileID: 1925128966082434214, guid: 57238b047d8310942b860cf7d6155987,
+    type: 3}
+  myPlayerPrefab: {fileID: 1549191695794174396, guid: 1c234dc0f68f9cc419283dad7a64c5aa,
     type: 3}

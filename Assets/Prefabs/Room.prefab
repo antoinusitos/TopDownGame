@@ -47,9 +47,15 @@ MonoBehaviour:
     myX: 0
     myY: 0
     myType: 0
+    myHasTopNeighbour: 0
+    myHasRightNeighbour: 0
+    myHasBottomNeighbour: 0
+    myHasLeftNeighbour: 0
   myTileFloorPrefab: {fileID: 9043261872285094333, guid: be18e73cd4253b34b9988f6c7cd0d5cf,
     type: 3}
   myTileWallPrefab: {fileID: 9043261872285094333, guid: 6c6259668d17c8e43b88747651def4d9,
+    type: 3}
+  myTriggerNextRoomPrefab: {fileID: 3022583159136432593, guid: ececbdd80fd52a446b60513e164d2ad8,
     type: 3}
   myStartingRoom: 0
   myMaterials:

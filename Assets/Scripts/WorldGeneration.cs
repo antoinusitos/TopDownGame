@@ -7,6 +7,7 @@ public class WorldGeneration : MonoBehaviour
     public bool             myUseSeed = false;
     public bool             myRandomSeed = false;
     public Room             myRoomPrefab = null;
+    public PlayerMovement   myPlayerPrefab = null;
 
     private const int       myWorldSideSize = 10;
     private RoomData[]      myWorld = null;
@@ -20,7 +21,8 @@ public class WorldGeneration : MonoBehaviour
     private const int       myMinRoomNumber = 20;
     private const int       myRoomSize = 20;
     private Transform       myTransform = null;
-    private RoomData        myStartingRoom;
+    private RoomData        myStartingRoomData;
+    private Room            myStartingRoom;
 
     private void Awake()
     {
@@ -86,6 +88,8 @@ public class WorldGeneration : MonoBehaviour
         InstantiateWalls();
 
         Invoke("HideRooms", 2);
+
+        SpawnPlayer();
     }
 
     private bool TryFillRoom(int[] aStartingPointsIndex)
@@ -106,9 +110,9 @@ public class WorldGeneration : MonoBehaviour
 
             int startingPointIndex = aStartingPointsIndex[Random.Range(0, aStartingPointsIndex.Length)];
 
-            myStartingRoom = myWorld[startingPointIndex];
+            myStartingRoomData = myWorld[startingPointIndex];
 
-            FillRoom(myStartingRoom.myX, myStartingRoom.myY, true);
+            FillRoom(myStartingRoomData.myX, myStartingRoomData.myY, true);
         }
 
         //DebugRooms();
@@ -206,8 +210,11 @@ public class WorldGeneration : MonoBehaviour
                     myRooms.Add(room);
                     room.ConstuctRoom(myRoomSize);
 
-                    if (myStartingRoom.myX == x && myStartingRoom.myY == y)
+                    if (myStartingRoomData.myX == x && myStartingRoomData.myY == y)
+                    {
                         room.myStartingRoom = true;
+                        myStartingRoom = room;
+                    }
 
                     room.transform.parent = myTransform;
                 }
@@ -219,7 +226,7 @@ public class WorldGeneration : MonoBehaviour
     {
         for (int i = 0; i < myRooms.Count; ++i)
         {
-            myRooms[i].PlaceWalls(myRoomSize);
+            myRooms[i].PlaceWalls(myRoomSize, this);
         }
     }
 
@@ -254,5 +261,25 @@ public class WorldGeneration : MonoBehaviour
     private void DebugSeed()
     {
         Debug.Log("Seed used :" + myCurrentSeed.ToString());
+    }
+
+    private void SpawnPlayer()
+    {
+        PlayerMovement playerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.up * 0.5f, Quaternion.identity);
+        FindObjectOfType<CameraFollowPlayer>().SetPlayerMovement(playerMovement);
+    }
+
+    public Room GetRoom(int aX, int aY)
+    {
+        if (aX < 0 || aY < 0 || aX == myWorldSideSize || aY == myWorldSideSize)
+            return null;
+
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            if (myRooms[i].myRoomData.myX == aX & myRooms[i].myRoomData.myY == aY)
+                return myRooms[i];
+        }
+
+        return null;
     }
 }
