@@ -46,6 +46,8 @@ public class TriggerNextRoom : MonoBehaviour
                 aCollider.transform.position = myNextRoom.myRightSpawningTile.transform.position;
             }
             myActualRoom.gameObject.SetActive(false);
+
+            playerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(myNextRoom.myRoomData.myX, myNextRoom.myRoomData.myY);
         }
     }
 }

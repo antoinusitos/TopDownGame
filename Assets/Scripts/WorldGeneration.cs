@@ -23,6 +23,7 @@ public class WorldGeneration : MonoBehaviour
     private Transform       myTransform = null;
     private RoomData        myStartingRoomData;
     private Room            myStartingRoom;
+    private PlayerMovement  myPlayerMovement = null;
 
     private void Awake()
     {
@@ -32,6 +33,11 @@ public class WorldGeneration : MonoBehaviour
     private void Start()
     {
         GenerateWorld();
+    }
+
+    public int GetWorldSideSize()
+    {
+        return myWorldSideSize;
     }
 
     public void GenerateWorld()
@@ -243,6 +249,8 @@ public class WorldGeneration : MonoBehaviour
                 Camera.main.transform.position = myRooms[i].transform.position + Vector3.up * 10 + Vector3.right * (myRoomSize / 2);
             }
         }
+
+        myPlayerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(myStartingRoomData.myX, myStartingRoomData.myY);
     }
 
     private void DebugRooms()
@@ -265,8 +273,8 @@ public class WorldGeneration : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        PlayerMovement playerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.up * 0.5f, Quaternion.identity);
-        FindObjectOfType<CameraFollowPlayer>().SetPlayerMovement(playerMovement);
+        myPlayerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.up * 0.5f, Quaternion.identity);
+        FindObjectOfType<CameraFollowPlayer>().SetPlayerMovement(myPlayerMovement);
     }
 
     public Room GetRoom(int aX, int aY)
