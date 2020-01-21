@@ -2,68 +2,66 @@
 
 public class CameraFollowPlayer : MonoBehaviour
 {
-    public Transform lol = null;
+	public Transform        myPlayer;
 
-    private PlayerMovement  myPlayerMovement = null;
-    private Transform       myTransform = null;
-    private Transform       myCameraOffsetTransform = null;
-    private Transform       myPlayerTransform = null;
-    private const float     mySpeed = 2.0f;
-    public Vector3          myOffset = new Vector3(0, 5.0f, -3.0f);
-    public Vector3          myMouseCameraOffset = new Vector3(0, 5, -3);
-    private Camera          myCamera = null;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        myTransform = transform;
-        myCamera = GetComponentInChildren<Camera>();
-        myCameraOffsetTransform = myCamera.transform;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(myPlayerMovement == null)
+	private Vector3         myTarget;
+	private Vector3         myMousePos;
+	private Vector3         myRefVel;
+	private Vector3         myShakeOffset;
+    private const float     myCameraDist = 3f;
+    private float           mySmoothTime = 0.2f;
+	private float           myYStart = 7;
+    private Vector3         myCamOffset = new Vector3(0, 0, -4);
+	private float           myShakeMag;
+	private float           myShakeTimeEnd;
+	private Vector3         myShakeVector;
+    private bool            myShaking;
+	
+	private void Start()
+	{
+		myTarget = myPlayer.position;
+	}
+	
+	private void Update()
+	{
+        if (myPlayer == null)
         {
             return;
         }
 
-        /*RaycastHit hit;
-        Ray ray = myCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 pos = hit.point - myPlayerTransform.position;
-            pos.y = 0;
-
-            float dist = Vector3.Distance(hit.point, myPlayerTransform.position);
-            if(dist > 3)
-            {
-                pos = myPlayerTransform.position + Vector3.zero;
-            }
-            else
-            {
-                pos = myPlayerTransform.position + (hit.point - myPlayerTransform.position).normalized * 3;
-            }
-
-            pos.y = 0;
-
-            lol.transform.position = pos;
-
-            myCameraOffsetTransform.position = Vector3.Lerp(myCameraOffsetTransform.position, pos + myMouseCameraOffset, Time.deltaTime * mySpeed);
-        }
-        else
-        {
-            myCameraOffsetTransform.localPosition = Vector3.Lerp(myCameraOffsetTransform.localPosition, Vector3.zero, Time.deltaTime * mySpeed);
-        }*/
-
-        myTransform.position = Vector3.Lerp(myTransform.position, myPlayerTransform.position + myOffset, Time.deltaTime * mySpeed);
-    }
-
-    public void SetPlayerMovement(PlayerMovement aPlayerMovement)
-    {
-        myPlayerMovement = aPlayerMovement;
-        myPlayerTransform = myPlayerMovement.transform;
-    }
+		myMousePos = CaptureMousePos();
+		myTarget = UpdateTargetPos();
+		UpdateCameraPosition();
+	}
+	
+	private Vector3 CaptureMousePos()
+	{
+		Vector2 ret = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+		ret *= 2;
+		ret -= Vector2.one;
+		float max = 0.9f;
+		if(Mathf.Abs(ret.x) > max || Mathf.Abs(ret.y) > max)
+		{
+			ret = ret.normalized;
+		}
+		
+		return ret;
+	}
+	
+	private Vector3 UpdateTargetPos()
+	{
+        Vector3 mouseOffset = Vector3.zero;
+        mouseOffset.x = myMousePos.x * myCameraDist;
+        mouseOffset.z = myMousePos.y * myCameraDist;
+        Vector3 ret = myPlayer.position + mouseOffset + myCamOffset;
+		ret.y = myYStart;
+		return ret;
+	}
+	
+	private void UpdateCameraPosition()
+	{
+		Vector3 tempPos;
+		tempPos = Vector3.SmoothDamp(transform.position, myTarget, ref myRefVel, mySmoothTime);
+		transform.position = tempPos;
+	}
 }

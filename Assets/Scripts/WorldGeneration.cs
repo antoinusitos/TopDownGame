@@ -274,7 +274,7 @@ public class WorldGeneration : MonoBehaviour
     private void SpawnPlayer()
     {
         myPlayerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.up * 0.5f, Quaternion.identity);
-        FindObjectOfType<CameraFollowPlayer>().SetPlayerMovement(myPlayerMovement);
+        FindObjectOfType<CameraFollowPlayer>().myPlayer = myPlayerMovement.transform;
     }
 
     public Room GetRoom(int aX, int aY)
