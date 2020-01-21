@@ -30,6 +30,7 @@ public class CameraFollowPlayer : MonoBehaviour
         }
 
 		myMousePos = CaptureMousePos();
+        myShakeOffset = UpdateShake();
 		myTarget = UpdateTargetPos();
 		UpdateCameraPosition();
 	}
@@ -54,6 +55,7 @@ public class CameraFollowPlayer : MonoBehaviour
         mouseOffset.x = myMousePos.x * myCameraDist;
         mouseOffset.z = myMousePos.y * myCameraDist;
         Vector3 ret = myPlayer.position + mouseOffset + myCamOffset;
+        ret += myShakeOffset;
 		ret.y = myYStart;
 		return ret;
 	}
@@ -64,4 +66,29 @@ public class CameraFollowPlayer : MonoBehaviour
 		tempPos = Vector3.SmoothDamp(transform.position, myTarget, ref myRefVel, mySmoothTime);
 		transform.position = tempPos;
 	}
+
+    public void Shake(Vector3 aDirection, float aMagnitude, float aLength)
+    {
+        myShaking = true;
+        myShakeVector = aDirection;
+        myShakeMag = aMagnitude;
+        myShakeTimeEnd = Time.time + aLength;
+    }
+
+    private Vector3 UpdateShake()
+    {
+        if(!myShaking || Time.time > myShakeTimeEnd)
+        {
+            myShaking = false;
+            return Vector3.zero;
+        }
+        Vector3 tempOffset = myShakeVector;
+        tempOffset *= myShakeMag;
+        return tempOffset;
+    }
+
+    public Vector3 GetMousePos()
+    {
+        return myMousePos;
+    }
 }
