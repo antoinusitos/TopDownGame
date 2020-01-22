@@ -94,6 +94,8 @@ public class WorldGeneration : MonoBehaviour
 
         AffectNextRoomsTriggers();
 
+        ChangeTileRendering();
+
         Invoke("HideRooms", 2);
 
         SpawnPlayer();
@@ -239,6 +241,14 @@ public class WorldGeneration : MonoBehaviour
         for (int i = 0; i < myRooms.Count; ++i)
         {
             myRooms[i].AffectTransitions();
+        }
+    }
+
+    private void ChangeTileRendering()
+    {
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            myRooms[i].ChangeTileRendering();
         }
     }
 

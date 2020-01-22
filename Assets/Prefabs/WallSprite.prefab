@@ -150,3 +150,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 578aa62b5d3959b468506f14b49384ed, type: 3}
   - {fileID: 21300000, guid: bdd8c7d8550c6994d9d5d950698c18d2, type: 3}
   - {fileID: 21300000, guid: 3078cb73f1681904a9b7b595c68006ed, type: 3}
+  myWallSprites:
+  - {fileID: 21300000, guid: a4cb5f12881540f4386bf2c1d059002d, type: 3}
+  - {fileID: 21300000, guid: 154ddeef623e79346b758ecf5c809ca3, type: 3}
+  - {fileID: 21300000, guid: bde1e98a99880754f87b43f612f5793e, type: 3}
+  - {fileID: 21300000, guid: 42118368f4f6ccb40859e1f4b5e3216b, type: 3}
+  - {fileID: 21300000, guid: 84d099ab39c2bf044b0e893e2afd138c, type: 3}
+  - {fileID: 21300000, guid: 89c205b0bcc44d242a81b04a3e124bc4, type: 3}
+  - {fileID: 21300000, guid: 862d5ca00fcfe2a45b3312c5b16f83d2, type: 3}
+  - {fileID: 21300000, guid: 08ab5aba6dc12d349930aebcda39434a, type: 3}
+  - {fileID: 21300000, guid: c772ed88fe9cc7443b50c37cc5dfbdb6, type: 3}
+  - {fileID: 21300000, guid: a8df155d13dbcb346b6629ff58c10e7a, type: 3}
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0

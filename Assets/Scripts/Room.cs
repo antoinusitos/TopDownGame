@@ -24,10 +24,13 @@ public class Room : MonoBehaviour
 
     private WorldGeneration         myWorldGeneration = null;
 
+    private int                     myRoomSize = 0;
+
     public void ConstuctRoom(int aRoomSize, WorldGeneration aWorldGeneration)
     {
         myTransform = transform;
         myWorldGeneration = aWorldGeneration;
+        myRoomSize = myWorldGeneration.GetRoomSize();
 
         SelectTileType(aRoomSize);
     }
@@ -194,7 +197,6 @@ public class Room : MonoBehaviour
                         myMidTile = tileSpawned;
                     }
 
-                    tileSpawned.GetComponent<TileRendererChanger>().ChangeRendering();
                     myTiles.Add(tileSpawned);
                 }
             }
@@ -252,8 +254,27 @@ public class Room : MonoBehaviour
         }
     }
 
+    public void ChangeTileRendering()
+    {
+        for(int i = 0; i < myTiles.Count; i++)
+        {
+            myTiles[i].GetComponent<TileRendererChanger>().ChangeRendering();
+        }
+    }
+
     public Tile GetMidTile()
     {
         return myMidTile;
+    }
+
+    public int GetRoomSize()
+    {
+        return myRoomSize;
+    }
+
+    public Tile GetTile(int aX, int aY)
+    {
+        Debug.Log("want:" + aX + "," + aY);
+        return myTiles[aY * myRoomSize + aX];
     }
 }
