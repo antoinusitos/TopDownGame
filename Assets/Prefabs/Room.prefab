@@ -51,11 +51,11 @@ MonoBehaviour:
     myHasRightNeighbour: 0
     myHasBottomNeighbour: 0
     myHasLeftNeighbour: 0
-  myTileFloorPrefab: {fileID: 9043261872285094333, guid: be18e73cd4253b34b9988f6c7cd0d5cf,
+  myTileFloorPrefab: {fileID: 4538201598269162217, guid: ee4b548a432bb304e9d4f8e076fa6c62,
     type: 3}
-  myTileWallPrefab: {fileID: 9043261872285094333, guid: 6c6259668d17c8e43b88747651def4d9,
+  myTileWallPrefab: {fileID: 7725272156271587929, guid: 34bda0b3fe38e1946abe0c4cfb212ad0,
     type: 3}
-  myTriggerNextRoomPrefab: {fileID: 3022583159136432593, guid: ececbdd80fd52a446b60513e164d2ad8,
+  myTriggerNextRoomPrefab: {fileID: 7796739969722977917, guid: 86b67376987e84642b71b1f7c3887ff8,
     type: 3}
   myStartingRoom: 0
   myMaterials:
@@ -64,3 +64,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 121cf3023b5dffa4699f2f25f9f1d8c5, type: 2}
   - {fileID: 2100000, guid: 4040a1d38de85e441b0f74fb11fc5a0d, type: 2}
   - {fileID: 2100000, guid: 6af41386481e4954fa6526663e3dbc40, type: 2}
+  myBottomSpawningTile: {fileID: 0}
+  myTopSpawningTile: {fileID: 0}
+  myLeftSpawningTile: {fileID: 0}
+  myRightSpawningTile: {fileID: 0}

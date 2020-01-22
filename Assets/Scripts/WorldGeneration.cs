@@ -24,6 +24,7 @@ public class WorldGeneration : MonoBehaviour
     private RoomData        myStartingRoomData;
     private Room            myStartingRoom;
     private PlayerMovement  myPlayerMovement = null;
+    private const float     mySpriteSpace = 1;//2.5f;
 
     private void Awake()
     {
@@ -91,11 +92,16 @@ public class WorldGeneration : MonoBehaviour
 
         InstantiateRooms();
 
-        InstantiateWalls();
+        AffectNextRoomsTriggers();
 
         Invoke("HideRooms", 2);
 
         SpawnPlayer();
+    }
+
+    public int GetRoomSize()
+    {
+        return myRoomSize;
     }
 
     private bool TryFillRoom(int[] aStartingPointsIndex)
@@ -211,10 +217,10 @@ public class WorldGeneration : MonoBehaviour
             {
                 if(myWorld[y * myWorldSideSize + x].myType > 0)
                 {
-                    Room room = Instantiate(myRoomPrefab, new Vector3(x * myRoomSize, 0, y * myRoomSize ), Quaternion.identity);
+                    Room room = Instantiate(myRoomPrefab, new Vector3(x * myRoomSize * mySpriteSpace, y * myRoomSize * mySpriteSpace, 0), Quaternion.identity);
                     room.myRoomData = myWorld[y * myWorldSideSize + x];
                     myRooms.Add(room);
-                    room.ConstuctRoom(myRoomSize);
+                    room.ConstuctRoom(myRoomSize, this);
 
                     if (myStartingRoomData.myX == x && myStartingRoomData.myY == y)
                     {
@@ -228,11 +234,11 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
-    private void InstantiateWalls()
+    private void AffectNextRoomsTriggers()
     {
         for (int i = 0; i < myRooms.Count; ++i)
         {
-            myRooms[i].PlaceWalls(myRoomSize, this);
+            myRooms[i].AffectTransitions();
         }
     }
 
@@ -273,7 +279,7 @@ public class WorldGeneration : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        myPlayerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.up * 0.5f, Quaternion.identity);
+        myPlayerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.forward * -0.05f, Quaternion.identity);
         FindObjectOfType<CameraFollowPlayer>().myPlayer = myPlayerMovement.transform;
     }
 

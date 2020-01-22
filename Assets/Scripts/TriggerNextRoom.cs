@@ -1,10 +1,19 @@
 ﻿using UnityEngine;
 
+public enum TriggerPlace
+{
+    LEFT,
+    CENTER,
+    RIGHT
+}
+
 public class TriggerNextRoom : MonoBehaviour
 {
-    private Room myNextRoom = null;
-    private Room myActualRoom = null;
-    public int myTransitionType = 0;
+    public int              myTransitionType = 0;
+    public TriggerPlace     myTriggerPlace;
+
+    private Room            myNextRoom = null;
+    private Room            myActualRoom = null;
 
     public void SetNextRoom(Room aNextRoom)
     {
@@ -16,7 +25,7 @@ public class TriggerNextRoom : MonoBehaviour
         myActualRoom = aActualRoom;
     }
 
-    private void OnTriggerEnter(Collider aCollider)
+    private void OnTriggerEnter2D(Collider2D aCollider)
     {
         if(myNextRoom == null)
         {

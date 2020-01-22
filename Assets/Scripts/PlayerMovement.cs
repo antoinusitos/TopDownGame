@@ -2,36 +2,36 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody   myRigidbody = null;
-    private float       mySpeed = 5.0f;
-    private Vector3     myLastDirection = Vector3.zero;
+    private Rigidbody2D     myRigidbody = null;
+    private float           mySpeed = 5.0f;
+    private Vector2         myLastDirection = Vector3.zero;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        myRigidbody = GetComponent<Rigidbody>();
+        myRigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        myLastDirection = Vector3.zero;
+        myLastDirection = Vector2.zero;
 
         if (Input.GetKey(KeyCode.Q))
         {
-            myLastDirection -= Vector3.right;
+            myLastDirection -= Vector2.right;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            myLastDirection += Vector3.right;
+            myLastDirection += Vector2.right;
         }
         if (Input.GetKey(KeyCode.Z))
         {
-            myLastDirection += Vector3.forward;
+            myLastDirection += Vector2.up;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            myLastDirection -= Vector3.forward;
+            myLastDirection -= Vector2.up;
         }
 
         myLastDirection.Normalize();

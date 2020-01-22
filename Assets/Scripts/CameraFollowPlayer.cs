@@ -8,10 +8,9 @@ public class CameraFollowPlayer : MonoBehaviour
 	private Vector3         myMousePos;
 	private Vector3         myRefVel;
 	private Vector3         myShakeOffset;
-    private const float     myCameraDist = 3f;
+    private const float     myCameraDist = 3.5f;
     private float           mySmoothTime = 0.2f;
-	private float           myYStart = 7;
-    private Vector3         myCamOffset = new Vector3(0, 0, -4);
+	private float           myZStart = 7;
 	private float           myShakeMag;
 	private float           myShakeTimeEnd;
 	private Vector3         myShakeVector;
@@ -19,8 +18,15 @@ public class CameraFollowPlayer : MonoBehaviour
 	
 	private void Start()
 	{
-		myTarget = myPlayer.position;
-	}
+        if (myPlayer == null)
+        {
+            return;
+        }
+
+        myTarget = myPlayer.position;
+        myZStart = transform.position.z;
+
+    }
 	
 	private void Update()
 	{
@@ -51,12 +57,10 @@ public class CameraFollowPlayer : MonoBehaviour
 	
 	private Vector3 UpdateTargetPos()
 	{
-        Vector3 mouseOffset = Vector3.zero;
-        mouseOffset.x = myMousePos.x * myCameraDist;
-        mouseOffset.z = myMousePos.y * myCameraDist;
-        Vector3 ret = myPlayer.position + mouseOffset + myCamOffset;
+        Vector3 mouseOffset = myMousePos * myCameraDist;
+        Vector3 ret = myPlayer.position + mouseOffset;
         ret += myShakeOffset;
-		ret.y = myYStart;
+		ret.z = myZStart;
 		return ret;
 	}
 	
