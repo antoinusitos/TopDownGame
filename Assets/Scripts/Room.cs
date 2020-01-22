@@ -9,8 +9,6 @@ public class Room : MonoBehaviour
     public TriggerNextRoom          myTriggerNextRoomPrefab = null;
     public bool                     myStartingRoom = false;
 
-    public Material[]               myMaterials = null;
-
     public Tile                     myBottomSpawningTile = null;
     public Tile                     myTopSpawningTile = null;
     public Tile                     myLeftSpawningTile = null;
@@ -158,16 +156,23 @@ public class Room : MonoBehaviour
                 if (tileType == 0)
                 {
                     tileSpawned = Instantiate(myTileFloorPrefab, myTransform);
+                    tileSpawned.myTileType = TileType.FLOOR;
+                    tileSpawned.myTileData.myType = myRoomData.myType;
                 }
                 else if (tileType == 1)
                 {
                     tileSpawned = Instantiate(myTileWallPrefab, myTransform);
+                    tileSpawned.myTileType = TileType.WALL;
+                    tileSpawned.myTileData.myType = myRoomData.myType;
                 }
                 else if (tileType == 2)
                 {
                     TriggerNextRoom triggerNextRoom = Instantiate(myTriggerNextRoomPrefab, myTransform);
                     tileSpawned = triggerNextRoom.GetComponent<Tile>();
                     triggerNextRoom.SetActualRoom(this);
+
+                    tileSpawned.myTileType = TileType.FLOOR;
+                    tileSpawned.myTileData.myType = myRoomData.myType;
 
                     triggerNextRoom.myTransitionType = transitionType;
                     triggerNextRoom.myTriggerPlace = triggerPlace;
@@ -189,7 +194,7 @@ public class Room : MonoBehaviour
                         myMidTile = tileSpawned;
                     }
 
-                    //tileSpawned.GetComponent<Renderer>().material = myMaterials[myRoomData.myType - 1];
+                    tileSpawned.GetComponent<TileRendererChanger>().ChangeRendering();
                     myTiles.Add(tileSpawned);
                 }
             }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7796739969722977917}
   - component: {fileID: -7943057806869190218}
   - component: {fileID: 7388679051010712420}
+  - component: {fileID: -7879969465779337205}
   m_Layer: 0
   m_Name: TriggerNextRoomSprite
   m_TagString: Untagged
@@ -106,6 +107,7 @@ MonoBehaviour:
     myHasRightNeighbour: 0
     myHasBottomNeighbour: 0
     myHasLeftNeighbour: 0
+  myTileType: 0
 --- !u!114 &7796739969722977917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myTransitionType: 0
+  myTriggerPlace: 0
 --- !u!61 &-7943057806869190218
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -166,3 +169,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &-7879969465779337205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4193833450672149543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ca77c464dada57479223c3214f2cf8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySprites:
+  - {fileID: 21300000, guid: 300ae7388b4f63545a752bd1d99f6330, type: 3}
+  - {fileID: 21300000, guid: 0f74a01a686eb5147b9fb94413f621c1, type: 3}
+  - {fileID: 21300000, guid: 578aa62b5d3959b468506f14b49384ed, type: 3}
+  - {fileID: 21300000, guid: bdd8c7d8550c6994d9d5d950698c18d2, type: 3}
+  - {fileID: 21300000, guid: 3078cb73f1681904a9b7b595c68006ed, type: 3}

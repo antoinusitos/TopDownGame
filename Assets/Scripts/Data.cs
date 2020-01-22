@@ -7,8 +7,6 @@ public struct RoomData
     public int myY;
     public int myType;
 
-    //ADD CORRESPONDANCE WITH ROOMS
-
     public bool myHasTopNeighbour;
     public bool myHasRightNeighbour;
     public bool myHasBottomNeighbour;
