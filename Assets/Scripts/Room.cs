@@ -14,6 +14,10 @@ public class Room : MonoBehaviour
     public Tile                     myLeftSpawningTile = null;
     public Tile                     myRightSpawningTile = null;
 
+    public Enemy                    myEnemyPrefab = null;
+
+    private List<Enemy>             myEnemies = new List<Enemy>();
+
     private Transform               myTransform = null;
     private Tile                    myMidTile = null;
     private List<Tile>              myTiles = new List<Tile>();
@@ -33,6 +37,15 @@ public class Room : MonoBehaviour
         myRoomSize = myWorldGeneration.GetRoomSize();
 
         SelectTileType(aRoomSize);
+
+        for(int i = 0; i < 3; ++i)
+        {
+            int x = Random.Range(1, myRoomSize - 1);
+            int y = Random.Range(1, myRoomSize - 1);
+            Enemy e = Instantiate(myEnemyPrefab, transform);
+            e.transform.localPosition = new Vector3(x * mySpriteSpace, y * mySpriteSpace, 0);
+            myEnemies.Add(e);
+        }
     }
 
     private void SelectTileType(int aRoomSize)
@@ -248,8 +261,6 @@ public class Room : MonoBehaviour
             }
 
             Room room = myWorldGeneration.GetRoom(neighbourX, neighbourY);
-            Debug.Log("for room :(" + myRoomData.myX + "," + myRoomData.myY + ")");
-            Debug.Log("trying to get :(" + neighbourX + "," + neighbourY + ")");
             myTriggerNextRooms[i].SetNextRoom(room);
         }
     }
@@ -274,7 +285,6 @@ public class Room : MonoBehaviour
 
     public Tile GetTile(int aX, int aY)
     {
-        Debug.Log("want:" + aX + "," + aY);
         return myTiles[aY * myRoomSize + aX];
     }
 }

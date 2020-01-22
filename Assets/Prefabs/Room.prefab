@@ -58,13 +58,8 @@ MonoBehaviour:
   myTriggerNextRoomPrefab: {fileID: 7796739969722977917, guid: 86b67376987e84642b71b1f7c3887ff8,
     type: 3}
   myStartingRoom: 0
-  myMaterials:
-  - {fileID: 2100000, guid: 27cff862c05b3f54cbafb783e3d082d5, type: 2}
-  - {fileID: 2100000, guid: bd6012ae01d8a684fb8c6efeffa7991f, type: 2}
-  - {fileID: 2100000, guid: 121cf3023b5dffa4699f2f25f9f1d8c5, type: 2}
-  - {fileID: 2100000, guid: 4040a1d38de85e441b0f74fb11fc5a0d, type: 2}
-  - {fileID: 2100000, guid: 6af41386481e4954fa6526663e3dbc40, type: 2}
   myBottomSpawningTile: {fileID: 0}
   myTopSpawningTile: {fileID: 0}
   myLeftSpawningTile: {fileID: 0}
   myRightSpawningTile: {fileID: 0}
+  myEnemyPrefab: {fileID: 1661400808, guid: bed689b6a3ad10243abd02f77cc4b4dc, type: 3}

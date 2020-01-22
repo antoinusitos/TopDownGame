@@ -48,6 +48,11 @@ public class Bullet : MonoBehaviour
         {
             mySpeed = 0; //stop if it hits a wall
         }
+        else if(other.gameObject.GetComponent<Enemy>() != null)
+        {
+            mySpeed = 0;
+            Destroy(other.gameObject);
+        }
     }
 
     void CheckDisappear()

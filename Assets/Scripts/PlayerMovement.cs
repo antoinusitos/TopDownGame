@@ -39,6 +39,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        myRigidbody.MovePosition(myRigidbody.position + myLastDirection * mySpeed * Time.deltaTime);
+        myRigidbody.MovePosition(myRigidbody.position + myLastDirection * mySpeed * Time.fixedDeltaTime);
     }
 }
