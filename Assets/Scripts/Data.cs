@@ -49,6 +49,19 @@ public struct TileData
     }
 }
 
+[System.Serializable]
+public struct Item
+{
+    public int myID;
+    public int myQuantity;
+
+    public Item(int anID)
+    {
+        myID = anID;
+        myQuantity = 0;
+    }
+}
+
 public class Data : MonoBehaviour
 {
 

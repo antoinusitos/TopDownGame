@@ -14,10 +14,10 @@ public class StateChanger : MonoBehaviour
 
     private void OnTriggerEnter(Collider aCollider)
     {
-        PlayerStats playerStats = aCollider.GetComponent<PlayerStats>();
-        if(playerStats != null)
+        PlayerData playerData = aCollider.GetComponent<PlayerData>();
+        if(playerData != null)
         {
-            playerStats.SetInFire(true, myTime);
+            playerData.SetInFire(true, myTime);
         }
     }
 }

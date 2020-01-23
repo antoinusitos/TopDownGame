@@ -1,71 +1,40 @@
 ﻿using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : LivingEntityData
 {
-    private int myLife = 100;
-    private int myMaxLife = 100;
-    private int myMana = 100;
-    private int myMaxMana = 100;
+    private int myForgeLevel = 1;
+    private int myEnchantementLevel = 1;
 
-    private bool isAlive = true;
+    private bool myIsInFire = false;
+    private float myTimeInFire = 0;
+    private float myCurrentTimeInFire = 0;
 
-    public int GetCurrentLife()
+    private void Update()
     {
-        return myLife;
+        if (myIsInFire)
+        {
+            myCurrentTimeInFire -= Time.deltaTime;
+            if (myCurrentTimeInFire <= 0)
+            {
+                RemoveLife(5);
+                myTimeInFire--;
+                if (myTimeInFire > 0)
+                {
+                    myCurrentTimeInFire = 1;
+                }
+                else
+                {
+                    myCurrentTimeInFire = 0;
+                    myIsInFire = false;
+                }
+            }
+        }
     }
 
-    public int GetMaxLife()
+    public void SetInFire(bool aNewState, float aTime)
     {
-        return myMaxLife;
-    }
-
-    public int GetCurrentMana()
-    {
-        return myMana;
-    }
-
-    public int GetMaxMana()
-    {
-        return myMaxMana;
-    }
-
-    public void SetLife(int aValue)
-    {
-        myLife = Mathf.Clamp(aValue, 0, myMaxLife);
-    }
-
-    public void SetMana(int aValue)
-    {
-        myMana = Mathf.Clamp(aValue, 0, myMaxMana);
-    }
-
-    public float GetLifeRatio()
-    {
-        return myLife / (float)myMaxLife;
-    }
-
-    public float GetManaRatio()
-    {
-        return myMana / (float)myMaxMana;
-    }
-
-    public void AddLife(int aValue)
-    {
-        myLife = Mathf.Clamp(myLife + aValue, 0, myMaxLife);
-    }
-
-    public void RemoveLife(int aValue)
-    {
-        myLife = Mathf.Clamp(myLife - aValue, 0, myMaxLife);
-    }
-
-    public void AddMana(int aValue)
-    {
-        myMana = Mathf.Clamp(myMana + aValue, 0, myMaxMana);
-    }
-
-    public void RemoveMana(int aValue)
-    {
-        myMana = Mathf.Clamp(myMana - aValue, 0, myMaxMana);
+        myIsInFire = aNewState;
+        myTimeInFire = aTime;
+        myCurrentTimeInFire = 1;
     }
 }

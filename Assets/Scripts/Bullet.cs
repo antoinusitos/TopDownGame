@@ -48,10 +48,14 @@ public class Bullet : MonoBehaviour
         {
             mySpeed = 0; //stop if it hits a wall
         }
-        else if(other.gameObject.GetComponent<Enemy>() != null)
+        else
         {
+            EntityData ed = other.gameObject.GetComponent<EntityData>();
+            if (ed != null)
+            {
+                ed.RemoveLife(40);
+            }
             mySpeed = 0;
-            Destroy(other.gameObject);
         }
     }
 

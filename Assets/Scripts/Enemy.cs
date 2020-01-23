@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : LivingEntityData
 {
     private Transform   myPlayer = null;
     private Rigidbody2D myRigidbody2D = null;
@@ -9,6 +9,14 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if(myLife <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void FixedUpdate()
