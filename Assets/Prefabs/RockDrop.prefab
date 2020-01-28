@@ -96,6 +96,7 @@ MonoBehaviour:
   myItem:
     myID: 0
     myQuantity: 1
+    mySprite: {fileID: 21300000, guid: 082a8cfc5b57c184e81dc27450cd3381, type: 3}
 --- !u!1 &3943118767612831257
 GameObject:
   m_ObjectHideFlags: 0

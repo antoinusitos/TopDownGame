@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class EntityData : MonoBehaviour
 {
-    protected int myLife = 100;
-    protected int myMaxLife = 100;
-    protected int myMana = 100;
-    protected int myMaxMana = 100;
+    public Quickslot[]  myQuickslots = null;
+
+    protected int       myLife = 100;
+    protected int       myMaxLife = 100;
+    protected int       myMana = 100;
+    protected int       myMaxMana = 100;
 
     protected List<Item> myInventory = new List<Item>();
 
@@ -79,10 +81,37 @@ public class EntityData : MonoBehaviour
                 Item item = myInventory[i];
                 item.myQuantity += aCollectible.myItem.myQuantity;
                 myInventory[i] = item;
+
+                if (myQuickslots != null)
+                {
+                    for (int q = 0; q < myQuickslots.Length; q++)
+                    {
+                        if (myQuickslots[i].myItem.myID == item.myID)
+                        {
+                            myQuickslots[i].mySlotQuantity.text = item.myQuantity.ToString();
+                            break;
+                        }
+                    }
+                }
+
                 return;
             }
         }
 
         myInventory.Add(aCollectible.myItem);
+        if(myQuickslots != null)
+        {
+            for(int i = 0; i < myQuickslots.Length; i++)
+            {
+                if(!myQuickslots[i].myIsFilled)
+                {
+                    myQuickslots[i].mySlotImage.sprite = aCollectible.myItem.mySprite;
+                    myQuickslots[i].mySlotQuantity.text = aCollectible.myItem.myQuantity.ToString();
+                    myQuickslots[i].myIsFilled = true;
+                    myQuickslots[i].myItem = aCollectible.myItem;
+                    break;
+                }
+            }
+        }
     }
 }

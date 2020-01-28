@@ -177,3 +177,4 @@ MonoBehaviour:
   myItem:
     myID: 1
     myQuantity: 1
+    mySprite: {fileID: 21300000, guid: 4917c569f66f46f4182dcd5e73f1ee52, type: 3}

@@ -52,13 +52,15 @@ public struct TileData
 [System.Serializable]
 public struct Item
 {
-    public int myID;
-    public int myQuantity;
+    public int      myID;
+    public int      myQuantity;
+    public Sprite   mySprite;
 
     public Item(int anID)
     {
         myID = anID;
         myQuantity = 0;
+        mySprite = null;
     }
 }
 
