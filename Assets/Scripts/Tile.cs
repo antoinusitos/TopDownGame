@@ -11,4 +11,5 @@ public class Tile : MonoBehaviour
     public Room         myParentRoom = null;
     public RoomData     myTileData;
     public TileType     myTileType;
+    public bool         myOccupied = false;
 }

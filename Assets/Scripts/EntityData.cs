@@ -72,6 +72,17 @@ public class EntityData : MonoBehaviour
 
     public void AddToInventory(Collectible aCollectible)
     {
+        for(int i = 0; i < myInventory.Count; ++i)
+        {
+            if(myInventory[i].myID == aCollectible.myItem.myID)
+            {
+                Item item = myInventory[i];
+                item.myQuantity += aCollectible.myItem.myQuantity;
+                myInventory[i] = item;
+                return;
+            }
+        }
+
         myInventory.Add(aCollectible.myItem);
     }
 }

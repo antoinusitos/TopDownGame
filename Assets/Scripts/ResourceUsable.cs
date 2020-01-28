@@ -2,8 +2,8 @@
 
 public class ResourceUsable : EntityData
 {
-    public Sprite               myFullSprite = null;
-    public Sprite               myEmptySprite = null;
+    public GameObject           myFullSprite = null;
+    public GameObject           myEmptySprite = null;
 
     protected bool              myCanDropResources = true;
 
@@ -30,19 +30,38 @@ public class ResourceUsable : EntityData
             else if (myCanRefill)
             {
                 myCurrentTimeToRefill += Time.deltaTime;
-                if(myCurrentTimeToRefill >= myTimeToRefill)
-                {
-                    myCurrentTimeToRefill = 0;
-                    myCanDropResources = true;
-                    mySpriteRenderer.sprite = myFullSprite;
-                    SetLife(100);
-                }
+                CheckRefillTime();
             }
         }
     }
 
     protected virtual void DropResources()
     {
-        mySpriteRenderer.sprite = myEmptySprite;
+        myEmptySprite.SetActive(true);
+        myFullSprite.SetActive(false);
+    }
+
+    protected void CheckRefillTime()
+    {
+        if (myCurrentTimeToRefill >= myTimeToRefill)
+        {
+            myCurrentTimeToRefill = 0;
+            myCanDropResources = true;
+            myEmptySprite.SetActive(false);
+            myFullSprite.SetActive(true);
+            SetLife(100);
+        }
+    }
+
+    public void OnEnteringRoom(float myDifferenceTime)
+    {
+        if (myLife <= 0)
+        {
+            if (myCanRefill)
+            {
+                myCurrentTimeToRefill += myDifferenceTime;
+                CheckRefillTime();
+            }
+        }
     }
 }

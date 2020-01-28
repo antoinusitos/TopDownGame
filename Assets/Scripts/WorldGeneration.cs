@@ -96,6 +96,10 @@ public class WorldGeneration : MonoBehaviour
 
         ChangeTileRendering();
 
+        SpawnResources();
+
+        SpawnDecoration();
+
         Invoke("HideRooms", 2);
 
         SpawnPlayer();
@@ -249,6 +253,22 @@ public class WorldGeneration : MonoBehaviour
         for (int i = 0; i < myRooms.Count; ++i)
         {
             myRooms[i].ChangeTileRendering();
+        }
+    }
+
+    private void SpawnResources()
+    {
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            myRooms[i].SpawnResources();
+        }
+    }
+
+    private void SpawnDecoration()
+    {
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            myRooms[i].SpawnDecoration();
         }
     }
 

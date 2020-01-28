@@ -37,8 +37,9 @@ public class TriggerNextRoom : MonoBehaviour
         if (playerMovement != null)
         {
             myNextRoom.gameObject.SetActive(true);
+            myNextRoom.OnEnteringRoom();
 
-            if(myTransitionType == 0)
+            if (myTransitionType == 0)
             {
                 aCollider.transform.position = myNextRoom.myBottomSpawningTile.transform.position;
             }
@@ -54,6 +55,7 @@ public class TriggerNextRoom : MonoBehaviour
             {
                 aCollider.transform.position = myNextRoom.myRightSpawningTile.transform.position;
             }
+            myActualRoom.OnLeavingRoom();
             myActualRoom.gameObject.SetActive(false);
 
             playerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(myNextRoom.myRoomData.myX, myNextRoom.myRoomData.myY);

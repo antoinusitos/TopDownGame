@@ -63,3 +63,7 @@ MonoBehaviour:
   myLeftSpawningTile: {fileID: 0}
   myRightSpawningTile: {fileID: 0}
   myEnemyPrefab: {fileID: 1661400808, guid: bed689b6a3ad10243abd02f77cc4b4dc, type: 3}
+  myResourcePrefab: {fileID: 4972274863554560887, guid: 1762212b770415b47aa822c7b9a45d0c,
+    type: 3}
+  myDecorationPrefab: {fileID: 9189619099192096526, guid: aa1c5cc43925113439379cb14e74c67b,
+    type: 3}

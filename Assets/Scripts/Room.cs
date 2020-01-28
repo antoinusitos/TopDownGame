@@ -16,6 +16,9 @@ public class Room : MonoBehaviour
 
     public Enemy                    myEnemyPrefab = null;
 
+    public ResourceUsable           myResourcePrefab = null;
+    public Transform                myDecorationPrefab = null;
+
     private List<Enemy>             myEnemies = new List<Enemy>();
 
     private Transform               myTransform = null;
@@ -29,6 +32,8 @@ public class Room : MonoBehaviour
     private WorldGeneration         myWorldGeneration = null;
 
     private int                     myRoomSize = 0;
+
+    private float                   myLastTime = 0;
 
     public void ConstuctRoom(int aRoomSize, WorldGeneration aWorldGeneration)
     {
@@ -273,6 +278,54 @@ public class Room : MonoBehaviour
         }
     }
 
+    public void SpawnResources()
+    {
+        for(int i = 0; i < 3; ++i)
+        {
+            bool occupied = true;
+
+            int x = 0;
+            int y = 0;
+
+            while (occupied)
+            {
+                x = Random.Range(2, myRoomSize - 1);
+                y = Random.Range(2, myRoomSize - 1);
+
+                occupied = myTiles[y * myRoomSize + x].myOccupied;
+            }
+
+            Transform resource = Instantiate(myResourcePrefab, transform).transform;
+            resource.localPosition = new Vector3(x, y, 0);
+
+            myTiles[y * myRoomSize + x].myOccupied = true;
+        }
+    }
+
+    public void SpawnDecoration()
+    {
+        for (int i = 0; i < 15; ++i)
+        {
+            bool occupied = true;
+
+            int x = 0;
+            int y = 0;
+
+            while (occupied)
+            {
+                x = Random.Range(1, myRoomSize);
+                y = Random.Range(2, myRoomSize - 1);
+
+                occupied = myTiles[y * myRoomSize + x].myOccupied;
+            }
+
+            Transform resource = Instantiate(myDecorationPrefab, transform);
+            resource.localPosition = new Vector3(x, y, 0);
+
+            myTiles[y * myRoomSize + x].myOccupied = true;
+        }
+    }
+
     public Tile GetMidTile()
     {
         return myMidTile;
@@ -286,5 +339,21 @@ public class Room : MonoBehaviour
     public Tile GetTile(int aX, int aY)
     {
         return myTiles[aY * myRoomSize + aX];
+    }
+
+    public void OnLeavingRoom()
+    {
+        myLastTime = Time.time;
+    }
+
+    public void OnEnteringRoom()
+    {
+        float diffTime = Time.time - myLastTime;
+
+        ResourceUsable[] resourceUsables = GetComponentsInChildren<ResourceUsable>();
+        for(int i = 0; i < resourceUsables.Length; i++)
+        {
+            resourceUsables[i].OnEnteringRoom(diffTime);
+        }
     }
 }
