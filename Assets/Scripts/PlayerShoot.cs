@@ -2,18 +2,17 @@
 
 public class PlayerShoot : MonoBehaviour
 {
-    public Transform            myBulletSpawnPos = null;
     public Transform            myGunPivot = null;
-    public Bullet               myBulletPrefab = null;
 
     private CameraFollowPlayer  myCameraFollowPlayer = null;
     private bool                myCanShoot = true;
     private bool                myMouseLeft = false;
     private float               myLastShot = 0;
-    private const float         myTimeBetweenShots = 0.25f;
+    private float               myTimeBetweenShots = 0.25f;
     private Vector3             myMouseVector = Vector3.zero;
     private Vector3             myMousePos = Vector3.zero;
     private Transform           myTransform = null;
+    private WeaponData          myCurrentWeapon = null;
 
     private void Start()
     {
@@ -27,16 +26,12 @@ public class PlayerShoot : MonoBehaviour
     {
         GetMouseInput();
 
-        myCanShoot = (myLastShot + myTimeBetweenShots < Time.time);
+        myCanShoot = (myLastShot + myCurrentWeapon.myTimeBetweenShots < Time.time);
         if(myCanShoot && myMouseLeft)
         {
-            if(myBulletPrefab != null)
-            {
-                Bullet bullet = Instantiate(myBulletPrefab, myBulletSpawnPos.position, Quaternion.identity);
-                bullet.Setup(myMouseVector);
-            }
+            myCurrentWeapon.UseWeapon(myMouseVector);
             myLastShot = Time.time;
-            myCameraFollowPlayer.Shake((myTransform.position - myBulletSpawnPos.position), 1.5f, 0.05f);
+            myCameraFollowPlayer.Shake((myTransform.position - myCurrentWeapon.myBulletSpawnPos.position), 1.5f, 0.05f);
         }
 
         UpdateGunPivot();
@@ -59,5 +54,10 @@ public class PlayerShoot : MonoBehaviour
         myMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition); //position of cursor in world
         myMousePos.z = transform.position.z;
         myMouseVector = (myMousePos - transform.position).normalized;
+    }
+
+    public void EquipWeapon(WeaponData aWeaponData)
+    {
+        myCurrentWeapon = aWeaponData;
     }
 }
