@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public enum WeaponType
 {
@@ -14,16 +15,30 @@ public class WeaponData : MonoBehaviour
     public Bullet       myBulletPrefab = null;
     public Transform    myBulletSpawnPos = null;
     public float        myTimeBetweenShots = 0.25f;
+    public float        mySwingTime = 0.2f;
+    public Collider     myMeleeCollider = null;
 
-    private bool        myWantToUse = false;
+    private bool        myCanUseWeapon = true;
+    private float       myCurrentTimeToShot = 0;
+    private Animation   myAnimation = null;
+
+    private void Awake()
+    {
+        myAnimation = GetComponent<Animation>();
+    }
 
     public void UseWeapon(Vector3 aMouseVector)
     {
+        if(!myCanUseWeapon)
+        {
+            return;
+        }
+
         switch (myWeaponType)
         {
             case WeaponType.MELEE:
                 {
-                    myWantToUse = true;
+                    StartCoroutine("UseMelee");
                 }
                 break;
             case WeaponType.RANGE:
@@ -41,5 +56,27 @@ public class WeaponData : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private void Update()
+    {
+        if(!myCanUseWeapon)
+        {
+            myCurrentTimeToShot += Time.deltaTime;
+            if(myCurrentTimeToShot >= myTimeBetweenShots)
+            {
+                myCanUseWeapon = true;
+                myCurrentTimeToShot = 0;
+            }
+        }
+    }
+
+    private IEnumerator UseMelee()
+    {
+        if (myAnimation != null)
+            myAnimation.Play();
+        myMeleeCollider.enabled = true;
+        yield return new WaitForSeconds(mySwingTime);
+        myMeleeCollider.enabled = false;
     }
 }
