@@ -12,7 +12,7 @@ public class PlayerShoot : MonoBehaviour
     private Vector3             myMouseVector = Vector3.zero;
     private Vector3             myMousePos = Vector3.zero;
     private Transform           myTransform = null;
-    private WeaponData          myCurrentWeapon = null;
+    public WeaponData           myCurrentWeapon = null;
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class PlayerShoot : MonoBehaviour
         {
             myCurrentWeapon.UseWeapon(myMouseVector);
             myLastShot = Time.time;
-            myCameraFollowPlayer.Shake((myTransform.position - myCurrentWeapon.myBulletSpawnPos.position), 1.5f, 0.05f);
+            //myCameraFollowPlayer.Shake((myTransform.position - myCurrentWeapon.myBulletSpawnPos.position), 1.5f, 0.05f);
         }
 
         UpdateGunPivot();

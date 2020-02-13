@@ -133,7 +133,7 @@ MonoBehaviour:
   myBulletSpawnPos: {fileID: 0}
   myTimeBetweenShots: 0.25
   mySwingTime: 0.2
-  myMeleeCollider: {fileID: 0}
+  myMeleeCollider: {fileID: 7087519864879057715}
 --- !u!111 &2489848040954087064
 Animation:
   m_ObjectHideFlags: 0

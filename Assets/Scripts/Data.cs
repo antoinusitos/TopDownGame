@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public struct RoomData
@@ -63,6 +64,7 @@ public struct Item
         mySprite = null;
     }
 }
+
 
 public class Data : MonoBehaviour
 {

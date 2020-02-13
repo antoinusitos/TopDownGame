@@ -9,6 +9,11 @@ public class WorldGeneration : MonoBehaviour
     public Room             myRoomPrefab = null;
     public PlayerMovement   myPlayerPrefab = null;
 
+    public Biome            myBiomePrefab = null;
+    private const int       myBiomesSideNumber = 5;
+    private Biome[]         myBiomes = null;
+
+
     private const int       myWorldSideSize = 10;
     private RoomData[]      myWorld = null;
     private List<Room>      myRooms = new List<Room>();
@@ -58,6 +63,22 @@ public class WorldGeneration : MonoBehaviour
         Random.InitState(myCurrentSeed);
         myCurrentSeedState = Random.state;
 
+        //Generate the biomes
+        GenerateBiomes();
+
+        //Instantiate rooms for each biome
+        GenerateBiomesRooms();
+
+        //Find farest North, South, West and East room for each biome
+        //Link rooms
+        //Link biomes with room
+        //Spawn tiles
+        //Add Environment
+        //Spawn NPC
+        //Create Quests
+        
+
+
         myWorld = new RoomData[myWorldSideSize * myWorldSideSize];
 
         for (int y = 0; y < myWorldSideSize; ++y)
@@ -103,6 +124,32 @@ public class WorldGeneration : MonoBehaviour
         Invoke("HideRooms", 2);
 
         SpawnPlayer();
+    }
+
+    private void GenerateBiomes()
+    {
+        myBiomes = new Biome[myBiomesSideNumber * myBiomesSideNumber];
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            myBiomes[i] = Instantiate(myBiomePrefab, transform);
+            myBiomes[i].Init(x, y, 0);
+            x++;
+            if(x >= myBiomesSideNumber)
+            {
+                x = 0;
+                y++;
+            }
+        }
+    }
+
+    private void GenerateBiomesRooms()
+    {
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            myBiomes[i].GenerateRooms();
+        }
     }
 
     public int GetRoomSize()

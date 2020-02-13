@@ -16,7 +16,7 @@ public class WeaponData : MonoBehaviour
     public Transform    myBulletSpawnPos = null;
     public float        myTimeBetweenShots = 0.25f;
     public float        mySwingTime = 0.2f;
-    public Collider     myMeleeCollider = null;
+    public Collider2D   myMeleeCollider = null;
 
     private bool        myCanUseWeapon = true;
     private float       myCurrentTimeToShot = 0;
