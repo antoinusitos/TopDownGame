@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -516,6 +516,12 @@ PrefabInstance:
       propertyPath: myPlayerPrefab
       value: 
       objectReference: {fileID: 2791185044764874444, guid: c476695a04bde7f44afc2fa157ad7339,
+        type: 3}
+    - target: {fileID: 3337974756053023700, guid: 5100bb2dac88e734c986d34743d7716c,
+        type: 3}
+      propertyPath: myBiomePrefab
+      value: 
+      objectReference: {fileID: 1836210740586259384, guid: e82487d7039306f499b5d76ad55f0d1e,
         type: 3}
     - target: {fileID: 4564891558992765185, guid: 5100bb2dac88e734c986d34743d7716c,
         type: 3}

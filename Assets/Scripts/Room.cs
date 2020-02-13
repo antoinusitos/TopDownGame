@@ -29,17 +29,17 @@ public class Room : MonoBehaviour
 
     private const float             mySpriteSpace = 1;//2.5f;
 
-    private WorldGeneration         myWorldGeneration = null;
+    private Biome                   myBiome = null;
 
     private int                     myRoomSize = 0;
 
     private float                   myLastTime = 0;
 
-    public void ConstuctRoom(int aRoomSize, WorldGeneration aWorldGeneration)
+    public void ConstuctRoom(int aRoomSize, Biome aBiome)
     {
         myTransform = transform;
-        myWorldGeneration = aWorldGeneration;
-        myRoomSize = myWorldGeneration.GetRoomSize();
+        myBiome = aBiome;
+        myRoomSize = aBiome.GetRoomSize();
 
         SelectTileType(aRoomSize);
 
@@ -234,7 +234,7 @@ public class Room : MonoBehaviour
                 if(myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
                     Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myTopSpawningTile = myTiles[(tile.myTileData.myY - 1) * myWorldGeneration.GetRoomSize() + tile.myTileData.myX];
+                    myTopSpawningTile = myTiles[(tile.myTileData.myY - 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
                 }
             }
             else if (myTriggerNextRooms[i].myTransitionType == 1)
@@ -243,7 +243,7 @@ public class Room : MonoBehaviour
                 if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
                     Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myRightSpawningTile = myTiles[tile.myTileData.myY * myWorldGeneration.GetRoomSize() + tile.myTileData.myX - 1];
+                    myRightSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX - 1];
                 }
             }
             else if (myTriggerNextRooms[i].myTransitionType == 2)
@@ -252,7 +252,7 @@ public class Room : MonoBehaviour
                 if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
                     Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myBottomSpawningTile = myTiles[(tile.myTileData.myY + 1) * myWorldGeneration.GetRoomSize() + tile.myTileData.myX];
+                    myBottomSpawningTile = myTiles[(tile.myTileData.myY + 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
                 }
             }
             else if (myTriggerNextRooms[i].myTransitionType == 3)
@@ -261,11 +261,11 @@ public class Room : MonoBehaviour
                 if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
                     Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myLeftSpawningTile = myTiles[tile.myTileData.myY * myWorldGeneration.GetRoomSize() + tile.myTileData.myX + 1];
+                    myLeftSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX + 1];
                 }
             }
 
-            Room room = myWorldGeneration.GetRoom(neighbourX, neighbourY);
+            Room room = myBiome.GetRoom(neighbourX, neighbourY);
             myTriggerNextRooms[i].SetNextRoom(room);
         }
     }

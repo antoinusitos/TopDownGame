@@ -15,7 +15,7 @@ public class MapUI : MonoBehaviour
 
     private void Start()
     {
-        myGridLayoutGroup = GetComponent<GridLayoutGroup>();
+       /* myGridLayoutGroup = GetComponent<GridLayoutGroup>();
 
         if(myWorldGeneration == null)
             myWorldGeneration = FindObjectOfType<WorldGeneration>();
@@ -44,7 +44,7 @@ public class MapUI : MonoBehaviour
                     img.color = transparent;
                 }
             }
-        }
+        }*/
     }
 
     private void Update()
@@ -60,7 +60,7 @@ public class MapUI : MonoBehaviour
 
     public void SetRoomVisited(int aX, int aY)
     {
-        Room room = myWorldGeneration.GetRoom(aX, aY);
+        /*Room room = myWorldGeneration.GetRoom(aX, aY);
         if(room.myRoomData.myType == 1)
         {
             myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.green;
@@ -89,6 +89,6 @@ public class MapUI : MonoBehaviour
             myCurrentRoom.color = col;
         }
         myCurrentRoom = myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX];
-        myVisibility = 1;
+        myVisibility = 1;*/
     }
 }

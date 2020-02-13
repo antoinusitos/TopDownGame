@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2373059822908045017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3476907700399996709}
+  - component: {fileID: 1836210740586259384}
+  m_Layer: 0
+  m_Name: Biome
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3476907700399996709
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2373059822908045017}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1836210740586259384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2373059822908045017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c380f2ade7c6fe34390d370b4d657348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myX: 0
+  myY: 0
+  myType: 0
+  myRooms: []
+  myRoomPrefab: {fileID: 1925128966082434214, guid: 57238b047d8310942b860cf7d6155987,
+    type: 3}
+  myWestRoom:
+    myX: 0
+    myY: 0
+    myType: 0
+    myHasTopNeighbour: 0
+    myHasRightNeighbour: 0
+    myHasBottomNeighbour: 0
+    myHasLeftNeighbour: 0
+  myEastRoom:
+    myX: 0
+    myY: 0
+    myType: 0
+    myHasTopNeighbour: 0
+    myHasRightNeighbour: 0
+    myHasBottomNeighbour: 0
+    myHasLeftNeighbour: 0
+  myNorthRoom:
+    myX: 0
+    myY: 0
+    myType: 0
+    myHasTopNeighbour: 0
+    myHasRightNeighbour: 0
+    myHasBottomNeighbour: 0
+    myHasLeftNeighbour: 0
+  mySouthRoom:
+    myX: 0
+    myY: 0
+    myType: 0
+    myHasTopNeighbour: 0
+    myHasRightNeighbour: 0
+    myHasBottomNeighbour: 0
+    myHasLeftNeighbour: 0
