@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Biome : MonoBehaviour
@@ -26,6 +27,10 @@ public class Biome : MonoBehaviour
     public RoomData        myNorthRoom;
     public RoomData        mySouthRoom;
 
+    public bool             myGenerationDone = false;
+
+    public string           myName = "";
+
     public void Init(int aX, int aY, int aType, int aBiomeSideSize, int aRoomSideSize)
     {
         myX = aX;
@@ -35,6 +40,7 @@ public class Biome : MonoBehaviour
         myTransform = transform;
         myBiomeSideSize = aBiomeSideSize;
         myRoomSideSize = aRoomSideSize;
+        myName = Data.GetBiomeName();
     }
 
     public void GenerateRooms()
@@ -73,9 +79,7 @@ public class Biome : MonoBehaviour
 
         CheckNeighbours();
 
-        InstantiateRooms();
-
-        AffectNextRoomsTriggers();
+        StartCoroutine(InstantiateRooms());
     }
 
     private bool TryFillRoom(int[] aStartingPointsIndex)
@@ -181,8 +185,13 @@ public class Biome : MonoBehaviour
         }
     }
 
-    private void InstantiateRooms()
+    private IEnumerator InstantiateRooms()
     {
+        if (WorldGeneration.GetInstance().DEBUG)
+        {
+            WorldGeneration.GetInstance().DEBUGCANVAS.ClearHighlightBiome();
+        }
+
         for (int y = 0; y < myBiomeSideSize; ++y)
         {
             for (int x = 0; x < myBiomeSideSize; ++x)
@@ -202,9 +211,26 @@ public class Biome : MonoBehaviour
                     }
 
                     room.transform.parent = myTransform;
+
+                    if(WorldGeneration.GetInstance().DEBUG)
+                    {
+                        WorldGeneration.GetInstance().DEBUGCANVAS.HighlightBiome(x, y);
+
+                        yield return new WaitForSeconds(WorldGeneration.GetInstance().STEPTIME);
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
                 }
             }
         }
+
+        AffectNextRoomsTriggers();
+
+        myGenerationDone = true;
+
+        gameObject.SetActive(false);
     }
 
     public void AffectNextRoomsTriggers()

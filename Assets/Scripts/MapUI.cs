@@ -15,7 +15,7 @@ public class MapUI : MonoBehaviour
 
     private void Start()
     {
-       /* myGridLayoutGroup = GetComponent<GridLayoutGroup>();
+        /*myGridLayoutGroup = GetComponent<GridLayoutGroup>();
 
         if(myWorldGeneration == null)
             myWorldGeneration = FindObjectOfType<WorldGeneration>();

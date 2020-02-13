@@ -68,5 +68,37 @@ public struct Item
 
 public class Data : MonoBehaviour
 {
+    public static string[] myBiomesNames =
+    {
+        "Groenavatn",
+        "Mork",
+        "Mjola",
+        "Hafnarlond",
+        "Garpsdalr",
+        "Kopanes",
+        "Miohus",
+        "Haugr",
+        "Esjuberg",
+        "Eiriksvagr",
+    };
 
+    private static int myBiomeNameIndex = 0;
+
+    public static void ShuffleBiomesNames()
+    {
+        for(int i = 0; i < myBiomesNames.Length; i++)
+        {
+            int rand = Random.Range(0, myBiomesNames.Length);
+            string temp = myBiomesNames[rand];
+            myBiomesNames[rand] = myBiomesNames[i];
+            myBiomesNames[i] = temp;
+        }
+    }
+
+    public static string GetBiomeName()
+    {
+        string toReturn = myBiomesNames[myBiomeNameIndex];
+        myBiomeNameIndex++;
+        return toReturn;
+    }
 }
