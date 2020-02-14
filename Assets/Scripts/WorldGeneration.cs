@@ -75,35 +75,67 @@ public class WorldGeneration : MonoBehaviour
         }
         else
         {
-
             //Generate the biomes
             GenerateBiomes();
 
-            //Instantiate rooms for each biome
+            //Instantiate rooms for each biome and link them
             GenerateBiomesRooms();
 
-            //Find farest North, South, West and East room for each biome
-            FindBiomesExtremeRooms();
-
-            //Link rooms
-            //Link biomes with room
-            //Spawn tiles
-            //Add Environment
-            //Spawn NPC
-            //Create Quests
-
-            ChangeTileRendering();
-
-            SpawnResources();
-
-            SpawnDecoration();
-
-            //Invoke("HideRooms", 2);
-
-            //SpawnPlayer();
+            StartCoroutine("ContinueGeneration");
         }
     }
 
+    // Step Way 1
+    private IEnumerator DelayedGenerateBiomes()
+    {
+        myBiomes = new Biome[myBiomesSideNumber * myBiomesSideNumber];
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            myBiomes[i] = Instantiate(myBiomePrefab, transform);
+            myBiomes[i].transform.localPosition = new Vector3(x * myBiomeSideSize * myRoomSideSize, y * myBiomeSideSize * myRoomSideSize, 0);
+            myBiomes[i].Init(x, y, 0, myBiomeSideSize, myRoomSideSize);
+            DEBUGCANVAS.HighlightMap(x, y);
+            x++;
+            if (x >= myBiomesSideNumber)
+            {
+                x = 0;
+                y++;
+            }
+            yield return new WaitForSeconds(STEPTIME);
+        }
+        
+        StartCoroutine("DelayedGenerateBiomesRooms");
+    }
+
+    // Step Way 2
+    private IEnumerator DelayedGenerateBiomesRooms()
+    {
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            DEBUGCANVAS.SelectMap(myBiomes[i].myX, myBiomes[i].myY);
+            myBiomes[i].GenerateRooms();
+        }
+
+        FindBiomesExtremeRooms();
+
+        LinkBiomesWithRooms();
+
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            myBiomes[i].InstantiateRoom();
+            while (!myBiomes[i].myGenerationDone)
+            {
+                yield return null;
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+        DEBUGCANVAS.gameObject.SetActive(false);
+    }
+
+    // Normal Way 1
     private void GenerateBiomes()
     {
         myBiomes = new Biome[myBiomesSideNumber * myBiomesSideNumber];
@@ -123,29 +155,7 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
-    private IEnumerator DelayedGenerateBiomes()
-    {
-        myBiomes = new Biome[myBiomesSideNumber * myBiomesSideNumber];
-        int x = 0;
-        int y = 0;
-        for (int i = 0; i < myBiomes.Length; i++)
-        {
-            yield return new WaitForSeconds(STEPTIME);
-            myBiomes[i] = Instantiate(myBiomePrefab, transform);
-            myBiomes[i].transform.localPosition = new Vector3(x * myBiomeSideSize * myRoomSideSize, y * myBiomeSideSize * myRoomSideSize, 0);
-            myBiomes[i].Init(x, y, 0, myBiomeSideSize, myRoomSideSize);
-            DEBUGCANVAS.HighlightMap(x, y);
-            x++;
-            if (x >= myBiomesSideNumber)
-            {
-                x = 0;
-                y++;
-            }
-        }
-
-        StartCoroutine("DelayedGenerateBiomesRooms");
-    }
-
+    // Normal Way 2
     private void GenerateBiomesRooms()
     {
         for (int i = 0; i < myBiomes.Length; i++)
@@ -154,17 +164,37 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
-    private IEnumerator DelayedGenerateBiomesRooms()
+    // Normal Way 3
+    private IEnumerator ContinueGeneration()
     {
+        //Find farest North, South, West and East room for each biome
+        FindBiomesExtremeRooms();
+
+        //Link biomes with room
+        LinkBiomesWithRooms();
+
+        //Spawn tiles
         for (int i = 0; i < myBiomes.Length; i++)
         {
-            DEBUGCANVAS.SelectMap(myBiomes[i].myX, myBiomes[i].myY);
-            myBiomes[i].GenerateRooms();
+            myBiomes[i].InstantiateRoom();
             while (!myBiomes[i].myGenerationDone)
             {
                 yield return null;
             }
         }
+
+        //Spawn NPC
+        //Create Quests
+
+        ChangeTileRendering();
+
+        SpawnResources();
+
+        SpawnDecoration();
+
+        //Invoke("HideRooms", 2);
+
+        //SpawnPlayer();
     }
 
     private void FindBiomesExtremeRooms()
@@ -173,6 +203,18 @@ public class WorldGeneration : MonoBehaviour
         {
             myBiomes[i].FindExtremeRooms();
         }
+    }
+
+    private void LinkBiomesWithRooms()
+    {
+        /*for (int i = 0; i < myBiomes.Length; i++)
+        {
+            if(myBiomes[i].myX > 0)
+            {
+                myBiomes[i].myWestRoom.myHasLeftNeighbour = true;
+                myBiomes[i - 1].myEastRoom.myHasRightNeighbour = true;
+            }
+        }*/
     }
 
     private void ChangeTileRendering()

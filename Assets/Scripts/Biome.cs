@@ -78,7 +78,10 @@ public class Biome : MonoBehaviour
         }
 
         CheckNeighbours();
+    }
 
+    public void InstantiateRoom()
+    {
         StartCoroutine(InstantiateRooms());
     }
 
@@ -127,6 +130,7 @@ public class Biome : MonoBehaviour
 
         myWorld[aY * myBiomeSideSize + aX].myType = Random.Range(1, 6);
         myRoomsNumber++;
+        LoadingManager.GetInstance().AddToSpawn();
 
         if (aX - 1 > 0 && myWorld[aY * myBiomeSideSize + aX - 1].myType == -1)
         {
@@ -212,7 +216,9 @@ public class Biome : MonoBehaviour
 
                     room.transform.parent = myTransform;
 
-                    if(WorldGeneration.GetInstance().DEBUG)
+                    LoadingManager.GetInstance().AddSpawned();
+
+                    if (WorldGeneration.GetInstance().DEBUG)
                     {
                         WorldGeneration.GetInstance().DEBUGCANVAS.HighlightBiome(x, y);
 
@@ -258,28 +264,28 @@ public class Biome : MonoBehaviour
 
     public void FindExtremeRooms()
     {
-        myWestRoom = myRooms[0].myRoomData;
-        myEastRoom = myRooms[0].myRoomData;
-        myNorthRoom = myRooms[0].myRoomData;
-        mySouthRoom = myRooms[0].myRoomData;
+        myWestRoom = myWorld[0];
+        myEastRoom = myWorld[0];
+        myNorthRoom = myWorld[0];
+        mySouthRoom = myWorld[0];
 
-        for (int i = 0; i < myRooms.Count; ++i)
+        for (int i = 0; i < myWorld.Length; ++i)
         {
-            if(myRooms[i].myRoomData.myY > myNorthRoom.myY)
+            if(myWorld[i].myY > myNorthRoom.myY)
             {
-                myNorthRoom = myRooms[i].myRoomData;
+                myNorthRoom = myWorld[i];
             }
-            if (myRooms[i].myRoomData.myY < mySouthRoom.myY)
+            if (myWorld[i].myY < mySouthRoom.myY)
             {
-                mySouthRoom = myRooms[i].myRoomData;
+                mySouthRoom = myWorld[i];
             }
-            if (myRooms[i].myRoomData.myX < myWestRoom.myX)
+            if (myWorld[i].myX < myWestRoom.myX)
             {
-                myWestRoom = myRooms[i].myRoomData;
+                myWestRoom = myWorld[i];
             }
-            if (myRooms[i].myRoomData.myX > myEastRoom.myX)
+            if (myWorld[i].myX > myEastRoom.myX)
             {
-                myEastRoom = myRooms[i].myRoomData;
+                myEastRoom = myWorld[i];
             }
         }
     }

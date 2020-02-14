@@ -270,6 +270,55 @@ public class Room : MonoBehaviour
         }
     }
 
+    public void AffectTransitionsTo(Room aRoom)
+    {
+        /*for (int i = 0; i < myTriggerNextRooms.Count; i++)
+        {
+            int neighbourX = myRoomData.myX;
+            int neighbourY = myRoomData.myY;
+
+            if (myTriggerNextRooms[i].myTransitionType == 0)
+            {
+                neighbourY += 1;
+                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
+                {
+                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    myTopSpawningTile = myTiles[(tile.myTileData.myY - 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
+                }
+            }
+            else if (myTriggerNextRooms[i].myTransitionType == 1)
+            {
+                neighbourX += 1;
+                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
+                {
+                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    myRightSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX - 1];
+                }
+            }
+            else if (myTriggerNextRooms[i].myTransitionType == 2)
+            {
+                neighbourY -= 1;
+                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
+                {
+                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    myBottomSpawningTile = myTiles[(tile.myTileData.myY + 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
+                }
+            }
+            else if (myTriggerNextRooms[i].myTransitionType == 3)
+            {
+                neighbourX -= 1;
+                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
+                {
+                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    myLeftSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX + 1];
+                }
+            }
+
+            Room room = myBiome.GetRoom(neighbourX, neighbourY);
+            myTriggerNextRooms[i].SetNextRoom(room);
+        }*/
+    }
+
     public void ChangeTileRendering()
     {
         for(int i = 0; i < myTiles.Count; i++)
