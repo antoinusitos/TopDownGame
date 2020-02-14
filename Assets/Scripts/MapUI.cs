@@ -13,9 +13,9 @@ public class MapUI : MonoBehaviour
     private float           myVisibility = 1;
     private const float     myBlinkSpeed = 2.0f;
 
-    private void Start()
+    public void Init()
     {
-        /*myGridLayoutGroup = GetComponent<GridLayoutGroup>();
+        myGridLayoutGroup = GetComponent<GridLayoutGroup>();
 
         if(myWorldGeneration == null)
             myWorldGeneration = FindObjectOfType<WorldGeneration>();
@@ -33,7 +33,7 @@ public class MapUI : MonoBehaviour
                 Image img = Instantiate(myRoomImagePrefab, myGridLayoutGroup.transform);
                 myRoomImages[y * worldSideSize + x] = img;
 
-                if (myWorldGeneration.GetRoom(x, y) != null)
+                if (myWorldGeneration.GetCurrentActiveBiome().GetRoom(x, y) != null)
                 {
                     Color col = Color.grey;
                     col.a = 0.25f;
@@ -44,7 +44,7 @@ public class MapUI : MonoBehaviour
                     img.color = transparent;
                 }
             }
-        }*/
+        }
     }
 
     private void Update()
@@ -60,7 +60,7 @@ public class MapUI : MonoBehaviour
 
     public void SetRoomVisited(int aX, int aY)
     {
-        /*Room room = myWorldGeneration.GetRoom(aX, aY);
+        Room room = myWorldGeneration.GetCurrentActiveBiome().GetRoom(aX, aY);
         if(room.myRoomData.myType == 1)
         {
             myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.green;
@@ -89,6 +89,6 @@ public class MapUI : MonoBehaviour
             myCurrentRoom.color = col;
         }
         myCurrentRoom = myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX];
-        myVisibility = 1;*/
+        myVisibility = 1;
     }
 }

@@ -14,7 +14,7 @@ public class WorldGeneration : MonoBehaviour
     public PlayerMovement   myPlayerPrefab = null;
 
     public Biome            myBiomePrefab = null;
-    private const int       myBiomesSideNumber = 2;
+    private const int       myBiomesSideNumber = 1;
     private Biome[]         myBiomes = null;
     private const int       myBiomeSideSize = 10;
     private const int       myRoomSideSize = 20;
@@ -26,6 +26,8 @@ public class WorldGeneration : MonoBehaviour
     private const float     myGenerationRoomPercentage = 0.4f;
     private Transform       myTransform = null;
     private PlayerMovement  myPlayerMovement = null;
+
+    private Biome           myCurrentActiveBiome = null;
 
     private static WorldGeneration  _instance = null;
 
@@ -46,6 +48,10 @@ public class WorldGeneration : MonoBehaviour
         if(DEBUG)
         {
             DEBUGCANVAS.Init(myBiomesSideNumber, myBiomeSideSize);
+        }
+        else
+        {
+            DEBUGCANVAS.gameObject.SetActive(false);
         }
 
         GenerateWorld();
@@ -133,6 +139,8 @@ public class WorldGeneration : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         DEBUGCANVAS.gameObject.SetActive(false);
+
+        SpawnPlayer();
     }
 
     // Normal Way 1
@@ -192,9 +200,23 @@ public class WorldGeneration : MonoBehaviour
 
         SpawnDecoration();
 
-        //Invoke("HideRooms", 2);
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            myBiomes[i].HideRooms();
+        }
 
-        //SpawnPlayer();
+        myCurrentActiveBiome = myBiomes[0];
+
+        myCurrentActiveBiome.gameObject.SetActive(true);
+
+        myCurrentActiveBiome.GetStartingRoom().gameObject.SetActive(true);
+
+        Invoke("SpawnPlayer", 0.5f);
+    }
+
+    public Biome GetCurrentActiveBiome()
+    {
+        return myCurrentActiveBiome;
     }
 
     private void FindBiomesExtremeRooms()
@@ -246,10 +268,18 @@ public class WorldGeneration : MonoBehaviour
         Debug.Log("Seed used :" + myCurrentSeed.ToString());
     }
 
+    public int GetWorldSideSize()
+    {
+        return myBiomeSideSize;
+    }
+
     private void SpawnPlayer()
     {
-        /*myPlayerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.forward * -0.05f, Quaternion.identity);
+        Room myStartingRoom = myCurrentActiveBiome.GetStartingRoom();
+        myPlayerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.forward * -0.05f, Quaternion.identity);
         FindObjectOfType<CameraFollowPlayer>().myPlayer = myPlayerMovement.transform;
-        myPlayerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(myStartingRoomData.myX, myStartingRoomData.myY);*/
+        MapUI mapUI = myPlayerMovement.GetComponentInChildren<MapUI>();
+        mapUI.Init();
+        mapUI.SetRoomVisited(myStartingRoom.myRoomData.myX, myStartingRoom.myRoomData.myY);
     }
 }

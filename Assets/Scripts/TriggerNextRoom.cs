@@ -11,6 +11,8 @@ public class TriggerNextRoom : MonoBehaviour
 {
     public int              myTransitionType = 0;
     public TriggerPlace     myTriggerPlace;
+    public int              myID = -1;
+    public Tile             myTile = null;
 
     private Room            myNextRoom = null;
     private Room            myActualRoom = null;

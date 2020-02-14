@@ -59,10 +59,104 @@ public class Room : MonoBehaviour
         {
             for (int x = 0; x < aRoomSize; ++x)
             {
-                int tileType = -1; //0 = floor, 1 = wall, 2 = transition
-                int transitionType = 0;
+                int tileType = -1; //0 = floor, 1 = wall
+                int transitionType = -1;
+                bool haveTransition = false;
 
-                TriggerPlace triggerPlace = TriggerPlace.CENTER;
+                if (x == 0)
+                {
+                    if (myRoomData.myHasLeftNeighbour)
+                    {
+                        if (y == aRoomSize / 2 || y == aRoomSize / 2 + 1 || y == aRoomSize / 2 - 1)
+                        {
+                            tileType = 0;
+                            //tileType = 2;
+                            transitionType = 3;
+                            if (y == aRoomSize / 2)
+                                haveTransition = true;
+                        }
+                        else
+                        {
+                            tileType = 1;
+                        }
+                    }
+                    else
+                    {
+                        tileType = 1;
+                    }
+                }
+                else if (x == aRoomSize - 1)
+                {
+                    if (myRoomData.myHasRightNeighbour)
+                    {
+                        if (y == aRoomSize / 2 || y == aRoomSize / 2 - 1 || y == aRoomSize / 2 + 1)
+                        {
+                            tileType = 0;
+                            //tileType = 2;
+                            transitionType = 1;
+                            if (y == aRoomSize / 2)
+                                haveTransition = true;
+                        }
+                        else
+                        {
+                            tileType = 1;
+                        }
+                    }
+                    else
+                    {
+                        tileType = 1;
+                    }
+                }
+                else if (y == 0)
+                {
+                    if (myRoomData.myHasTopNeighbour)
+                    {
+                        if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
+                        {
+                            tileType = 0;
+                            //tileType = 2;
+                            transitionType = 2;
+                            if (x == aRoomSize / 2)
+                                haveTransition = true;
+                        }
+                        else
+                        {
+                            tileType = 1;
+                        }
+                    }
+                    else
+                    {
+                        tileType = 1;
+                    }
+                }
+                else if (y == aRoomSize - 1)
+                {
+                    if (myRoomData.myHasBottomNeighbour)
+                    {
+                        if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
+                        {
+                            tileType = 0;
+                            //tileType = 2;
+                            transitionType = 0;
+                            if (x == aRoomSize / 2)
+                                haveTransition = true;
+                        }
+                        else
+                        {
+                            tileType = 1;
+                        }
+                    }
+                    else
+                    {
+                        tileType = 1;
+                    }
+                }
+                else
+                {
+                    tileType = 0;
+                }
+
+                /* TriggerPlace triggerPlace = TriggerPlace.CENTER;
 
                 if (x == 0)
                 {
@@ -171,7 +265,7 @@ public class Room : MonoBehaviour
                 else
                 {
                     tileType = 0;
-                }
+                }*/
 
                 Tile tileSpawned = null;
                 if (tileType == 0)
@@ -185,20 +279,6 @@ public class Room : MonoBehaviour
                     tileSpawned = Instantiate(myTileWallPrefab, myTransform);
                     tileSpawned.myTileType = TileType.WALL;
                     tileSpawned.myTileData.myType = myRoomData.myType;
-                }
-                else if (tileType == 2)
-                {
-                    TriggerNextRoom triggerNextRoom = Instantiate(myTriggerNextRoomPrefab, myTransform);
-                    tileSpawned = triggerNextRoom.GetComponent<Tile>();
-                    triggerNextRoom.SetActualRoom(this);
-
-                    tileSpawned.myTileType = TileType.FLOOR;
-                    tileSpawned.myTileData.myType = myRoomData.myType;
-
-                    triggerNextRoom.myTransitionType = transitionType;
-                    triggerNextRoom.myTriggerPlace = triggerPlace;
-
-                    myTriggerNextRooms.Add(triggerNextRoom);
                 }
 
                 if (tileSpawned != null)
@@ -217,6 +297,28 @@ public class Room : MonoBehaviour
 
                     myTiles.Add(tileSpawned);
                 }
+
+                if (haveTransition && tileSpawned != null)
+                {
+                    TriggerNextRoom triggerNextRoom = Instantiate(myTriggerNextRoomPrefab, myTransform);
+                    triggerNextRoom.SetActualRoom(this);
+                    triggerNextRoom.myTile = tileSpawned;
+                    triggerNextRoom.transform.localPosition = tileSpawned.transform.localPosition;
+
+                    triggerNextRoom.myTriggerPlace = TriggerPlace.CENTER;
+
+                    triggerNextRoom.myID = Data.transitionTriggerIndex;
+                    Data.transitionTriggerIndex++;
+
+                    triggerNextRoom.myTransitionType = transitionType;
+
+                    if (transitionType == 1 || transitionType == 3)
+                    {
+                        triggerNextRoom.transform.localScale = new Vector3(1, 3, 1);
+                    }
+
+                    myTriggerNextRooms.Add(triggerNextRoom);
+                }
             }
         }
     }
@@ -233,7 +335,7 @@ public class Room : MonoBehaviour
                 neighbourY += 1;
                 if(myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    Tile tile = myTriggerNextRooms[i].myTile;
                     myTopSpawningTile = myTiles[(tile.myTileData.myY - 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
                 }
             }
@@ -242,7 +344,7 @@ public class Room : MonoBehaviour
                 neighbourX += 1;
                 if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    Tile tile = myTriggerNextRooms[i].myTile;
                     myRightSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX - 1];
                 }
             }
@@ -251,7 +353,7 @@ public class Room : MonoBehaviour
                 neighbourY -= 1;
                 if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    Tile tile = myTriggerNextRooms[i].myTile;
                     myBottomSpawningTile = myTiles[(tile.myTileData.myY + 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
                 }
             }
@@ -260,7 +362,7 @@ public class Room : MonoBehaviour
                 neighbourX -= 1;
                 if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
                 {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
+                    Tile tile = myTriggerNextRooms[i].myTile;
                     myLeftSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX + 1];
                 }
             }

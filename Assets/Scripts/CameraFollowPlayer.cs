@@ -10,7 +10,7 @@ public class CameraFollowPlayer : MonoBehaviour
 	private Vector3         myShakeOffset;
     private const float     myCameraDist = 3.5f;
     private float           mySmoothTime = 0.2f;
-	private float           myZStart = 7;
+	private float           myZStart = -7;
 	private float           myShakeMag;
 	private float           myShakeTimeEnd;
 	private Vector3         myShakeVector;

@@ -251,14 +251,7 @@ public class Biome : MonoBehaviour
     {
         for (int i = 0; i < myRooms.Count; ++i)
         {
-            if (!myRooms[i].myStartingRoom)
-            {
-                myRooms[i].gameObject.SetActive(false);
-            }
-            else
-            {
-                Camera.main.transform.position = myRooms[i].transform.position + Vector3.up * 10 + Vector3.right * (myRoomSideSize / 2);
-            }
+            myRooms[i].gameObject.SetActive(false);
         }
     }
 
@@ -298,6 +291,11 @@ public class Biome : MonoBehaviour
     public int GetRoomSize()
     {
         return myRoomSideSize;
+    }
+
+    public Room GetStartingRoom()
+    {
+        return myStartingRoom;
     }
 
     public void DebugRooms()

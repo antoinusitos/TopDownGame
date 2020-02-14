@@ -65,6 +65,13 @@ public struct Item
     }
 }
 
+public enum TransitionDirection
+{
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT
+}
 
 public class Data : MonoBehaviour
 {
@@ -81,6 +88,8 @@ public class Data : MonoBehaviour
         "Esjuberg",
         "Eiriksvagr",
     };
+
+    public static int transitionTriggerIndex = 0;
 
     private static int myBiomeNameIndex = 0;
 
