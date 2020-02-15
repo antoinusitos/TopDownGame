@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
     private float           mySpeed = 5.0f;
     private Vector2         myLastDirection = Vector3.zero;
 
+    private Room            myCurrentRoom = null;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -40,5 +42,15 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         myRigidbody.MovePosition(myRigidbody.position + myLastDirection * mySpeed * Time.fixedDeltaTime);
+    }
+
+    public void SetCurrentRoom(Room aRoom)
+    {
+        myCurrentRoom = aRoom;
+    }
+
+    public Room GetCurrentRoom()
+    {
+        return myCurrentRoom;
     }
 }

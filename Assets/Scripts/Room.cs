@@ -18,6 +18,7 @@ public class Room : MonoBehaviour
 
     public ResourceUsable           myResourcePrefab = null;
     public Transform                myDecorationPrefab = null;
+    private List<ResourceUsable>    myResourceUsables = new List<ResourceUsable>();
 
     private List<Enemy>             myEnemies = new List<Enemy>();
 
@@ -156,117 +157,6 @@ public class Room : MonoBehaviour
                     tileType = 0;
                 }
 
-                /* TriggerPlace triggerPlace = TriggerPlace.CENTER;
-
-                if (x == 0)
-                {
-                    if (myRoomData.myHasLeftNeighbour)
-                    {
-                        if (y == aRoomSize / 2 || y == aRoomSize / 2 + 1 || y == aRoomSize / 2 - 1)
-                        {
-                            tileType = 2;
-                            transitionType = 3;
-                            if (y == aRoomSize / 2 + 1)
-                                triggerPlace = TriggerPlace.RIGHT;
-                            else if (y == aRoomSize / 2 - 1)
-                                triggerPlace = TriggerPlace.LEFT;
-                            else
-                                triggerPlace = TriggerPlace.CENTER;
-
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else if (x == aRoomSize - 1)
-                {
-                    if (myRoomData.myHasRightNeighbour)
-                    {
-                        if (y == aRoomSize / 2 || y == aRoomSize / 2 - 1 || y == aRoomSize / 2 + 1)
-                        {
-                            tileType = 2;
-                            transitionType = 1;
-                            if (y == aRoomSize / 2 + 1)
-                                triggerPlace = TriggerPlace.RIGHT;
-                            else if (y == aRoomSize / 2 - 1)
-                                triggerPlace = TriggerPlace.LEFT;
-                            else
-                                triggerPlace = TriggerPlace.CENTER;
-
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else if (y == 0)
-                {
-                    if (myRoomData.myHasTopNeighbour)
-                    {
-                        if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
-                        {
-                            tileType = 2;
-                            transitionType = 2;
-                            if (x == aRoomSize / 2 + 1)
-                                triggerPlace = TriggerPlace.RIGHT;
-                            else if (x == aRoomSize / 2 - 1)
-                                triggerPlace = TriggerPlace.LEFT;
-                            else
-                                triggerPlace = TriggerPlace.CENTER;
-
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else if (y == aRoomSize - 1)
-                {
-                    if (myRoomData.myHasBottomNeighbour)
-                    {
-                        if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
-                        {
-                            tileType = 2;
-                            transitionType = 0;
-                            if (x == aRoomSize / 2 + 1)
-                                triggerPlace = TriggerPlace.RIGHT;
-                            else if (x == aRoomSize / 2 - 1)
-                                triggerPlace = TriggerPlace.LEFT;
-                            else
-                                triggerPlace = TriggerPlace.CENTER;
-
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else
-                {
-                    tileType = 0;
-                }*/
-
                 Tile tileSpawned = null;
                 if (tileType == 0)
                 {
@@ -374,51 +264,7 @@ public class Room : MonoBehaviour
 
     public void AffectTransitionsTo(Room aRoom)
     {
-        /*for (int i = 0; i < myTriggerNextRooms.Count; i++)
-        {
-            int neighbourX = myRoomData.myX;
-            int neighbourY = myRoomData.myY;
 
-            if (myTriggerNextRooms[i].myTransitionType == 0)
-            {
-                neighbourY += 1;
-                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myTopSpawningTile = myTiles[(tile.myTileData.myY - 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
-                }
-            }
-            else if (myTriggerNextRooms[i].myTransitionType == 1)
-            {
-                neighbourX += 1;
-                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myRightSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX - 1];
-                }
-            }
-            else if (myTriggerNextRooms[i].myTransitionType == 2)
-            {
-                neighbourY -= 1;
-                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myBottomSpawningTile = myTiles[(tile.myTileData.myY + 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
-                }
-            }
-            else if (myTriggerNextRooms[i].myTransitionType == 3)
-            {
-                neighbourX -= 1;
-                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].GetComponent<Tile>();
-                    myLeftSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX + 1];
-                }
-            }
-
-            Room room = myBiome.GetRoom(neighbourX, neighbourY);
-            myTriggerNextRooms[i].SetNextRoom(room);
-        }*/
     }
 
     public void ChangeTileRendering()
@@ -446,8 +292,9 @@ public class Room : MonoBehaviour
                 occupied = myTiles[y * myRoomSize + x].myOccupied;
             }
 
-            Transform resource = Instantiate(myResourcePrefab, transform).transform;
-            resource.localPosition = new Vector3(x, y, 0);
+            ResourceUsable resource = Instantiate(myResourcePrefab, transform);
+            resource.transform.localPosition = new Vector3(x, y, 0);
+            myResourceUsables.Add(resource);
 
             myTiles[y * myRoomSize + x].myOccupied = true;
         }
@@ -506,5 +353,25 @@ public class Room : MonoBehaviour
         {
             resourceUsables[i].OnEnteringRoom(diffTime);
         }
+    }
+
+    public List<ResourceUsable> GetResourceToSave()
+    {
+        List<ResourceUsable> toSave = new List<ResourceUsable>();
+
+        for(int i = 0; i < myResourceUsables.Count; ++i)
+        {
+            if(myResourceUsables[i].GetMarkAsToSave())
+            {
+                toSave.Add(myResourceUsables[i]);
+            }
+        }
+
+        return toSave;
+    }
+
+    public Biome GetBiome()
+    {
+        return myBiome;
     }
 }

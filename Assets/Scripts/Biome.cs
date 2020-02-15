@@ -324,4 +324,20 @@ public class Biome : MonoBehaviour
 
         return null;
     }
+
+    public List<ResourceUsable> GetResourceUsablesToSave()
+    {
+        List<ResourceUsable> toSave = new List<ResourceUsable>();
+
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            List<ResourceUsable> resourceToSave = myRooms[i].GetResourceToSave();
+            for (int j = 0; j < resourceToSave.Count; ++j)
+            {
+                toSave.Add(resourceToSave[j]);
+            }
+        }
+
+        return toSave;
+    }
 }

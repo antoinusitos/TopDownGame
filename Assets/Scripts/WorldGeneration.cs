@@ -43,9 +43,9 @@ public class WorldGeneration : MonoBehaviour
         return _instance;
     }
 
-    private void Start()
+    public void StartGenerating()
     {
-        if(DEBUG)
+        if (DEBUG)
         {
             DEBUGCANVAS.Init(myBiomesSideNumber, myBiomeSideSize);
         }
@@ -239,6 +239,11 @@ public class WorldGeneration : MonoBehaviour
         }*/
     }
 
+    public Biome[] GetBiomes()
+    {
+        return myBiomes;
+    }
+
     private void ChangeTileRendering()
     {
         for (int i = 0; i < myRooms.Count; ++i)
@@ -263,6 +268,11 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
+    public int GetSeed()
+    {
+        return myCurrentSeed;
+    }
+
     private void DebugSeed()
     {
         Debug.Log("Seed used :" + myCurrentSeed.ToString());
@@ -281,5 +291,11 @@ public class WorldGeneration : MonoBehaviour
         MapUI mapUI = myPlayerMovement.GetComponentInChildren<MapUI>();
         mapUI.Init();
         mapUI.SetRoomVisited(myStartingRoom.myRoomData.myX, myStartingRoom.myRoomData.myY);
+        myPlayerMovement.SetCurrentRoom(myStartingRoom);
+    }
+
+    public PlayerMovement GetPlayerMovement()
+    {
+        return myPlayerMovement;
     }
 }

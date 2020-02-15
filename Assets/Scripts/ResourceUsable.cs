@@ -13,9 +13,14 @@ public class ResourceUsable : EntityData
 
     protected SpriteRenderer    mySpriteRenderer = null;
 
+    protected bool              myMarkAsToSave = false;
+
+    protected Tile              myTile = null;
+
     private void Awake()
     {
         mySpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        myTile = GetComponent<Tile>();
     }
 
     private void Update()
@@ -26,11 +31,13 @@ public class ResourceUsable : EntityData
             {
                 myCanDropResources = false;
                 DropResources();
+                myMarkAsToSave = true;
             }
             else if (myCanRefill)
             {
                 myCurrentTimeToRefill += Time.deltaTime;
                 CheckRefillTime();
+                myMarkAsToSave = true;
             }
         }
     }
@@ -63,5 +70,25 @@ public class ResourceUsable : EntityData
                 CheckRefillTime();
             }
         }
+    }
+
+    public float GetCurrentTimeToRefill()
+    {
+        return myCurrentTimeToRefill;
+    }
+
+    public void ResetMarkToSave()
+    {
+        myMarkAsToSave = false;
+    }
+
+    public bool GetMarkAsToSave()
+    {
+        return myMarkAsToSave;
+    }
+
+    public Tile GetTile()
+    {
+        return myTile;
     }
 }

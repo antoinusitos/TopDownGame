@@ -61,6 +61,8 @@ public class TriggerNextRoom : MonoBehaviour
             myActualRoom.gameObject.SetActive(false);
 
             playerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(myNextRoom.myRoomData.myX, myNextRoom.myRoomData.myY);
+
+            playerMovement.SetCurrentRoom(myNextRoom);
         }
     }
 }

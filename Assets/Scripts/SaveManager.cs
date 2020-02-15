@@ -1,76 +1,33 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class LoadingManager : MonoBehaviour
+public class SaveManager : MonoBehaviour
 {
-    private static LoadingManager   _myInstance = null;
+    private static SaveManager  myInstance = null;
 
-    public Slider                   myProgressSlider = null;
-    public Text                     myTextProgressSlider = null;
-
-    public GameObject               myPauseMenu = null;
-
-    private int                     myNumberToSpawn = 0;
-    private int                     myCurrentNumberSpawned = 0;
-    private bool                    myIsLoading = true;
-
-    private WorldGeneration         myWorldGeneration = null;
+    private WorldGeneration     myWorldGeneration = null;
 
     private void Awake()
     {
-        _myInstance = this;
+        myInstance = this;
         myWorldGeneration = FindObjectOfType<WorldGeneration>();
     }
 
-    private void Update()
+    public static SaveManager GetInstance()
     {
-        if(!myIsLoading)
-        {
-            return;
-        }
-
-        myProgressSlider.value = (float)myCurrentNumberSpawned / myNumberToSpawn;
-        myTextProgressSlider.text = "Loading... (" + myCurrentNumberSpawned.ToString() + "/" + myNumberToSpawn.ToString() + ")";
-
-        if(myProgressSlider.value >= 1)
-        {
-            myIsLoading = false;
-            myProgressSlider.gameObject.SetActive(false);
-        }
+        return myInstance;
     }
 
-    public static LoadingManager GetInstance()
+    public void SaveWorld()
     {
-        return _myInstance;
-    }
-
-    public void AddToSpawn()
-    {
-        myNumberToSpawn++;
-    }
-
-    public void AddSpawned()
-    {
-        myCurrentNumberSpawned++;
-    }
-
-    public void LoadWorld()
-    {
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("Seed"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerRoomX"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerRoomY"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerBiomeX"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerBiomeY"));
-        Debug.Log("PlayerX:" + PlayerPrefs.GetFloat("PlayerX"));
-        Debug.Log("PlayerY:" + PlayerPrefs.GetFloat("PlayerY"));
-
-        /*PlayerPrefs.SetInt("Seed", myWorldGeneration.GetSeed());
+        PlayerPrefs.SetInt("Seed", myWorldGeneration.GetSeed());
 
         Biome[] biomes = myWorldGeneration.GetBiomes();
 
         List<ResourceUsable> resourceToSave = new List<ResourceUsable>();
 
-        for (int i = 0; i < biomes.Length; ++i)
+        for(int i = 0; i < biomes.Length; ++i)
         {
             List<ResourceUsable> newResouces = biomes[i].GetResourceUsablesToSave();
             for (int j = 0; j < newResouces.Count; ++j)
@@ -98,6 +55,6 @@ public class LoadingManager : MonoBehaviour
             PlayerPrefs.SetInt("Resource" + i + "BiomeY", resourceToSave[i].GetTile().myParentRoom.GetBiome().myY);
         }
 
-        PlayerPrefs.Save();*/
+        PlayerPrefs.Save();
     }
 }
