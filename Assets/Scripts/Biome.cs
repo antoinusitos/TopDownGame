@@ -340,4 +340,25 @@ public class Biome : MonoBehaviour
 
         return toSave;
     }
+
+    public Room ActivateRoom(int aX, int aY)
+    {
+        Room theRoom = null;
+        Debug.Log("rooms:" + myRooms.Count);
+        for (int i = 0; i < myRooms.Count; i++)
+        {
+            if (myRooms[i].myRoomData.myX == aX && myRooms[i].myRoomData.myY == aY)
+            {
+                Debug.Log("found room");
+                theRoom = myRooms[i];
+                myRooms[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                myRooms[i].gameObject.SetActive(false);
+            }
+        }
+
+        return theRoom;
+    }
 }

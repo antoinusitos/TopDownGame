@@ -55,6 +55,20 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Resource" + i + "BiomeY", resourceToSave[i].GetTile().myParentRoom.GetBiome().myY);
         }
 
+        MapUI mapUI = FindObjectOfType<MapUI>();
+
+        List<Room> rooms = mapUI.GetVisitedRooms();
+
+        PlayerPrefs.SetInt("RoomsVisited", rooms.Count);
+
+        for (int i = 0; i < rooms.Count; ++i)
+        {
+            PlayerPrefs.SetInt("Visited"+ i + "BiomeX", rooms[i].GetBiome().myX);
+            PlayerPrefs.SetInt("Visited"+ i + "BiomeY", rooms[i].GetBiome().myY);
+            PlayerPrefs.SetInt("Visited"+ i + "RoomX", rooms[i].myRoomData.myX);
+            PlayerPrefs.SetInt("Visited"+ i + "RoomY", rooms[i].myRoomData.myY);
+        }
+
         PlayerPrefs.Save();
     }
 }

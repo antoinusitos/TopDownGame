@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class MapUI : MonoBehaviour
@@ -12,6 +13,8 @@ public class MapUI : MonoBehaviour
     private Image           myCurrentRoom = null;
     private float           myVisibility = 1;
     private const float     myBlinkSpeed = 2.0f;
+
+    private List<Room>      myVisitedRooms = new List<Room>();
 
     public void Init()
     {
@@ -58,10 +61,16 @@ public class MapUI : MonoBehaviour
         }
     }
 
-    public void SetRoomVisited(int aX, int aY)
+    public void SetRoomVisited(int aX, int aY, Biome aBiome = null)
     {
-        Room room = myWorldGeneration.GetCurrentActiveBiome().GetRoom(aX, aY);
-        if(room.myRoomData.myType == 1)
+        Room room = null;
+        if (aBiome == null)
+            room = myWorldGeneration.GetCurrentActiveBiome().GetRoom(aX, aY);
+        else
+            room = aBiome.GetRoom(aX, aY);
+        myVisitedRooms.Add(room);
+
+        if (room.myRoomData.myType == 1)
         {
             myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.green;
         }
@@ -90,5 +99,10 @@ public class MapUI : MonoBehaviour
         }
         myCurrentRoom = myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX];
         myVisibility = 1;
+    }
+
+    public List<Room> GetVisitedRooms()
+    {
+        return myVisitedRooms;
     }
 }

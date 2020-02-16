@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class LoadingManager : MonoBehaviour
@@ -56,13 +57,52 @@ public class LoadingManager : MonoBehaviour
 
     public void LoadWorld()
     {
+        StartCoroutine("LoadSave");   
+    }
+
+    private IEnumerator LoadSave()
+    {
         Debug.Log("Seed:" + PlayerPrefs.GetInt("Seed"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerRoomX"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerRoomY"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerBiomeX"));
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("PlayerBiomeY"));
+
+        myWorldGeneration.myUseSeed = true;
+        myWorldGeneration.myGivenSeed = PlayerPrefs.GetInt("Seed");
+
+        myWorldGeneration.GenerateWorld();
+
+        Debug.Log("PlayerRoomX:" + PlayerPrefs.GetInt("PlayerRoomX"));
+        Debug.Log("PlayerRoomY:" + PlayerPrefs.GetInt("PlayerRoomY"));
+        Debug.Log("PlayerBiomeX:" + PlayerPrefs.GetInt("PlayerBiomeX"));
+        Debug.Log("PlayerBiomeY:" + PlayerPrefs.GetInt("PlayerBiomeY"));
+
+        while(!myWorldGeneration.myGenerationFinished)
+        {
+            yield return null;
+        }
+
+        myWorldGeneration.ActivateBiome(PlayerPrefs.GetInt("PlayerBiomeX"), PlayerPrefs.GetInt("PlayerBiomeY"));
+        Room theRoom = myWorldGeneration.ActivateRoom(PlayerPrefs.GetInt("PlayerRoomX"), PlayerPrefs.GetInt("PlayerRoomY"));
+
+
+        myWorldGeneration.PlacePlayerInRoom(theRoom);
+
         Debug.Log("PlayerX:" + PlayerPrefs.GetFloat("PlayerX"));
         Debug.Log("PlayerY:" + PlayerPrefs.GetFloat("PlayerY"));
+
+        myWorldGeneration.PlacePlayerAt(PlayerPrefs.GetFloat("PlayerX"), PlayerPrefs.GetFloat("PlayerY"));
+
+        MapUI mapUI = FindObjectOfType<MapUI>();
+
+        int roomVisited = PlayerPrefs.GetInt("RoomsVisited");
+
+        for (int i = 0; i < roomVisited; ++i)
+        {
+            Debug.Log("want biome " + PlayerPrefs.GetInt("Visited" + i + "BiomeX") + ":" + PlayerPrefs.GetInt("Visited" + i + "BiomeY"));
+            Debug.Log("want room " + PlayerPrefs.GetInt("Visited" + i + "RoomX") + ":" + PlayerPrefs.GetInt("Visited" + i + "RoomY"));
+
+            Biome biome = myWorldGeneration.GetBiome(PlayerPrefs.GetInt("Visited" + i + "BiomeX"), PlayerPrefs.GetInt("Visited" + i + "BiomeY"));
+
+            mapUI.SetRoomVisited(PlayerPrefs.GetInt("Visited" + i + "RoomX"), PlayerPrefs.GetInt("Visited" + i + "RoomY"), biome);
+        }
 
         /*PlayerPrefs.SetInt("Seed", myWorldGeneration.GetSeed());
 

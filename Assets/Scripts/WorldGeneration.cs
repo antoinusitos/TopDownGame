@@ -13,6 +13,10 @@ public class WorldGeneration : MonoBehaviour
     public bool             myRandomSeed = false;
     public PlayerMovement   myPlayerPrefab = null;
 
+    public bool             myPlacePlayer = false;
+
+    public bool             myGenerationFinished = false;
+
     public Biome            myBiomePrefab = null;
     private const int       myBiomesSideNumber = 1;
     private Biome[]         myBiomes = null;
@@ -211,7 +215,7 @@ public class WorldGeneration : MonoBehaviour
 
         myCurrentActiveBiome.GetStartingRoom().gameObject.SetActive(true);
 
-        Invoke("SpawnPlayer", 0.5f);
+        SpawnPlayer();
     }
 
     public Biome GetCurrentActiveBiome()
@@ -242,6 +246,11 @@ public class WorldGeneration : MonoBehaviour
     public Biome[] GetBiomes()
     {
         return myBiomes;
+    }
+
+    public void SetPlacePlayer(bool aNewState)
+    {
+        myPlacePlayer = aNewState;
     }
 
     private void ChangeTileRendering()
@@ -285,9 +294,34 @@ public class WorldGeneration : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        Room myStartingRoom = myCurrentActiveBiome.GetStartingRoom();
-        myPlayerMovement = Instantiate(myPlayerPrefab, myStartingRoom.GetMidTile().transform.position + Vector3.forward * -0.05f, Quaternion.identity);
+        myPlayerMovement = Instantiate(myPlayerPrefab, Vector3.zero, Quaternion.identity);
         FindObjectOfType<CameraFollowPlayer>().myPlayer = myPlayerMovement.transform;
+
+        if(myPlacePlayer)
+        {
+            PlacePlayer();
+        }
+
+        myGenerationFinished = true;
+    }
+
+    public void PlacePlayer()
+    {
+        Room myStartingRoom = myCurrentActiveBiome.GetStartingRoom();
+        myPlayerMovement.transform.position = myStartingRoom.GetMidTile().transform.position + Vector3.forward * -0.05f;
+        MapUI mapUI = myPlayerMovement.GetComponentInChildren<MapUI>();
+        mapUI.Init();
+        mapUI.SetRoomVisited(myStartingRoom.myRoomData.myX, myStartingRoom.myRoomData.myY);
+        myPlayerMovement.SetCurrentRoom(myStartingRoom);
+    }
+
+    public void PlacePlayerInRoom(Room aRoom)
+    {
+        if (aRoom == null)
+            Debug.LogError("lol");
+
+        Room myStartingRoom = aRoom;
+        myPlayerMovement.transform.position = myStartingRoom.GetMidTile().transform.position + Vector3.forward * -0.05f;
         MapUI mapUI = myPlayerMovement.GetComponentInChildren<MapUI>();
         mapUI.Init();
         mapUI.SetRoomVisited(myStartingRoom.myRoomData.myX, myStartingRoom.myRoomData.myY);
@@ -297,5 +331,44 @@ public class WorldGeneration : MonoBehaviour
     public PlayerMovement GetPlayerMovement()
     {
         return myPlayerMovement;
+    }
+
+    public void ActivateBiome(int aX, int aY)
+    {
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            if (myBiomes[i].myX == aX && myBiomes[i].myY == aY)
+            {
+                myCurrentActiveBiome = myBiomes[i];
+                myCurrentActiveBiome.gameObject.SetActive(true);
+            }
+            else
+            {
+                myCurrentActiveBiome.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public Biome GetBiome(int aX, int aY)
+    {
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            if (myBiomes[i].myX == aX && myBiomes[i].myY == aY)
+            {
+                return myBiomes[i];
+            }
+        }
+
+        return null;
+    }
+
+    public Room ActivateRoom(int aX, int aY)
+    {
+        return myCurrentActiveBiome.ActivateRoom(aX, aY);
+    }
+
+    public void PlacePlayerAt(float aX, float aY)
+    {
+        myPlayerMovement.transform.position = new Vector3(aX, aY, 0);
     }
 }
