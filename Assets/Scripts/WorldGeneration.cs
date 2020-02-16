@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WorldGeneration : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class WorldGeneration : MonoBehaviour
     public bool             myUseSeed = false;
     public bool             myRandomSeed = false;
     public PlayerMovement   myPlayerPrefab = null;
+
+    public InputField       myInputFieldSeed = null;
 
     public bool             myPlacePlayer = false;
 
@@ -65,6 +68,7 @@ public class WorldGeneration : MonoBehaviour
     {
         if (myUseSeed)
         {
+            myGivenSeed = int.Parse(myInputFieldSeed.text);
             myCurrentSeed = myGivenSeed;
         }
         else if(myRandomSeed)
@@ -255,9 +259,9 @@ public class WorldGeneration : MonoBehaviour
 
     private void ChangeTileRendering()
     {
-        for (int i = 0; i < myRooms.Count; ++i)
+        for (int i = 0; i < myBiomes.Length; ++i)
         {
-            myRooms[i].ChangeTileRendering();
+            myBiomes[i].ChangeTileRendering();
         }
     }
 
@@ -317,9 +321,6 @@ public class WorldGeneration : MonoBehaviour
 
     public void PlacePlayerInRoom(Room aRoom)
     {
-        if (aRoom == null)
-            Debug.LogError("lol");
-
         Room myStartingRoom = aRoom;
         myPlayerMovement.transform.position = myStartingRoom.GetMidTile().transform.position + Vector3.forward * -0.05f;
         MapUI mapUI = myPlayerMovement.GetComponentInChildren<MapUI>();
