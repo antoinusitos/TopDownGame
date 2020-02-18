@@ -160,6 +160,7 @@ public class WorldGeneration : MonoBehaviour
         for (int i = 0; i < myBiomes.Length; i++)
         {
             myBiomes[i] = Instantiate(myBiomePrefab, transform);
+            myBiomes[i].gameObject.name = "Biome" + i;
             myBiomes[i].transform.localPosition = new Vector3(x * myBiomeSideSize * myRoomSideSize, y * myBiomeSideSize * myRoomSideSize, 0);
             myBiomes[i].Init(x, y, 0, myBiomeSideSize, myRoomSideSize);
             x++;
@@ -237,19 +238,29 @@ public class WorldGeneration : MonoBehaviour
 
     private void LinkBiomesWithRooms()
     {
-        /*for (int i = 0; i < myBiomes.Length; i++)
+        for (int i = 0; i < myBiomes.Length; i++)
         {
-            if(myBiomes[i].myX > 0)
+            // Affect Left transition
+            if (myBiomes[i].myX > 0)
             {
-                myBiomes[i].myWestRoom.myHasLeftNeighbour = true;
-                myBiomes[i - 1].myEastRoom.myHasRightNeighbour = true;
+                RoomData roomData = myBiomes[i].GetRoomData(myBiomes[i].myWestRoom.myX, myBiomes[i].myWestRoom.myY);
+
+                roomData.myTransitionDatas.Add(
+                        new TransitionData() { myRoomX = myBiomes[i - 1].myEastRoom.myX, myRoomY = myBiomes[i - 1].myEastRoom.myY, myBiome = myBiomes[i - 1], myTransitionDirection = TransitionDirection.LEFT }
+                );
             }
+            // Affect Right transition
             if (myBiomes[i].myX < myBiomesSideNumber - 1)
             {
-                myBiomes[i].myWestRoom.myHasRightNeighbour = true;
-                myBiomes[i + 1].myEastRoom.myHasLeftNeighbour = true;
+                Debug.Log("Looking for X" + myBiomes[i].myEastRoom.myX + " : " + myBiomes[i].myEastRoom.myY);
+                Debug.Log("int biome " + myBiomes[i].gameObject.name);
+                RoomData roomData = myBiomes[i].GetRoomData(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY);
+
+                roomData.myTransitionDatas.Add(
+                        new TransitionData() { myRoomX = myBiomes[i + 1].myWestRoom.myX, myRoomY = myBiomes[i + 1].myWestRoom.myY, myBiome = myBiomes[i + 1], myTransitionDirection = TransitionDirection.RIGHT }
+                );
             }
-        }*/
+        }
     }
 
     public Biome[] GetBiomes()

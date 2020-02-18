@@ -134,7 +134,7 @@ public class Room : MonoBehaviour
                 }
                 else if (y == aRoomSize - 1)
                 {
-                    if (myRoomData.HasTransition(TransitionDirection.DOWN))
+                    if (myRoomData.HasTransition(TransitionDirection.UP))
                     {
                         if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
                         {

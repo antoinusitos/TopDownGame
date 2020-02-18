@@ -179,17 +179,14 @@ public class Biome : MonoBehaviour
                     if (y > 0 && myWorld[(y - 1) * myBiomeSideSize + x].myType > 0)
                     {
                         myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
-                            new TransitionData() { myRoomX = x, myRoomY = y - 1, myBiome = this, myTransitionDirection = TransitionDirection.UP }
+                            new TransitionData() { myRoomX = x, myRoomY = y - 1, myBiome = this, myTransitionDirection = TransitionDirection.DOWN }
                         );
                     }
                     // Check top neighbour
                     if (y < myBiomeSideSize - 1 && myWorld[(y + 1) * myBiomeSideSize + x].myType > 0)
                     {
-                        if (myWorld[y * myBiomeSideSize + x].myTransitionDatas == null)
-                            Debug.LogError("lol");
-
                         myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
-                            new TransitionData() { myRoomX = x, myRoomY = y + 1, myBiome = this, myTransitionDirection = TransitionDirection.DOWN }
+                            new TransitionData() { myRoomX = x, myRoomY = y + 1, myBiome = this, myTransitionDirection = TransitionDirection.UP }
                         );
                     }
                 }
@@ -331,6 +328,20 @@ public class Biome : MonoBehaviour
         }
 
         return null;
+    }
+
+    public RoomData GetRoomData(int aX, int aY)
+    {
+        if (aX < 0 || aY < 0 || aX == myBiomeSideSize || aY == myBiomeSideSize)
+            return new RoomData();
+
+        for (int i = 0; i < myWorld.Length; ++i)
+        {
+            if (myWorld[i].myX == aX & myWorld[i].myY == aY)
+                return myWorld[i];
+        }
+
+        return new RoomData();
     }
 
     public List<ResourceUsable> GetResourceUsablesToSave()
