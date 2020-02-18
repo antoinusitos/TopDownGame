@@ -16,6 +16,8 @@ public class Room : MonoBehaviour
 
     public Enemy                    myEnemyPrefab = null;
 
+    Public List<TransitionData>     myTransitions = new List<TransitionData>();
+
     public ResourceUsable           myResourcePrefab = null;
     public Transform                myDecorationPrefab = null;
     private List<ResourceUsable>    myResourceUsables = new List<ResourceUsable>();
