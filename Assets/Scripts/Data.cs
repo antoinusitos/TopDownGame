@@ -4,14 +4,11 @@ using UnityEngine;
 [System.Serializable]
 public struct RoomData
 {
-    public int myX;
-    public int myY;
-    public int myType;
+    public int                  myX;
+    public int                  myY;
+    public int                  myType;
 
-    public bool myHasTopNeighbour;
-    public bool myHasRightNeighbour;
-    public bool myHasBottomNeighbour;
-    public bool myHasLeftNeighbour;
+    public List<TransitionData> myTransitionDatas;
 
 
     public RoomData(int aX, int aY, int aType)
@@ -19,10 +16,23 @@ public struct RoomData
         myX = aX;
         myY = aY;
         myType = aType;
-        myHasTopNeighbour = false;
-        myHasRightNeighbour = false;
-        myHasBottomNeighbour = false;
-        myHasLeftNeighbour = false;
+        myTransitionDatas = new List<TransitionData>();
+    }
+
+    public void Init()
+    {
+        myTransitionDatas = new List<TransitionData>();
+    }
+
+    public bool HasTransition(TransitionDirection aDirection)
+    {
+        for(int i = 0; i < myTransitionDatas.Count; ++i)
+        {
+            if (myTransitionDatas[i].myTransitionDirection == aDirection)
+                return true;
+        }
+
+        return false;
     }
 }
 
@@ -53,12 +63,16 @@ public struct TileData
 [System.Serializable]
 public struct TransitionData
 {
-    public Room myRoom;
+    public int myRoomX;
+    public int myRoomY;
+    public Biome myBiome;
     public TransitionDirection myTransitionDirection;
 
-    public TransitionData(Room aRoom,TransitionDirection aDirection )
+    public TransitionData(int aX, int aY, Biome aBiome, TransitionDirection aDirection )
     {
-        myRoom = aRoom;
+        myRoomX = aX;
+        myRoomY = aY;
+        myBiome = aBiome;
         myTransitionDirection = aDirection;
     }
 }

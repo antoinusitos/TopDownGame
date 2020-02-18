@@ -53,6 +53,7 @@ public class Biome : MonoBehaviour
             for (int x = 0; x < myBiomeSideSize; ++x)
             {
                 RoomData theRoom = myWorld[y * myBiomeSideSize + x];
+                theRoom.Init();
                 theRoom.myX = x;
                 theRoom.myY = y;
                 theRoom.myType = -1;
@@ -163,26 +164,33 @@ public class Biome : MonoBehaviour
                     // Check left neighbour
                     if (x > 0 && myWorld[y * myBiomeSideSize + x - 1].myType > 0)
                     {
-                        myWorld[y * myBiomeSideSize + x].myHasLeftNeighbour = true;
-                        myWorld[y * myBiomeSideSize + x - 1].myHasRightNeighbour = true;
+                        myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
+                            new TransitionData() { myRoomX = x - 1, myRoomY = y, myBiome = this, myTransitionDirection = TransitionDirection.LEFT }
+                        );
                     }
                     // Check right neighbour
                     if (x < myBiomeSideSize - 1 && myWorld[y * myBiomeSideSize + x + 1].myType > 0)
                     {
-                        myWorld[y * myBiomeSideSize + x].myHasRightNeighbour = true;
-                        myWorld[y * myBiomeSideSize + x + 1].myHasLeftNeighbour = true;
+                        myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
+                            new TransitionData() { myRoomX = x + 1, myRoomY = y, myBiome = this, myTransitionDirection = TransitionDirection.RIGHT }
+                        );
                     }
                     // Check bottom neighbour
                     if (y > 0 && myWorld[(y - 1) * myBiomeSideSize + x].myType > 0)
                     {
-                        myWorld[y * myBiomeSideSize + x].myHasTopNeighbour = true;
-                        myWorld[(y - 1) * myBiomeSideSize + x].myHasBottomNeighbour = true;
+                        myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
+                            new TransitionData() { myRoomX = x, myRoomY = y - 1, myBiome = this, myTransitionDirection = TransitionDirection.UP }
+                        );
                     }
                     // Check top neighbour
                     if (y < myBiomeSideSize - 1 && myWorld[(y + 1) * myBiomeSideSize + x].myType > 0)
                     {
-                        myWorld[y * myBiomeSideSize + x].myHasBottomNeighbour = true;
-                        myWorld[(y + 1) * myBiomeSideSize + x].myHasTopNeighbour = true;
+                        if (myWorld[y * myBiomeSideSize + x].myTransitionDatas == null)
+                            Debug.LogError("lol");
+
+                        myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
+                            new TransitionData() { myRoomX = x, myRoomY = y + 1, myBiome = this, myTransitionDirection = TransitionDirection.DOWN }
+                        );
                     }
                 }
             }

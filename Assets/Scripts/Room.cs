@@ -16,7 +16,7 @@ public class Room : MonoBehaviour
 
     public Enemy                    myEnemyPrefab = null;
 
-    Public List<TransitionData>     myTransitions = new List<TransitionData>();
+    public List<TransitionData>     myTransitions = new List<TransitionData>();
 
     public ResourceUsable           myResourcePrefab = null;
     public Transform                myDecorationPrefab = null;
@@ -68,7 +68,7 @@ public class Room : MonoBehaviour
 
                 if (x == 0)
                 {
-                    if (myRoomData.myHasLeftNeighbour)
+                    if (myRoomData.HasTransition(TransitionDirection.LEFT))
                     {
                         if (y == aRoomSize / 2 || y == aRoomSize / 2 + 1 || y == aRoomSize / 2 - 1)
                         {
@@ -90,7 +90,7 @@ public class Room : MonoBehaviour
                 }
                 else if (x == aRoomSize - 1)
                 {
-                    if (myRoomData.myHasRightNeighbour)
+                    if (myRoomData.HasTransition(TransitionDirection.RIGHT))
                     {
                         if (y == aRoomSize / 2 || y == aRoomSize / 2 - 1 || y == aRoomSize / 2 + 1)
                         {
@@ -112,7 +112,7 @@ public class Room : MonoBehaviour
                 }
                 else if (y == 0)
                 {
-                    if (myRoomData.myHasTopNeighbour)
+                    if (myRoomData.HasTransition(TransitionDirection.UP))
                     {
                         if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
                         {
@@ -134,7 +134,7 @@ public class Room : MonoBehaviour
                 }
                 else if (y == aRoomSize - 1)
                 {
-                    if (myRoomData.myHasBottomNeighbour)
+                    if (myRoomData.HasTransition(TransitionDirection.DOWN))
                     {
                         if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
                         {
