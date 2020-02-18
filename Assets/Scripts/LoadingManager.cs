@@ -62,17 +62,17 @@ public class LoadingManager : MonoBehaviour
 
     private IEnumerator LoadSave()
     {
-        Debug.Log("Seed:" + PlayerPrefs.GetInt("Seed"));
+        //Debug.Log("Seed:" + PlayerPrefs.GetInt("Seed"));
 
         myWorldGeneration.myUseSeed = true;
         myWorldGeneration.myGivenSeed = PlayerPrefs.GetInt("Seed");
 
         myWorldGeneration.GenerateWorld();
 
-        Debug.Log("PlayerRoomX:" + PlayerPrefs.GetInt("PlayerRoomX"));
-        Debug.Log("PlayerRoomY:" + PlayerPrefs.GetInt("PlayerRoomY"));
-        Debug.Log("PlayerBiomeX:" + PlayerPrefs.GetInt("PlayerBiomeX"));
-        Debug.Log("PlayerBiomeY:" + PlayerPrefs.GetInt("PlayerBiomeY"));
+        //Debug.Log("PlayerRoomX:" + PlayerPrefs.GetInt("PlayerRoomX"));
+        //Debug.Log("PlayerRoomY:" + PlayerPrefs.GetInt("PlayerRoomY"));
+        //Debug.Log("PlayerBiomeX:" + PlayerPrefs.GetInt("PlayerBiomeX"));
+        //Debug.Log("PlayerBiomeY:" + PlayerPrefs.GetInt("PlayerBiomeY"));
 
         while(!myWorldGeneration.myGenerationFinished)
         {
@@ -85,8 +85,8 @@ public class LoadingManager : MonoBehaviour
 
         myWorldGeneration.PlacePlayerInRoom(theRoom);
 
-        Debug.Log("PlayerX:" + PlayerPrefs.GetFloat("PlayerX"));
-        Debug.Log("PlayerY:" + PlayerPrefs.GetFloat("PlayerY"));
+        //Debug.Log("PlayerX:" + PlayerPrefs.GetFloat("PlayerX"));
+        //Debug.Log("PlayerY:" + PlayerPrefs.GetFloat("PlayerY"));
 
         myWorldGeneration.PlacePlayerAt(PlayerPrefs.GetFloat("PlayerX"), PlayerPrefs.GetFloat("PlayerY"));
 
@@ -96,36 +96,15 @@ public class LoadingManager : MonoBehaviour
 
         for (int i = 0; i < roomVisited; ++i)
         {
-            Debug.Log("want biome " + PlayerPrefs.GetInt("Visited" + i + "BiomeX") + ":" + PlayerPrefs.GetInt("Visited" + i + "BiomeY"));
-            Debug.Log("want room " + PlayerPrefs.GetInt("Visited" + i + "RoomX") + ":" + PlayerPrefs.GetInt("Visited" + i + "RoomY"));
+            //Debug.Log("want biome " + PlayerPrefs.GetInt("Visited" + i + "BiomeX") + ":" + PlayerPrefs.GetInt("Visited" + i + "BiomeY"));
+            //Debug.Log("want room " + PlayerPrefs.GetInt("Visited" + i + "RoomX") + ":" + PlayerPrefs.GetInt("Visited" + i + "RoomY"));
 
             Biome biome = myWorldGeneration.GetBiome(PlayerPrefs.GetInt("Visited" + i + "BiomeX"), PlayerPrefs.GetInt("Visited" + i + "BiomeY"));
 
             mapUI.SetRoomVisited(PlayerPrefs.GetInt("Visited" + i + "RoomX"), PlayerPrefs.GetInt("Visited" + i + "RoomY"), biome);
         }
 
-        /*PlayerPrefs.SetInt("Seed", myWorldGeneration.GetSeed());
-
-        Biome[] biomes = myWorldGeneration.GetBiomes();
-
-        List<ResourceUsable> resourceToSave = new List<ResourceUsable>();
-
-        for (int i = 0; i < biomes.Length; ++i)
-        {
-            List<ResourceUsable> newResouces = biomes[i].GetResourceUsablesToSave();
-            for (int j = 0; j < newResouces.Count; ++j)
-            {
-                resourceToSave.Add(newResouces[j]);
-            }
-        }
-
-        PlayerPrefs.SetInt("PlayerRoomX", myWorldGeneration.GetPlayerMovement().GetCurrentRoom().myRoomData.myX);
-        PlayerPrefs.SetInt("PlayerRoomY", myWorldGeneration.GetPlayerMovement().GetCurrentRoom().myRoomData.myY);
-        PlayerPrefs.SetInt("PlayerBiomeX", myWorldGeneration.GetPlayerMovement().GetCurrentRoom().GetBiome().myX);
-        PlayerPrefs.SetInt("PlayerBiomeY", myWorldGeneration.GetPlayerMovement().GetCurrentRoom().GetBiome().myY);
-        PlayerPrefs.SetFloat("PlayerX", myWorldGeneration.GetPlayerMovement().transform.position.x);
-        PlayerPrefs.SetFloat("PlayerY", myWorldGeneration.GetPlayerMovement().transform.position.y);
-
+        /*
         PlayerPrefs.SetInt("ResourceNum", resourceToSave.Count);
 
         for (int i = 0; i < resourceToSave.Count; ++i)
@@ -137,7 +116,6 @@ public class LoadingManager : MonoBehaviour
             PlayerPrefs.SetInt("Resource" + i + "BiomeX", resourceToSave[i].GetTile().myParentRoom.GetBiome().myX);
             PlayerPrefs.SetInt("Resource" + i + "BiomeY", resourceToSave[i].GetTile().myParentRoom.GetBiome().myY);
         }
-
-        PlayerPrefs.Save();*/
+        */
     }
 }

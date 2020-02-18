@@ -21,7 +21,7 @@ public class WorldGeneration : MonoBehaviour
     public bool             myGenerationFinished = false;
 
     public Biome            myBiomePrefab = null;
-    private const int       myBiomesSideNumber = 1;
+    private const int       myBiomesSideNumber = 2;
     private Biome[]         myBiomes = null;
     private const int       myBiomeSideSize = 10;
     private const int       myRoomSideSize = 20;
@@ -243,6 +243,11 @@ public class WorldGeneration : MonoBehaviour
             {
                 myBiomes[i].myWestRoom.myHasLeftNeighbour = true;
                 myBiomes[i - 1].myEastRoom.myHasRightNeighbour = true;
+            }
+            if (myBiomes[i].myX < myBiomesSideNumber - 1)
+            {
+                myBiomes[i].myWestRoom.myHasRightNeighbour = true;
+                myBiomes[i + 1].myEastRoom.myHasLeftNeighbour = true;
             }
         }*/
     }
