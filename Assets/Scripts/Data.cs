@@ -51,6 +51,19 @@ public struct TileData
 }
 
 [System.Serializable]
+public struct TransitionData
+{
+    public Room myRoom;
+    public TransitionDirection myTransitionDirection;
+
+    public TransitionData(Room aRoom,TransitionDirection aDirection )
+    {
+        myRoom = aRoom;
+        myTransitionDirection = aDirection;
+    }
+}
+
+[System.Serializable]
 public struct Item
 {
     public int      myID;
