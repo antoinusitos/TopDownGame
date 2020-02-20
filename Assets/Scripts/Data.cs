@@ -24,12 +24,15 @@ public struct RoomData
         myTransitionDatas = new List<TransitionData>();
     }
 
-    public bool HasTransition(TransitionDirection aDirection)
+    public bool HasTransition(TransitionDirection aDirection, ref TransitionData aTransitionData)
     {
         for(int i = 0; i < myTransitionDatas.Count; ++i)
         {
             if (myTransitionDatas[i].myTransitionDirection == aDirection)
+            {
+                aTransitionData = myTransitionDatas[i];
                 return true;
+            }
         }
 
         return false;

@@ -13,6 +13,9 @@ public class TriggerNextRoom : MonoBehaviour
     public TriggerPlace     myTriggerPlace;
     public int              myID = -1;
     public Tile             myTile = null;
+    public bool             myChangeBiome = false;
+
+    public TransitionData   myTransitionData;
 
     private Room            myNextRoom = null;
     private Room            myActualRoom = null;
@@ -38,6 +41,9 @@ public class TriggerNextRoom : MonoBehaviour
 
         if (playerMovement != null)
         {
+            if(myNextRoom.GetBiome() != myActualRoom.GetBiome())
+                myNextRoom.GetBiome().gameObject.SetActive(true);
+
             myNextRoom.gameObject.SetActive(true);
             myNextRoom.OnEnteringRoom();
 
@@ -60,7 +66,16 @@ public class TriggerNextRoom : MonoBehaviour
             myActualRoom.OnLeavingRoom();
             myActualRoom.gameObject.SetActive(false);
 
-            playerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(myNextRoom.myRoomData.myX, myNextRoom.myRoomData.myY);
+            FindObjectOfType<WorldGeneration>().SetCurrentActiveBiome(myNextRoom.GetBiome());
+
+            if (myNextRoom.GetBiome() != myActualRoom.GetBiome())
+            {
+                myActualRoom.GetBiome().gameObject.SetActive(false);
+
+                playerMovement.GetComponentInChildren<MapUI>().UpdateBiomeOnMap();
+            }
+
+            playerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(myNextRoom.myRoomData.myX, myNextRoom.myRoomData.myY, myNextRoom.GetBiome());
 
             playerMovement.SetCurrentRoom(myNextRoom);
         }

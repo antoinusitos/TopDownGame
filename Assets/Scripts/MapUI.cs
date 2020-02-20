@@ -22,14 +22,28 @@ public class MapUI : MonoBehaviour
 
         if(myWorldGeneration == null)
             myWorldGeneration = FindObjectOfType<WorldGeneration>();
+
+        UpdateBiomeOnMap();
+    }
+
+    public void UpdateBiomeOnMap()
+    {
+        if(myRoomImages != null)
+        {
+            for(int i = 0; i < myRoomImages.Length; ++i)
+            {
+                Destroy(myRoomImages[i].gameObject);
+            }
+        }
+
         int worldSideSize = myWorldGeneration.GetWorldSideSize();
 
         myRoomImages = new Image[worldSideSize * worldSideSize];
 
         Color transparent = Color.white;
-        transparent.a = 0; 
+        transparent.a = 0;
 
-        for(int y = 0; y < worldSideSize; ++y)
+        for (int y = 0; y < worldSideSize; ++y)
         {
             for (int x = 0; x < worldSideSize; ++x)
             {
@@ -48,6 +62,7 @@ public class MapUI : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void Update()

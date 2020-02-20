@@ -65,10 +65,13 @@ public class Room : MonoBehaviour
                 int tileType = -1; //0 = floor, 1 = wall
                 int transitionType = -1;
                 bool haveTransition = false;
+                bool changeBiome = false;
+
+                TransitionData transitionData = new TransitionData();
 
                 if (x == 0)
                 {
-                    if (myRoomData.HasTransition(TransitionDirection.LEFT))
+                    if (myRoomData.HasTransition(TransitionDirection.LEFT, ref transitionData))
                     {
                         if (y == aRoomSize / 2 || y == aRoomSize / 2 + 1 || y == aRoomSize / 2 - 1)
                         {
@@ -76,7 +79,13 @@ public class Room : MonoBehaviour
                             //tileType = 2;
                             transitionType = 3;
                             if (y == aRoomSize / 2)
+                            {
+                                if(myBiome != transitionData.myBiome)
+                                {
+                                    changeBiome = true;
+                                }
                                 haveTransition = true;
+                            }
                         }
                         else
                         {
@@ -90,7 +99,7 @@ public class Room : MonoBehaviour
                 }
                 else if (x == aRoomSize - 1)
                 {
-                    if (myRoomData.HasTransition(TransitionDirection.RIGHT))
+                    if (myRoomData.HasTransition(TransitionDirection.RIGHT, ref transitionData))
                     {
                         if (y == aRoomSize / 2 || y == aRoomSize / 2 - 1 || y == aRoomSize / 2 + 1)
                         {
@@ -98,7 +107,13 @@ public class Room : MonoBehaviour
                             //tileType = 2;
                             transitionType = 1;
                             if (y == aRoomSize / 2)
+                            {
+                                if (myBiome != transitionData.myBiome)
+                                {
+                                    changeBiome = true;
+                                }
                                 haveTransition = true;
+                            }
                         }
                         else
                         {
@@ -112,7 +127,7 @@ public class Room : MonoBehaviour
                 }
                 else if (y == 0)
                 {
-                    if (myRoomData.HasTransition(TransitionDirection.UP))
+                    if (myRoomData.HasTransition(TransitionDirection.DOWN, ref transitionData))
                     {
                         if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
                         {
@@ -120,7 +135,13 @@ public class Room : MonoBehaviour
                             //tileType = 2;
                             transitionType = 2;
                             if (x == aRoomSize / 2)
+                            {
+                                if (myBiome != transitionData.myBiome)
+                                {
+                                    changeBiome = true;
+                                }
                                 haveTransition = true;
+                            }
                         }
                         else
                         {
@@ -134,7 +155,7 @@ public class Room : MonoBehaviour
                 }
                 else if (y == aRoomSize - 1)
                 {
-                    if (myRoomData.HasTransition(TransitionDirection.UP))
+                    if (myRoomData.HasTransition(TransitionDirection.UP, ref transitionData))
                     {
                         if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
                         {
@@ -142,7 +163,13 @@ public class Room : MonoBehaviour
                             //tileType = 2;
                             transitionType = 0;
                             if (x == aRoomSize / 2)
+                            {
+                                if (myBiome != transitionData.myBiome)
+                                {
+                                    changeBiome = true;
+                                }
                                 haveTransition = true;
+                            }
                         }
                         else
                         {
@@ -196,6 +223,9 @@ public class Room : MonoBehaviour
                     triggerNextRoom.SetActualRoom(this);
                     triggerNextRoom.myTile = tileSpawned;
                     triggerNextRoom.transform.localPosition = tileSpawned.transform.localPosition;
+
+                    //if(changeBiome)
+                        triggerNextRoom.myTransitionData = transitionData;
 
                     triggerNextRoom.myTriggerPlace = TriggerPlace.CENTER;
 
@@ -259,7 +289,15 @@ public class Room : MonoBehaviour
                 }
             }
 
-            Room room = myBiome.GetRoom(neighbourX, neighbourY);
+            Biome biome = myBiome;
+            if (myTriggerNextRooms[i].myTransitionData.myBiome != biome)
+            {
+                biome = myTriggerNextRooms[i].myTransitionData.myBiome;
+                neighbourX = myTriggerNextRooms[i].myTransitionData.myRoomX;
+                neighbourY = myTriggerNextRooms[i].myTransitionData.myRoomY;
+            }
+
+            Room room = biome.GetRoom(neighbourX, neighbourY);
             myTriggerNextRooms[i].SetNextRoom(room);
         }
     }

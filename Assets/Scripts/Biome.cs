@@ -237,8 +237,6 @@ public class Biome : MonoBehaviour
             }
         }
 
-        AffectNextRoomsTriggers();
-
         myGenerationDone = true;
 
         gameObject.SetActive(false);
@@ -269,19 +267,36 @@ public class Biome : MonoBehaviour
 
         for (int i = 0; i < myWorld.Length; ++i)
         {
-            if(myWorld[i].myY > myNorthRoom.myY)
-            {
-                myNorthRoom = myWorld[i];
-            }
-            if (myWorld[i].myY < mySouthRoom.myY)
-            {
-                mySouthRoom = myWorld[i];
-            }
-            if (myWorld[i].myX < myWestRoom.myX)
+            if(myWestRoom.myType == -1 && myWorld[i].myType > 0)
             {
                 myWestRoom = myWorld[i];
             }
-            if (myWorld[i].myX > myEastRoom.myX)
+            if (myNorthRoom.myType == -1 && myWorld[i].myType > 0)
+            {
+                myNorthRoom = myWorld[i];
+            }
+            if (mySouthRoom.myType == -1 && myWorld[i].myType > 0)
+            {
+                mySouthRoom = myWorld[i];
+            }
+            if (myEastRoom.myType == -1 && myWorld[i].myType > 0)
+            {
+                myEastRoom = myWorld[i];
+            }
+
+            if (myWorld[i].myY >= myNorthRoom.myY && myWorld[i].myType > 0)
+            {
+                myNorthRoom = myWorld[i];
+            }
+            if (myWorld[i].myY <= mySouthRoom.myY && myWorld[i].myType > 0)
+            {
+                mySouthRoom = myWorld[i];
+            }
+            if (myWorld[i].myX <= myWestRoom.myX && myWorld[i].myType > 0)
+            {
+                myWestRoom = myWorld[i];
+            }
+            if (myWorld[i].myX >= myEastRoom.myX && myWorld[i].myType > 0)
             {
                 myEastRoom = myWorld[i];
             }
@@ -333,15 +348,33 @@ public class Biome : MonoBehaviour
     public RoomData GetRoomData(int aX, int aY)
     {
         if (aX < 0 || aY < 0 || aX == myBiomeSideSize || aY == myBiomeSideSize)
+        {
+            Debug.LogError("GetRoomData cannot return a correct value");
             return new RoomData();
+        }
 
         for (int i = 0; i < myWorld.Length; ++i)
         {
             if (myWorld[i].myX == aX & myWorld[i].myY == aY)
+            {
+                Debug.Log("GetRoomData returning a correct value");
                 return myWorld[i];
+            }
         }
 
+        Debug.LogError("GetRoomData cannot return a correct value");
         return new RoomData();
+    }
+
+    public void SetRoomData(int aX, int aY, RoomData aRoomData)
+    {
+        for (int i = 0; i < myWorld.Length; ++i)
+        {
+            if (myWorld[i].myX == aX & myWorld[i].myY == aY)
+            {
+                myWorld[i] = aRoomData;
+            }
+        }
     }
 
     public List<ResourceUsable> GetResourceUsablesToSave()

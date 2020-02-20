@@ -200,6 +200,12 @@ public class WorldGeneration : MonoBehaviour
             }
         }
 
+        //Create physic link between biomes
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            myBiomes[i].AffectNextRoomsTriggers();
+        }
+
         //Spawn NPC
         //Create Quests
 
@@ -228,6 +234,11 @@ public class WorldGeneration : MonoBehaviour
         return myCurrentActiveBiome;
     }
 
+    public void SetCurrentActiveBiome(Biome aBiome)
+    {
+        myCurrentActiveBiome = aBiome;
+    }
+
     private void FindBiomesExtremeRooms()
     {
         for (int i = 0; i < myBiomes.Length; i++)
@@ -248,17 +259,21 @@ public class WorldGeneration : MonoBehaviour
                 roomData.myTransitionDatas.Add(
                         new TransitionData() { myRoomX = myBiomes[i - 1].myEastRoom.myX, myRoomY = myBiomes[i - 1].myEastRoom.myY, myBiome = myBiomes[i - 1], myTransitionDirection = TransitionDirection.LEFT }
                 );
+
+                myBiomes[i].SetRoomData(myBiomes[i].myWestRoom.myX, myBiomes[i].myWestRoom.myY, roomData);
             }
             // Affect Right transition
             if (myBiomes[i].myX < myBiomesSideNumber - 1)
             {
                 Debug.Log("Looking for X" + myBiomes[i].myEastRoom.myX + " : " + myBiomes[i].myEastRoom.myY);
-                Debug.Log("int biome " + myBiomes[i].gameObject.name);
+                Debug.Log("in biome " + myBiomes[i].gameObject.name);
                 RoomData roomData = myBiomes[i].GetRoomData(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY);
 
                 roomData.myTransitionDatas.Add(
                         new TransitionData() { myRoomX = myBiomes[i + 1].myWestRoom.myX, myRoomY = myBiomes[i + 1].myWestRoom.myY, myBiome = myBiomes[i + 1], myTransitionDirection = TransitionDirection.RIGHT }
                 );
+
+                myBiomes[i].SetRoomData(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY, roomData);
             }
         }
     }
