@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d0c4e530e9c13846858b4c4a199856d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myQuickslots: []
   myFullSprite: {fileID: 2876112483389431426}
   myEmptySprite: {fileID: 4816536033826142051}
   myDropPrefab: {fileID: 5700893680828255671, guid: 90ebcf271ed96a64f9d537c31570739b,
@@ -108,6 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2876112483389431425}
   - component: {fileID: 2876112483389431424}
+  - component: {fileID: 2355476583092093401}
   m_Layer: 0
   m_Name: New Sprite
   m_TagString: Untagged
@@ -167,7 +169,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: -100
   m_Sprite: {fileID: 21300000, guid: 5128f1e7bdafac04b88e2c6d86ee9d2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -179,6 +181,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2355476583092093401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2876112483389431426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42b40ab1653c1649bd9d1e3856659e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySortingOrderBase: 5000
+  myOffset: 0
+  myRunOnlyOnce: 1
 --- !u!1 &4816536033826142051
 GameObject:
   m_ObjectHideFlags: 0

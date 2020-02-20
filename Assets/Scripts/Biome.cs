@@ -258,6 +258,22 @@ public class Biome : MonoBehaviour
         }
     }
 
+    public void SpawnResources()
+    {
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            myRooms[i].SpawnResources();
+        }
+    }
+
+    public void SpawnDecoration()
+    {
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            myRooms[i].SpawnDecoration();
+        }
+    }
+
     public void FindExtremeRooms()
     {
         myWestRoom = myWorld[0];

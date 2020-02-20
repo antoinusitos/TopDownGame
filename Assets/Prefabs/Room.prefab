@@ -47,10 +47,7 @@ MonoBehaviour:
     myX: 0
     myY: 0
     myType: 0
-    myHasTopNeighbour: 0
-    myHasRightNeighbour: 0
-    myHasBottomNeighbour: 0
-    myHasLeftNeighbour: 0
+    myTransitionDatas: []
   myTileFloorPrefab: {fileID: 4538201598269162217, guid: ee4b548a432bb304e9d4f8e076fa6c62,
     type: 3}
   myTileWallPrefab: {fileID: 7725272156271587929, guid: 34bda0b3fe38e1946abe0c4cfb212ad0,
@@ -63,7 +60,8 @@ MonoBehaviour:
   myLeftSpawningTile: {fileID: 0}
   myRightSpawningTile: {fileID: 0}
   myEnemyPrefab: {fileID: 1661400808, guid: bed689b6a3ad10243abd02f77cc4b4dc, type: 3}
+  myTransitions: []
   myResourcePrefab: {fileID: 4972274863554560887, guid: 1762212b770415b47aa822c7b9a45d0c,
     type: 3}
-  myDecorationPrefab: {fileID: 9189619099192096526, guid: aa1c5cc43925113439379cb14e74c67b,
+  myDecorationPrefab: {fileID: 2876112483162458616, guid: f5c2b2f7ea8d8404d9c2e1f417474d7d,
     type: 3}

@@ -129,7 +129,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -140,7 +140,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &4972274863554560778
 Rigidbody2D:
@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d0c4e530e9c13846858b4c4a199856d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myQuickslots: []
   myFullSprite: {fileID: 4972274863714554994}
   myEmptySprite: {fileID: 3545625539491052360}
   myDropPrefab: {fileID: 3943118767433847372, guid: 8071db0733b22b24e97595283f26ed94,
@@ -189,6 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4972274863714554993}
   - component: {fileID: 4972274863714554992}
+  - component: {fileID: 2714288438455123463}
   m_Layer: 0
   m_Name: New Sprite
   m_TagString: Untagged
@@ -248,7 +250,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -100
   m_Sprite: {fileID: 21300000, guid: fbf5d3ef196c5754881e1f93c1da3d3b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -260,3 +262,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2714288438455123463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4972274863714554994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42b40ab1653c1649bd9d1e3856659e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySortingOrderBase: 5000
+  myOffset: 0
+  myRunOnlyOnce: 1

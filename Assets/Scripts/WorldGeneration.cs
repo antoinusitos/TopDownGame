@@ -21,7 +21,7 @@ public class WorldGeneration : MonoBehaviour
     public bool             myGenerationFinished = false;
 
     public Biome            myBiomePrefab = null;
-    private const int       myBiomesSideNumber = 2;
+    private const int       myBiomesSideNumber = 1;
     private Biome[]         myBiomes = null;
     private const int       myBiomeSideSize = 10;
     private const int       myRoomSideSize = 20;
@@ -298,17 +298,17 @@ public class WorldGeneration : MonoBehaviour
 
     private void SpawnResources()
     {
-        for (int i = 0; i < myRooms.Count; ++i)
+        for (int i = 0; i < myBiomes.Length; ++i)
         {
-            myRooms[i].SpawnResources();
+            myBiomes[i].SpawnResources();
         }
     }
 
     private void SpawnDecoration()
     {
-        for (int i = 0; i < myRooms.Count; ++i)
+        for (int i = 0; i < myBiomes.Length; ++i)
         {
-            myRooms[i].SpawnDecoration();
+            myBiomes[i].SpawnDecoration();
         }
     }
 
