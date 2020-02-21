@@ -43,307 +43,34 @@ public class Room : MonoBehaviour
 
     private float                   myLastTime = 0;
 
-    /*public void ConstuctRoom(int aRoomSize, Biome aBiome)
-    {
-        myTransform = transform;
-        myBiome = aBiome;
-        myRoomSize = aBiome.GetRoomSize();
+    private TileType[,]             myGrid;
+    private int                     myRoomHeight;
+    private int                     myRoomWidth;
+    private Vector2                 myRoomSizeWorldUnits = Vector2.one * Data.myRoomSideSize;
+    private float                   myWorldUnitsInOneGridCell = 1;
 
-        SelectTileType(aRoomSize);
+    private List<Walker>            myWalkers;
+    private float                   myChanceWalkerChangeDir = 0.5f;
+    private float                   myChangeWalkerSpawn = 0.05f;
+    private float                   myChanceWalkerDestroy = 0.05f;
+    private int                     myMaxWalkers = 10;
+    private float                   myPercentToFill = 0.2f;
 
-        for(int i = 0; i < 3; ++i)
-        {
-            int x = Random.Range(1, myRoomSize - 1);
-            int y = Random.Range(1, myRoomSize - 1);
-            Enemy e = Instantiate(myEnemyPrefab, transform);
-            e.transform.localPosition = new Vector3(x * mySpriteSpace, y * mySpriteSpace, 0);
-            myEnemies.Add(e);
-        }
-    }
+    private List<GameObject>        mySpawned;
 
-    private void SelectTileType(int aRoomSize)
-    {
-        for (int y = 0; y < aRoomSize; ++y)
-        {
-            for (int x = 0; x < aRoomSize; ++x)
-            {
-                int tileType = -1; //0 = floor, 1 = wall
-                int transitionType = -1;
-                bool haveTransition = false;
-                bool changeBiome = false;
+    private int                     myWestX = -1;
+    private int                     myWestY = -1;
+    private int                     myEastX = -1;
+    private int                     myEastY = -1;
+    private int                     myNorthX = -1;
+    private int                     myNorthY = -1;
+    private int                     mySouthX = -1;
+    private int                     mySouthY = -1;
 
-                TransitionData transitionData = new TransitionData();
+    public GameObject               myWallObj;
+    public GameObject               myFloorObj;
 
-                if (x == 0)
-                {
-                    if (myRoomData.HasTransition(TransitionDirection.LEFT, ref transitionData))
-                    {
-                        if (y == aRoomSize / 2 || y == aRoomSize / 2 + 1 || y == aRoomSize / 2 - 1)
-                        {
-                            tileType = 0;
-                            //tileType = 2;
-                            transitionType = 3;
-                            if (y == aRoomSize / 2)
-                            {
-                                if(myBiome != transitionData.myBiome)
-                                {
-                                    changeBiome = true;
-                                }
-                                haveTransition = true;
-                            }
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else if (x == aRoomSize - 1)
-                {
-                    if (myRoomData.HasTransition(TransitionDirection.RIGHT, ref transitionData))
-                    {
-                        if (y == aRoomSize / 2 || y == aRoomSize / 2 - 1 || y == aRoomSize / 2 + 1)
-                        {
-                            tileType = 0;
-                            //tileType = 2;
-                            transitionType = 1;
-                            if (y == aRoomSize / 2)
-                            {
-                                if (myBiome != transitionData.myBiome)
-                                {
-                                    changeBiome = true;
-                                }
-                                haveTransition = true;
-                            }
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else if (y == 0)
-                {
-                    if (myRoomData.HasTransition(TransitionDirection.DOWN, ref transitionData))
-                    {
-                        if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
-                        {
-                            tileType = 0;
-                            //tileType = 2;
-                            transitionType = 2;
-                            if (x == aRoomSize / 2)
-                            {
-                                if (myBiome != transitionData.myBiome)
-                                {
-                                    changeBiome = true;
-                                }
-                                haveTransition = true;
-                            }
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else if (y == aRoomSize - 1)
-                {
-                    if (myRoomData.HasTransition(TransitionDirection.UP, ref transitionData))
-                    {
-                        if (x == aRoomSize / 2 || x == aRoomSize / 2 - 1 || x == aRoomSize / 2 + 1)
-                        {
-                            tileType = 0;
-                            //tileType = 2;
-                            transitionType = 0;
-                            if (x == aRoomSize / 2)
-                            {
-                                if (myBiome != transitionData.myBiome)
-                                {
-                                    changeBiome = true;
-                                }
-                                haveTransition = true;
-                            }
-                        }
-                        else
-                        {
-                            tileType = 1;
-                        }
-                    }
-                    else
-                    {
-                        tileType = 1;
-                    }
-                }
-                else
-                {
-                    tileType = 0;
-                }
-
-                Tile tileSpawned = null;
-                if (tileType == 0)
-                {
-                    tileSpawned = Instantiate(myTileFloorPrefab, myTransform);
-                    tileSpawned.myTileType = TileType.FLOOR;
-                    tileSpawned.myTileData.myType = myRoomData.myType;
-                }
-                else if (tileType == 1)
-                {
-                    tileSpawned = Instantiate(myTileWallPrefab, myTransform);
-                    tileSpawned.myTileType = TileType.WALL;
-                    tileSpawned.myTileData.myType = myRoomData.myType;
-                }
-
-                if (tileSpawned != null)
-                {
-                    Transform tileTransform = tileSpawned.transform;
-                    tileTransform.parent = myTransform;
-                    tileTransform.localPosition = new Vector3(x * mySpriteSpace, y * mySpriteSpace, 0);
-                    tileSpawned.myTileData.myX = x;
-                    tileSpawned.myTileData.myY = y;
-                    tileSpawned.myParentRoom = this;
-
-                    if (x == aRoomSize / 2 && y == aRoomSize / 2)
-                    {
-                        myMidTile = tileSpawned;
-                    }
-
-                    myTiles.Add(tileSpawned);
-                }
-
-                if (haveTransition && tileSpawned != null)
-                {
-                    TriggerNextRoom triggerNextRoom = Instantiate(myTriggerNextRoomPrefab, myTransform);
-                    triggerNextRoom.SetActualRoom(this);
-                    triggerNextRoom.myTile = tileSpawned;
-                    triggerNextRoom.transform.localPosition = tileSpawned.transform.localPosition;
-
-                    //if(changeBiome)
-                        triggerNextRoom.myTransitionData = transitionData;
-
-                    triggerNextRoom.myTriggerPlace = TriggerPlace.CENTER;
-
-                    triggerNextRoom.myID = Data.transitionTriggerIndex;
-                    Data.transitionTriggerIndex++;
-
-                    triggerNextRoom.myTransitionType = transitionType;
-
-                    if (transitionType == 1 || transitionType == 3)
-                    {
-                        triggerNextRoom.transform.localScale = new Vector3(1, 3, 1);
-                    }
-
-                    myTriggerNextRooms.Add(triggerNextRoom);
-                }
-            }
-        }
-    }
-
-    public void AffectTransitions()
-    {
-        for(int i = 0; i < myTriggerNextRooms.Count; i++)
-        {
-            int neighbourX = myRoomData.myX;
-            int neighbourY = myRoomData.myY;
-
-            if(myTriggerNextRooms[i].myTransitionType == 0)
-            {
-                neighbourY += 1;
-                if(myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].myTile;
-                    myTopSpawningTile = myTiles[(tile.myTileData.myY - 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
-                }
-            }
-            else if (myTriggerNextRooms[i].myTransitionType == 1)
-            {
-                neighbourX += 1;
-                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].myTile;
-                    myRightSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX - 1];
-                }
-            }
-            else if (myTriggerNextRooms[i].myTransitionType == 2)
-            {
-                neighbourY -= 1;
-                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].myTile;
-                    myBottomSpawningTile = myTiles[(tile.myTileData.myY + 1) * myBiome.GetRoomSize() + tile.myTileData.myX];
-                }
-            }
-            else if (myTriggerNextRooms[i].myTransitionType == 3)
-            {
-                neighbourX -= 1;
-                if (myTriggerNextRooms[i].myTriggerPlace == TriggerPlace.CENTER)
-                {
-                    Tile tile = myTriggerNextRooms[i].myTile;
-                    myLeftSpawningTile = myTiles[tile.myTileData.myY * myBiome.GetRoomSize() + tile.myTileData.myX + 1];
-                }
-            }
-
-            Biome biome = myBiome;
-            if (myTriggerNextRooms[i].myTransitionData.myBiome != biome)
-            {
-                biome = myTriggerNextRooms[i].myTransitionData.myBiome;
-                neighbourX = myTriggerNextRooms[i].myTransitionData.myRoomX;
-                neighbourY = myTriggerNextRooms[i].myTransitionData.myRoomY;
-            }
-
-            Room room = biome.GetRoom(neighbourX, neighbourY);
-            myTriggerNextRooms[i].SetNextRoom(room);
-        }
-    }*/
-
-
-    private TileType[,] myGrid;
-    private int myRoomHeight;
-    private int myRoomWidth;
-    private Vector2 myRoomSizeWorldUnits = Vector2.one * Data.myRoomSideSize;
-    private float myWorldUnitsInOneGridCell = 1;
-
-    private struct Walker
-    {
-        public Vector2 myDir;
-        public Vector2 myPos;
-    }
-
-    private List<Walker> myWalkers;
-    private float myChanceWalkerChangeDir = 0.5f;
-    private float myChangeWalkerSpawn = 0.05f;
-    private float myChanceWalkerDestroy = 0.05f;
-    private int myMaxWalkers = 10;
-    private float myPercentToFill = 0.2f;
-
-    private List<GameObject> mySpawned;
-
-    private int myWestX = -1;
-    private int myWestY = -1;
-    private int myEastX = -1;
-    private int myEastY = -1;
-    private int myNorthX = -1;
-    private int myNorthY = -1;
-    private int mySouthX = -1;
-    private int mySouthY = -1;
-
-    public GameObject myWallObj;
-    public GameObject myFloorObj;
-
-    public int mySeed = 0;
-
-
+    public int                      mySeed = 0;
 
     public void GetSeedAndGenerate(Biome aBiome)
     {
@@ -727,6 +454,7 @@ public class Room : MonoBehaviour
         aTile.GetComponentInChildren<SpriteRenderer>().color = Color.green;
         Transition toReturn = aTile.AddComponent<Transition>();
         aTile.GetComponent<Collider2D>().isTrigger = true;
+        aTile.layer = 8;
 
         return toReturn;
     }
@@ -742,11 +470,6 @@ public class Room : MonoBehaviour
                 myLeftTransitionTile.myNextTransition = room.myRightTransitionTile;
                 myLeftTransitionTile.myNextRoomTile = room.myRightSpawningTile;
             }
-            else
-            {
-                myLeftTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
-                Destroy(myLeftTransitionTile);
-            }
         }
         //Affect Right Transition
         if (myRoomData.myX < Data.myBiomeSideSize)
@@ -756,11 +479,6 @@ public class Room : MonoBehaviour
             {
                 myRightTransitionTile.myNextTransition = room.myLeftTransitionTile;
                 myRightTransitionTile.myNextRoomTile = room.myLeftSpawningTile;
-            }
-            else
-            {
-                myRightTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
-                Destroy(myRightTransitionTile);
             }
         }
         //Affect Bottom Transition
@@ -772,11 +490,6 @@ public class Room : MonoBehaviour
                 myBottomTransitionTile.myNextTransition = room.myTopTransitionTile;
                 myBottomTransitionTile.myNextRoomTile = room.myTopSpawningTile;
             }
-            else
-            {
-                myBottomTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
-                Destroy(myBottomTransitionTile);
-            }
         }
         //Affect Top Transition
         if (myRoomData.myY < Data.myBiomeSideSize)
@@ -787,17 +500,32 @@ public class Room : MonoBehaviour
                 myTopTransitionTile.myNextTransition = room.myBottomTransitionTile;
                 myTopTransitionTile.myNextRoomTile = room.myBottomSpawningTile;
             }
-            else
-            {
-                myTopTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
-                Destroy(myTopTransitionTile);
-            }
         }
     }
 
-
-
-
+    public void RemoveAllEmptyTransitions()
+    {
+        if(myLeftTransitionTile.myNextTransition == null)
+        {
+            myLeftTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+            Destroy(myLeftTransitionTile);
+        }
+        if (myRightTransitionTile.myNextTransition == null)
+        {
+            myRightTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+            Destroy(myRightTransitionTile);
+        }
+        if (myTopTransitionTile.myNextTransition == null)
+        {
+            myTopTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+            Destroy(myTopTransitionTile);
+        }
+        if (myBottomTransitionTile.myNextTransition == null)
+        {
+            myBottomTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+            Destroy(myBottomTransitionTile);
+        }
+    }
 
     public void AffectTransitionsTo(Room aRoom)
     {

@@ -48,6 +48,12 @@ public enum RoomType
     MOUNTAIN
 }
 
+public struct Walker
+{
+    public Vector2 myDir;
+    public Vector2 myPos;
+}
+
 [System.Serializable]
 public struct TileData
 {
@@ -125,8 +131,8 @@ public class Data : MonoBehaviour
 
     public static int myCurrentSeedRoom = 0;
 
-    public static int myWorldSideSize = 1; //number of biomes on the side
-    public static int myBiomeSideSize = 20; //number of room in a biome on the side
+    public static int myWorldSideSize = 2; //number of biomes on the side
+    public static int myBiomeSideSize = 10; //number of room in a biome on the side
     public static int myRoomSideSize = 30; //number of tile in a room on the side
 
     public static void ShuffleBiomesNames()

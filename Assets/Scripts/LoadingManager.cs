@@ -31,7 +31,8 @@ public class LoadingManager : MonoBehaviour
         }
 
         myProgressSlider.value = (float)myCurrentNumberSpawned / myNumberToSpawn;
-        myTextProgressSlider.text = "Loading... " + ((myCurrentNumberSpawned / (float)myNumberToSpawn) * 100).ToString() + "% (" + myCurrentNumberSpawned.ToString() + "/" + myNumberToSpawn.ToString() + ")";
+        myTextProgressSlider.text = "Loading... " + ((myCurrentNumberSpawned / (float)myNumberToSpawn) * 100).ToString() + "% (" + 
+            myCurrentNumberSpawned.ToString() + "/" + myNumberToSpawn.ToString() + " rooms loaded)";
 
         if(myProgressSlider.value >= 1)
         {

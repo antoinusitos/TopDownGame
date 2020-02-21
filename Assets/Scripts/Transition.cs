@@ -6,35 +6,57 @@ public class Transition : MonoBehaviour
     public Tile         myNextRoomTile = null;
 
     private bool        myCanDoTransition = true;
+    private float       myTransitionTimeAvailable = 0;
 
     private void OnTriggerEnter2D(Collider2D aCollider)
     {
         if(myCanDoTransition)
         {
-            PlayerMovement pm = aCollider.GetComponent<PlayerMovement>();
-            if(pm != null)
+            PlayerMovement playerMovement = aCollider.GetComponentInParent<PlayerMovement>();
+            if(playerMovement != null)
             {
                 Tile tile = GetComponent<Tile>();
-                tile.myParentRoom.gameObject.SetActive(false);
-                tile.myParentRoom.GetBiome().gameObject.SetActive(false);
+                Room actualRoom = tile.myParentRoom;
 
                 Tile tile2 = myNextTransition.GetComponent<Tile>();
-                tile2.myParentRoom.gameObject.SetActive(true);
-                tile2.myParentRoom.GetBiome().gameObject.SetActive(true);
+                myNextTransition.SetCanDoTransition(false);
+                Room nextRoom = tile2.myParentRoom;
 
-                pm.transform.position = myNextRoomTile.transform.position;
+                playerMovement.transform.position = myNextRoomTile.transform.position;
+
+                nextRoom.gameObject.SetActive(true);
+                nextRoom.OnEnteringRoom();
+
+                actualRoom.OnLeavingRoom();
+                actualRoom.gameObject.SetActive(false);
+
+                FindObjectOfType<WorldGeneration>().SetCurrentActiveBiome(nextRoom.GetBiome());
+
+                if(actualRoom.GetBiome() != nextRoom.GetBiome())
+                {
+                    actualRoom.GetBiome().gameObject.SetActive(false);
+
+                    playerMovement.GetComponentInChildren<MapUI>().UpdateBiomeOnMap();
+                }
+
+                nextRoom.GetBiome().gameObject.SetActive(true);
+
+                playerMovement.GetComponentInChildren<MapUI>().SetRoomVisited(nextRoom.myRoomData.myX, nextRoom.myRoomData.myY, nextRoom.GetBiome());
+
+                playerMovement.SetCurrentRoom(nextRoom);
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D aCollider)
+    private void Update()
     {
         if (!myCanDoTransition)
         {
-            PlayerMovement pm = aCollider.GetComponent<PlayerMovement>();
-            if (pm != null)
+            myTransitionTimeAvailable += Time.deltaTime;
+            if(myTransitionTimeAvailable >= 0.1f)
             {
-                SetCanDoTransition(true);
+                myTransitionTimeAvailable = 0;
+                myCanDoTransition = true;
             }
         }
     }

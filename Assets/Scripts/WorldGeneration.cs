@@ -179,9 +179,6 @@ public class WorldGeneration : MonoBehaviour
         //Find farest North, South, West and East room for each biome
         FindBiomesExtremeRooms();
 
-        //Link biomes with room
-        LinkBiomesWithRooms();
-
         //Spawn tiles
         for (int i = 0; i < myBiomes.Length; i++)
         {
@@ -192,10 +189,19 @@ public class WorldGeneration : MonoBehaviour
             }
         }
 
+        //Link biomes with room
+        LinkBiomesWithRooms();
+
         //Create physic link between biomes
         for (int i = 0; i < myBiomes.Length; i++)
         {
             myBiomes[i].AffectNextRoomsTriggers();
+        }
+
+        //Remove all empty transitions
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            myBiomes[i].RemoveAllEmptyTransitions();
         }
 
         //Spawn NPC
@@ -243,29 +249,35 @@ public class WorldGeneration : MonoBehaviour
     {
         for (int i = 0; i < myBiomes.Length; i++)
         {
-            // Affect Left transition
-            if (myBiomes[i].myX > 0)
-            {
-                RoomData roomData = myBiomes[i].GetRoomData(myBiomes[i].myWestRoom.myX, myBiomes[i].myWestRoom.myY);
-
-                roomData.myTransitionDatas.Add(
-                        new TransitionData() { myRoomX = myBiomes[i - 1].myEastRoom.myX, myRoomY = myBiomes[i - 1].myEastRoom.myY, myBiome = myBiomes[i - 1], myTransitionDirection = TransitionDirection.LEFT }
-                );
-
-                myBiomes[i].SetRoomData(myBiomes[i].myWestRoom.myX, myBiomes[i].myWestRoom.myY, roomData);
-            }
-            // Affect Right transition
+            // Affect from left to right transition (affecting go and back transition)
             if (myBiomes[i].myX < myWorldSideNumber - 1)
             {
-                //Debug.Log("Looking for X" + myBiomes[i].myEastRoom.myX + " : " + myBiomes[i].myEastRoom.myY);
-                //Debug.Log("in biome " + myBiomes[i].gameObject.name);
-                RoomData roomData = myBiomes[i].GetRoomData(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY);
+                Room roomFrom = myBiomes[i].GetRoom(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY);
+                Room roomTo = myBiomes[i + 1].GetRoom(myBiomes[i + 1].myWestRoom.myX, myBiomes[i + 1].myWestRoom.myY);
 
-                roomData.myTransitionDatas.Add(
-                        new TransitionData() { myRoomX = myBiomes[i + 1].myWestRoom.myX, myRoomY = myBiomes[i + 1].myWestRoom.myY, myBiome = myBiomes[i + 1], myTransitionDirection = TransitionDirection.RIGHT }
-                );
+                if (roomTo != null && roomFrom != null)
+                {
+                    roomFrom.myRightTransitionTile.myNextTransition = roomTo.myLeftTransitionTile;
+                    roomFrom.myRightTransitionTile.myNextRoomTile = roomTo.myLeftSpawningTile;
 
-                myBiomes[i].SetRoomData(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY, roomData);
+                    roomTo.myLeftTransitionTile.myNextTransition = roomFrom.myRightTransitionTile;
+                    roomTo.myLeftTransitionTile.myNextRoomTile = roomFrom.myRightSpawningTile;
+                }
+            }
+            // Affect from bottom to top transition (affecting go and back transition)
+            if (myBiomes[i].myY < myWorldSideNumber - 1)
+            {
+                Room roomFrom = myBiomes[i].GetRoom(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY);
+                Room roomTo = myBiomes[i + myWorldSideNumber].GetRoom(myBiomes[i + myWorldSideNumber].myWestRoom.myX, myBiomes[i + myWorldSideNumber].myWestRoom.myY);
+
+                if (roomTo != null && roomFrom != null)
+                {
+                    roomFrom.myTopTransitionTile.myNextTransition = roomTo.myBottomTransitionTile;
+                    roomFrom.myTopTransitionTile.myNextRoomTile = roomTo.myBottomSpawningTile;
+
+                    roomTo.myBottomTransitionTile.myNextTransition = roomFrom.myTopTransitionTile;
+                    roomTo.myBottomTransitionTile.myNextRoomTile = roomFrom.myTopSpawningTile;
+                }
             }
         }
     }

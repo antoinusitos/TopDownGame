@@ -346,18 +346,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4023827623614138945}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1529001435 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1529001435, guid: ec3a3e69334777d44b6f04b08f19ed49,
-    type: 3}
-  m_PrefabInstance: {fileID: 7072896884324231490}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1934427979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,15 +1078,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1529001434, guid: ec3a3e69334777d44b6f04b08f19ed49, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 914166890296626697, guid: ec3a3e69334777d44b6f04b08f19ed49,
-        type: 3}
-      propertyPath: myTextProgressSlider
-      value: 
-      objectReference: {fileID: 1529001435}
     - target: {fileID: 914166890296626697, guid: ec3a3e69334777d44b6f04b08f19ed49,
         type: 3}
       propertyPath: myPauseMenu
@@ -1218,11 +1197,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7072896884846165949, guid: ec3a3e69334777d44b6f04b08f19ed49,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec3a3e69334777d44b6f04b08f19ed49, type: 3}

@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 500, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1529001436
 CanvasRenderer:
@@ -299,6 +299,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myProgressSlider: {fileID: 7072896884846165571}
+  myTextProgressSlider: {fileID: 1529001435}
+  myPauseMenu: {fileID: 0}
 --- !u!1 &7072896884846165949
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,9 @@ public class MapUI : MonoBehaviour
     {
         myGridLayoutGroup = GetComponent<GridLayoutGroup>();
 
-        if(myWorldGeneration == null)
+        myGridLayoutGroup.cellSize = Vector2.one * (myGridLayoutGroup.GetComponent<RectTransform>().rect.width / Data.myBiomeSideSize);
+
+        if (myWorldGeneration == null)
             myWorldGeneration = FindObjectOfType<WorldGeneration>();
 
         UpdateBiomeOnMap();
@@ -36,19 +38,19 @@ public class MapUI : MonoBehaviour
             }
         }
 
-        int worldSideSize = myWorldGeneration.GetWorldSideSize();
+        int biomeSideSize = Data.myBiomeSideSize;
 
-        myRoomImages = new Image[worldSideSize * worldSideSize];
+        myRoomImages = new Image[biomeSideSize * biomeSideSize];
 
         Color transparent = Color.white;
         transparent.a = 0;
 
-        for (int y = 0; y < worldSideSize; ++y)
+        for (int y = 0; y < biomeSideSize; ++y)
         {
-            for (int x = 0; x < worldSideSize; ++x)
+            for (int x = 0; x < biomeSideSize; ++x)
             {
                 Image img = Instantiate(myRoomImagePrefab, myGridLayoutGroup.transform);
-                myRoomImages[y * worldSideSize + x] = img;
+                myRoomImages[y * biomeSideSize + x] = img;
 
                 if (myWorldGeneration.GetCurrentActiveBiome().GetRoom(x, y) != null)
                 {
@@ -63,6 +65,14 @@ public class MapUI : MonoBehaviour
             }
         }
 
+        for(int i = 0; i < myVisitedRooms.Count; i++)
+        {
+            if(myVisitedRooms[i].GetBiome() == myWorldGeneration.GetCurrentActiveBiome())
+            {
+                SetRoomVisited(myVisitedRooms[i]);
+            }
+        }
+
     }
 
     private void Update()
@@ -73,6 +83,33 @@ public class MapUI : MonoBehaviour
             Color col = myCurrentRoom.color;
             col.a = myVisibility;
             myCurrentRoom.color = col; 
+        }
+    }
+
+    public void SetRoomVisited(Room aRoom)
+    {
+        int x = aRoom.myRoomData.myX;
+        int y = aRoom.myRoomData.myY;
+
+        if (aRoom.myRoomData.myType == 1)
+        {
+            myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.green;
+        }
+        else if (aRoom.myRoomData.myType == 2)
+        {
+            myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.grey;
+        }
+        else if (aRoom.myRoomData.myType == 3)
+        {
+            myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = new Color(0.62f, 0.32f, 0.17f);
+        }
+        else if (aRoom.myRoomData.myType == 4)
+        {
+            myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.yellow;
+        }
+        else if (aRoom.myRoomData.myType == 5)
+        {
+            myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.white;
         }
     }
 

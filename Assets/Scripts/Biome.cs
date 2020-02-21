@@ -442,4 +442,12 @@ public class Biome : MonoBehaviour
             myRooms[i].ChangeTileRendering();
         }
     }
+
+    public void RemoveAllEmptyTransitions()
+    {
+        for (int i = 0; i < myRooms.Count; i++)
+        {
+            myRooms[i].RemoveAllEmptyTransitions();
+        }
+    }
 }
