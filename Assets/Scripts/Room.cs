@@ -6,7 +6,6 @@ public class Room : MonoBehaviour
     public RoomData                 myRoomData;
     public Tile                     myTileFloorPrefab = null;
     public Tile                     myTileWallPrefab = null;
-    public TriggerNextRoom          myTriggerNextRoomPrefab = null;
     public bool                     myStartingRoom = false;
 
     public Tile                     myBottomSpawningTile = null;

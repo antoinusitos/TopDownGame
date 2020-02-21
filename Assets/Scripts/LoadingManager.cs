@@ -66,7 +66,7 @@ public class LoadingManager : MonoBehaviour
         //Debug.Log("Seed:" + PlayerPrefs.GetInt("Seed"));
 
         myWorldGeneration.myUseSeed = true;
-        myWorldGeneration.myGivenSeed = PlayerPrefs.GetInt("Seed");
+        GameInstance.GetInstance().SetSeed(PlayerPrefs.GetInt("Seed"));
 
         myWorldGeneration.GenerateWorld();
 
@@ -83,11 +83,7 @@ public class LoadingManager : MonoBehaviour
         myWorldGeneration.ActivateBiome(PlayerPrefs.GetInt("PlayerBiomeX"), PlayerPrefs.GetInt("PlayerBiomeY"));
         Room theRoom = myWorldGeneration.ActivateRoom(PlayerPrefs.GetInt("PlayerRoomX"), PlayerPrefs.GetInt("PlayerRoomY"));
 
-
         myWorldGeneration.PlacePlayerInRoom(theRoom);
-
-        //Debug.Log("PlayerX:" + PlayerPrefs.GetFloat("PlayerX"));
-        //Debug.Log("PlayerY:" + PlayerPrefs.GetFloat("PlayerY"));
 
         myWorldGeneration.PlacePlayerAt(PlayerPrefs.GetFloat("PlayerX"), PlayerPrefs.GetFloat("PlayerY"));
 
@@ -97,15 +93,10 @@ public class LoadingManager : MonoBehaviour
 
         for (int i = 0; i < roomVisited; ++i)
         {
-            //Debug.Log("want biome " + PlayerPrefs.GetInt("Visited" + i + "BiomeX") + ":" + PlayerPrefs.GetInt("Visited" + i + "BiomeY"));
-            //Debug.Log("want room " + PlayerPrefs.GetInt("Visited" + i + "RoomX") + ":" + PlayerPrefs.GetInt("Visited" + i + "RoomY"));
-
             Biome biome = myWorldGeneration.GetBiome(PlayerPrefs.GetInt("Visited" + i + "BiomeX"), PlayerPrefs.GetInt("Visited" + i + "BiomeY"));
 
             mapUI.SetRoomVisited(PlayerPrefs.GetInt("Visited" + i + "RoomX"), PlayerPrefs.GetInt("Visited" + i + "RoomY"), biome);
         }
-
-        FadeManager.GetInstance().LaunchBeginTransition();
 
         /*
         PlayerPrefs.SetInt("ResourceNum", resourceToSave.Count);

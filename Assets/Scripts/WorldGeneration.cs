@@ -382,7 +382,7 @@ public class WorldGeneration : MonoBehaviour
             }
             else
             {
-                myCurrentActiveBiome.gameObject.SetActive(false);
+                myBiomes[i].gameObject.SetActive(false);
             }
         }
     }

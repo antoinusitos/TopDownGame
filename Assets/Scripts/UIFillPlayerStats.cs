@@ -16,7 +16,9 @@ public class UIFillPlayerStats : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        myPlayerLifeBar.value = myPlayerData.GetLifeRatio();
-        myPlayerManaBar.value = myPlayerData.GetManaRatio();
+        myPlayerLifeBar.maxValue = myPlayerData.GetMaxLife();
+        myPlayerLifeBar.value = myPlayerData.GetCurrentLife();
+        myPlayerManaBar.maxValue = myPlayerData.GetMaxMana();
+        myPlayerManaBar.value = myPlayerData.GetCurrentMana();
     }
 }
