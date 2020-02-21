@@ -29,11 +29,8 @@ public class Room : MonoBehaviour
 
     private List<Enemy>             myEnemies = new List<Enemy>();
 
-    private Transform               myTransform = null;
     private Tile                    myMidTile = null;
     private List<Tile>              myTiles = new List<Tile>();
-
-    private List<TriggerNextRoom>   myTriggerNextRooms = new List<TriggerNextRoom>();
 
     private const float             mySpriteSpace = 1;//2.5f;
 
@@ -573,27 +570,34 @@ public class Room : MonoBehaviour
 
     public void SpawnDecoration()
     {
-        return;
-
         for (int i = 0; i < 15; ++i)
         {
             bool occupied = true;
 
-            int x = 0;
-            int y = 0;
+            int tries = 10;
+            int currentTries = 0;
+
+            Tile tile = null;
 
             while (occupied)
             {
-                x = Random.Range(1, myRoomSize);
-                y = Random.Range(2, myRoomSize - 1);
+                tile = myTiles[Random.Range(0, myTiles.Count)];
 
-                occupied = myTiles[y * myRoomSize + x].myOccupied;
+                currentTries++;
+
+                occupied = tile.myOccupied;
+
+                if (currentTries >= tries)
+                    break;
             }
 
-            Transform resource = Instantiate(myDecorationPrefab, transform);
-            resource.localPosition = new Vector3(x, y, 0);
+            if (tile != null)
+            {
+                Transform resource = Instantiate(myDecorationPrefab, transform);
+                resource.localPosition = tile.transform.localPosition;
 
-            myTiles[y * myRoomSize + x].myOccupied = true;
+                tile.myOccupied = true;
+            }
         }
     }
 

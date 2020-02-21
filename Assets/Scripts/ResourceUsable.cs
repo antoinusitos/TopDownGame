@@ -5,6 +5,9 @@ public class ResourceUsable : EntityData
     public GameObject           myFullSprite = null;
     public GameObject           myEmptySprite = null;
 
+    [SerializeField]
+    protected bool              myCanBeCrossedWhenDestroyed = false;
+
     protected bool              myCanDropResources = true;
 
     protected bool              myCanRefill = true;
@@ -46,6 +49,11 @@ public class ResourceUsable : EntityData
     {
         myEmptySprite.SetActive(true);
         myFullSprite.SetActive(false);
+
+        if(myCanBeCrossedWhenDestroyed)
+        {
+            GetComponent<Collider2D>().isTrigger = true;
+        }
     }
 
     protected void CheckRefillTime()
@@ -57,6 +65,11 @@ public class ResourceUsable : EntityData
             myEmptySprite.SetActive(false);
             myFullSprite.SetActive(true);
             SetLife(100);
+
+            if (myCanBeCrossedWhenDestroyed)
+            {
+                GetComponent<Collider2D>().isTrigger = false;
+            }
         }
     }
 

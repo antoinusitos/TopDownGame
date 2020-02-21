@@ -105,6 +105,8 @@ public class LoadingManager : MonoBehaviour
             mapUI.SetRoomVisited(PlayerPrefs.GetInt("Visited" + i + "RoomX"), PlayerPrefs.GetInt("Visited" + i + "RoomY"), biome);
         }
 
+        FadeManager.GetInstance().LaunchBeginTransition();
+
         /*
         PlayerPrefs.SetInt("ResourceNum", resourceToSave.Count);
 

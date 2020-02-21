@@ -15,6 +15,8 @@ public class Transition : MonoBehaviour
             PlayerMovement playerMovement = aCollider.GetComponentInParent<PlayerMovement>();
             if(playerMovement != null)
             {
+                FadeManager.GetInstance().LaunchTransitionFade();
+
                 Tile tile = GetComponent<Tile>();
                 Room actualRoom = tile.myParentRoom;
 

@@ -97,6 +97,7 @@ MonoBehaviour:
   myQuickslots: []
   myFullSprite: {fileID: 2876112483389431426}
   myEmptySprite: {fileID: 4816536033826142051}
+  myCanBeCrossedWhenDestroyed: 1
   myDropPrefab: {fileID: 5700893680828255671, guid: 90ebcf271ed96a64f9d537c31570739b,
     type: 3}
 --- !u!1 &2876112483389431426

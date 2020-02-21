@@ -225,6 +225,8 @@ public class WorldGeneration : MonoBehaviour
         myCurrentActiveBiome.GetStartingRoom().gameObject.SetActive(true);
 
         SpawnPlayer();
+
+        FadeManager.GetInstance().LaunchBeginTransition();
     }
 
     public Biome GetCurrentActiveBiome()
