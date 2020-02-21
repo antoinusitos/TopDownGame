@@ -19,7 +19,7 @@ public class Biome : MonoBehaviour
     private RoomData        myStartingRoomData;
     private Room            myStartingRoom;
     private const float     myGenerationRoomPercentage = 0.4f;
-    private const float     mySpriteSpace = 1;//2.5f;
+    private const float     mySpriteSpace = 2;//2.5f;
     private int             myBiomeSideSize = 10;
 
     public RoomData        myWestRoom;
@@ -31,15 +31,15 @@ public class Biome : MonoBehaviour
 
     public string           myName = "";
 
-    public void Init(int aX, int aY, int aType, int aBiomeSideSize, int aRoomSideSize)
+    public void Init(int aX, int aY, int aType)
     {
         myX = aX;
         myY = aY;
         myType = aType;
         myRooms = new List<Room>();
         myTransform = transform;
-        myBiomeSideSize = aBiomeSideSize;
-        myRoomSideSize = aRoomSideSize;
+        myBiomeSideSize = Data.myBiomeSideSize;
+        myRoomSideSize = Data.myRoomSideSize;
         myName = Data.GetBiomeName();
     }
 
@@ -74,7 +74,7 @@ public class Biome : MonoBehaviour
 
         if (!TryFillRoom(startingPointsIndex))
         {
-            Debug.LogError("Unable to create enough rooms");
+            Debug.LogError("Unable to create enough rooms with " + myRoomsNumber + " on " + myMinRoomNumber);
             return;
         }
 
@@ -103,6 +103,16 @@ public class Biome : MonoBehaviour
             currentTryNumber++;
 
             int startingPointIndex = aStartingPointsIndex[Random.Range(0, aStartingPointsIndex.Length)];
+
+            if(startingPointIndex >= aStartingPointsIndex.Length)
+            {
+                Debug.Log("BUG");
+                Debug.Log("BEFORE startingPointIndex:" + startingPointIndex);
+                startingPointIndex--;
+            }
+
+            Debug.Log("startingPointIndex:" + startingPointIndex);
+            Debug.Log("aStartingPointsIndex.Length:" + aStartingPointsIndex.Length);
 
             myStartingRoomData = myWorld[startingPointIndex];
 
@@ -211,7 +221,9 @@ public class Biome : MonoBehaviour
                     room.transform.localPosition = new Vector3(x * myRoomSideSize * mySpriteSpace, y * myRoomSideSize * mySpriteSpace, 0);
                     room.myRoomData = myWorld[y * myBiomeSideSize + x];
                     myRooms.Add(room);
-                    room.ConstuctRoom(myRoomSideSize, this);
+                    //room.ConstuctRoom(myRoomSideSize, this);
+
+                    room.GetSeedAndGenerate();
 
                     if (myStartingRoomData.myX == x && myStartingRoomData.myY == y)
                     {
@@ -246,7 +258,7 @@ public class Biome : MonoBehaviour
     {
         for (int i = 0; i < myRooms.Count; ++i)
         {
-            myRooms[i].AffectTransitions();
+            //myRooms[i].AffectTransitions();
         }
     }
 

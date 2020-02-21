@@ -66,7 +66,11 @@ public class WorldGeneration : MonoBehaviour
 
     public void GenerateWorld()
     {
-        if (myUseSeed)
+        Data.myCurrentSeedRoom = GameInstance.GetInstance().GetSeed();
+        myCurrentSeed = Data.myCurrentSeedRoom;
+        Random.InitState(myCurrentSeed);
+
+        /*if (myUseSeed)
         {
             myGivenSeed = int.Parse(myInputFieldSeed.text);
             myCurrentSeed = myGivenSeed;
@@ -80,7 +84,7 @@ public class WorldGeneration : MonoBehaviour
             myCurrentSeed = myDefaultSeed;
         }
         Random.InitState(myCurrentSeed);
-        myCurrentSeedState = Random.state;
+        myCurrentSeedState = Random.state;*/
 
         if (DEBUG)
         {
@@ -109,7 +113,7 @@ public class WorldGeneration : MonoBehaviour
         {
             myBiomes[i] = Instantiate(myBiomePrefab, transform);
             myBiomes[i].transform.localPosition = new Vector3(x * myBiomeSideSize * myRoomSideSize, y * myBiomeSideSize * myRoomSideSize, 0);
-            myBiomes[i].Init(x, y, 0, myBiomeSideSize, myRoomSideSize);
+            myBiomes[i].Init(x, y, 0);
             DEBUGCANVAS.HighlightMap(x, y);
             x++;
             if (x >= myBiomesSideNumber)
@@ -162,7 +166,7 @@ public class WorldGeneration : MonoBehaviour
             myBiomes[i] = Instantiate(myBiomePrefab, transform);
             myBiomes[i].gameObject.name = "Biome" + i;
             myBiomes[i].transform.localPosition = new Vector3(x * myBiomeSideSize * myRoomSideSize, y * myBiomeSideSize * myRoomSideSize, 0);
-            myBiomes[i].Init(x, y, 0, myBiomeSideSize, myRoomSideSize);
+            myBiomes[i].Init(x, y, 0);
             x++;
             if(x >= myBiomesSideNumber)
             {

@@ -4,6 +4,7 @@ public enum TileType
 {
     FLOOR,
     WALL,
+    EMPTY
 }
 
 public class Tile : MonoBehaviour

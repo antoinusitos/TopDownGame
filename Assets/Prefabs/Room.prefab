@@ -65,3 +65,8 @@ MonoBehaviour:
     type: 3}
   myDecorationPrefab: {fileID: 2876112483162458616, guid: f5c2b2f7ea8d8404d9c2e1f417474d7d,
     type: 3}
+  myWallObj: {fileID: 2430159564186124649, guid: 34bda0b3fe38e1946abe0c4cfb212ad0,
+    type: 3}
+  myFloorObj: {fileID: 8392151589324599769, guid: ee4b548a432bb304e9d4f8e076fa6c62,
+    type: 3}
+  mySeed: 0

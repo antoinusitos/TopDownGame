@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelGeneration : MonoBehaviour
+public class RoomGeneration : MonoBehaviour
 {
-    private enum GridSpace { EMPTY, FLOOR, WALL };
-
-    private GridSpace[,]    myGrid;
+    private TileType[,]     myGrid;
     private int             myRoomHeight;
     private int             myRoomWidth;
     private Vector2         myRoomSizeWorldUnits = Vector2.one * Data.myRoomSideSize;
@@ -90,14 +88,14 @@ public class LevelGeneration : MonoBehaviour
         myRoomWidth = Mathf.RoundToInt(myRoomSizeWorldUnits.y / myWorldUnitsInOneGridCell);
 
         //create grid
-        myGrid = new GridSpace[myRoomWidth, myRoomHeight];
+        myGrid = new TileType[myRoomWidth, myRoomHeight];
 
         //set grid's default state
         for (int x = 0; x < myRoomWidth; x++)
         {
             for (int y = 0; y < myRoomHeight; y++)
             {
-                myGrid[x, y] = GridSpace.EMPTY;
+                myGrid[x, y] = TileType.EMPTY;
             }
         }
 
@@ -147,7 +145,7 @@ public class LevelGeneration : MonoBehaviour
             //create floor at position of every walker
             foreach(Walker aWalker in myWalkers)
             {
-                myGrid[(int)aWalker.myPos.x, (int)aWalker.myPos.y] = GridSpace.FLOOR;
+                myGrid[(int)aWalker.myPos.x, (int)aWalker.myPos.y] = TileType.FLOOR;
             }
 
             //chance: destroy walker
@@ -220,9 +218,9 @@ public class LevelGeneration : MonoBehaviour
     private int NumberOfFloors()
     {
         int count = 0; 
-        foreach(GridSpace space in myGrid)
+        foreach(TileType space in myGrid)
         {
-            if(space == GridSpace.FLOOR)
+            if(space == TileType.FLOOR)
             {
                 count++;
             }
@@ -238,20 +236,20 @@ public class LevelGeneration : MonoBehaviour
             {
                switch(myGrid[x, y])
                 {
-                    case GridSpace.EMPTY:
+                    case TileType.EMPTY:
                         break;
-                    case GridSpace.FLOOR:
-                        Spawn(x, y, myFloorObj);
+                    case TileType.FLOOR:
+                        Spawn(x, y, myFloorObj, myGrid[x, y]);
                         break;
-                    case GridSpace.WALL:
-                        Spawn(x, y, myWallObj);
+                    case TileType.WALL:
+                        Spawn(x, y, myWallObj, myGrid[x, y]);
                         break;
                 }
             }
         }
     }
 
-    private void Spawn(float aX, float aY, GameObject aToSpawn)
+    private void Spawn(float aX, float aY, GameObject aToSpawn, TileType aTileType)
     {
         //find the position to spawn
         Vector2 offset = myRoomSizeWorldUnits / 2.0f;
@@ -260,10 +258,14 @@ public class LevelGeneration : MonoBehaviour
         //spawn object
         GameObject spawned = Instantiate(aToSpawn, spawnPos, Quaternion.identity);
         spawned.name = spawned.name + (aX * myRoomWidth + aY).ToString();
-        TempTile tile = spawned.AddComponent<TempTile>();
-        tile.myX = (int)aX;
-        tile.myY = (int)aY;
+
         mySpawned.Add(spawned);
+        spawned.transform.parent = transform;
+
+        Tile tileBis = spawned.GetComponent<Tile>();
+        tileBis.myTileData.myX = (int)aX;
+        tileBis.myTileData.myY = (int)aY;
+        tileBis.myTileType = aTileType;
     }
 
     private void CreateWalls()
@@ -274,24 +276,24 @@ public class LevelGeneration : MonoBehaviour
             for (int y = 0; y < myRoomHeight - 1; y++)
             {
                 //if there is a floor, check the space around it
-                if(myGrid[x, y] == GridSpace.FLOOR)
+                if(myGrid[x, y] == TileType.FLOOR)
                 {
                     //if any surrounding spaces are empty, place a wall
-                    if(myGrid[x, y + 1] == GridSpace.EMPTY)
+                    if(myGrid[x, y + 1] == TileType.EMPTY)
                     {
-                        myGrid[x, y + 1] = GridSpace.WALL;
+                        myGrid[x, y + 1] = TileType.WALL;
                     }
-                    if (myGrid[x, y - 1] == GridSpace.EMPTY)
+                    if (myGrid[x, y - 1] == TileType.EMPTY)
                     {
-                        myGrid[x, y - 1] = GridSpace.WALL;
+                        myGrid[x, y - 1] = TileType.WALL;
                     }
-                    if (myGrid[x + 1, y] == GridSpace.EMPTY)
+                    if (myGrid[x + 1, y] == TileType.EMPTY)
                     {
-                        myGrid[x + 1, y] = GridSpace.WALL;
+                        myGrid[x + 1, y] = TileType.WALL;
                     }
-                    if (myGrid[x - 1, y] == GridSpace.EMPTY)
+                    if (myGrid[x - 1, y] == TileType.EMPTY)
                     {
-                        myGrid[x - 1, y] = GridSpace.WALL;
+                        myGrid[x - 1, y] = TileType.WALL;
                     }
                 }
             }
@@ -306,7 +308,7 @@ public class LevelGeneration : MonoBehaviour
             for (int y = 0; y < myRoomHeight - 1; y++)
             {
                 //if there is a wall, check the space around it
-                if (myGrid[x, y] == GridSpace.WALL)
+                if (myGrid[x, y] == TileType.WALL)
                 {
                     //assume all space aroud wall are floors
                     bool allFloor = true;
@@ -326,7 +328,7 @@ public class LevelGeneration : MonoBehaviour
                                 //skip corners and center
                                 continue;
                             }
-                            if (myGrid[x + checkX, y + checkY] != GridSpace.FLOOR)
+                            if (myGrid[x + checkX, y + checkY] != TileType.FLOOR)
                             {
                                 allFloor = false;
                             }
@@ -334,7 +336,7 @@ public class LevelGeneration : MonoBehaviour
                     }
                     if(allFloor)
                     {
-                        myGrid[x, y] = GridSpace.FLOOR;
+                        myGrid[x, y] = TileType.FLOOR;
                     }
                 }
             }
@@ -356,7 +358,7 @@ public class LevelGeneration : MonoBehaviour
         {
             for (int y = 0; y < myRoomHeight - 1; y++)
             {
-                if(myGrid[x, y] == GridSpace.FLOOR)
+                if(myGrid[x, y] == TileType.FLOOR)
                 {
                     if(x <= myWestX)
                     {
@@ -384,23 +386,23 @@ public class LevelGeneration : MonoBehaviour
 
         for(int i = 0; i < mySpawned.Count; i++)
         {
-            TempTile tile = mySpawned[i].GetComponent<TempTile>();
-            if (tile.myX == myWestX && tile.myY == myWestY)
+            Tile tile = mySpawned[i].GetComponent<Tile>();
+            if (tile.myTileData.myX == myWestX && tile.myTileData.myY == myWestY)
             {
                 mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
                 continue;
             }
-            else if (tile.myX == myEastX && tile.myY == myEastY)
+            else if (tile.myTileData.myX == myEastX && tile.myTileData.myY == myEastY)
             {
                 mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
                 continue;
             }
-            else if (tile.myX == myNorthX && tile.myY == myNorthY)
+            else if (tile.myTileData.myX == myNorthX && tile.myTileData.myY == myNorthY)
             {
                 mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
                 continue;
             }
-            else if (tile.myX == mySouthX && tile.myY == mySouthY)
+            else if (tile.myTileData.myX == mySouthX && tile.myTileData.myY == mySouthY)
             {
                 mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
                 continue;

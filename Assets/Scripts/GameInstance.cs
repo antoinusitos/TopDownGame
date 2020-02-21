@@ -2,6 +2,7 @@
 
 public class GameInstance : MonoBehaviour
 {
+    [SerializeField]
     private int                 mySeed = -1;
 
     private static GameInstance _myInstance = null;
