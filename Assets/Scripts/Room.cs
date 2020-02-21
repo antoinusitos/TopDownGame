@@ -14,6 +14,11 @@ public class Room : MonoBehaviour
     public Tile                     myLeftSpawningTile = null;
     public Tile                     myRightSpawningTile = null;
 
+    public Transition               myBottomTransitionTile = null;
+    public Transition               myTopTransitionTile = null;
+    public Transition               myLeftTransitionTile = null;
+    public Transition               myRightTransitionTile = null;
+
     public Enemy                    myEnemyPrefab = null;
 
     public List<TransitionData>     myTransitions = new List<TransitionData>();
@@ -340,8 +345,9 @@ public class Room : MonoBehaviour
 
 
 
-    public void GetSeedAndGenerate()
+    public void GetSeedAndGenerate(Biome aBiome)
     {
+        myBiome = aBiome;
         mySeed = Data.myCurrentSeedRoom;
         Data.myCurrentSeedRoom++;
         Generate();
@@ -542,11 +548,17 @@ public class Room : MonoBehaviour
         mySpawned.Add(spawned);
         spawned.transform.parent = transform;
 
-        Tile tileBis = spawned.GetComponent<Tile>();
-        tileBis.myTileData.myX = (int)aX;
-        tileBis.myTileData.myY = (int)aY;
-        tileBis.myTileType = aTileType;
-        tileBis.myParentRoom = this;
+        Tile tile = spawned.GetComponent<Tile>();
+        tile.myTileData.myX = (int)aX;
+        tile.myTileData.myY = (int)aY;
+        tile.myTileType = aTileType;
+        tile.myParentRoom = this;
+
+        if (aX == Data.myRoomSideSize / 2 && aY == Data.myRoomSideSize / 2)
+        {
+            myMidTile = tile;
+        }
+
     }
 
     private void CreateWalls()
@@ -668,32 +680,120 @@ public class Room : MonoBehaviour
         for (int i = 0; i < mySpawned.Count; i++)
         {
             Tile tile = mySpawned[i].GetComponent<Tile>();
+
             if (tile.myTileData.myX == myWestX && tile.myTileData.myY == myWestY)
             {
-                mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
+                myLeftSpawningTile = tile;
+            }
+            if (tile.myTileData.myX == myEastX && tile.myTileData.myY == myEastY)
+            {
+                myRightSpawningTile = tile;
+            }
+            if (tile.myTileData.myX == myNorthX && tile.myTileData.myY == myNorthY)
+            {
+                myTopSpawningTile = tile;
+            }
+            if (tile.myTileData.myX == mySouthX && tile.myTileData.myY == mySouthY)
+            {
+                myBottomSpawningTile = tile;
+            }
+
+            if (tile.myTileData.myX == myWestX - 1 && tile.myTileData.myY == myWestY)
+            {
+                myLeftTransitionTile = SetTransitionTile(mySpawned[i]);
                 continue;
             }
-            else if (tile.myTileData.myX == myEastX && tile.myTileData.myY == myEastY)
+            else if (tile.myTileData.myX == myEastX + 1 && tile.myTileData.myY == myEastY)
             {
-                mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
+                myRightTransitionTile = SetTransitionTile(mySpawned[i]);
                 continue;
             }
-            else if (tile.myTileData.myX == myNorthX && tile.myTileData.myY == myNorthY)
+            else if (tile.myTileData.myX == myNorthX && tile.myTileData.myY == myNorthY + 1)
             {
-                mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
+                myTopTransitionTile = SetTransitionTile(mySpawned[i]);
                 continue;
             }
-            else if (tile.myTileData.myX == mySouthX && tile.myTileData.myY == mySouthY)
+            else if (tile.myTileData.myX == mySouthX && tile.myTileData.myY == mySouthY - 1)
             {
-                mySpawned[i].GetComponentInChildren<SpriteRenderer>().color = Color.green;
+                myBottomTransitionTile = SetTransitionTile(mySpawned[i]);
                 continue;
             }
         }
 
     }
 
+    private Transition SetTransitionTile(GameObject aTile)
+    {
+        aTile.GetComponentInChildren<SpriteRenderer>().color = Color.green;
+        Transition toReturn = aTile.AddComponent<Transition>();
+        aTile.GetComponent<Collider2D>().isTrigger = true;
 
+        return toReturn;
+    }
 
+    public void AffectTransitions()
+    {
+        //Affect Left transition
+        if(myRoomData.myX > 0)
+        {
+            Room room = myBiome.GetRoom(myRoomData.myX - 1, myRoomData.myY);
+            if(room != null)
+            {
+                myLeftTransitionTile.myNextTransition = room.myRightTransitionTile;
+                myLeftTransitionTile.myNextRoomTile = room.myRightSpawningTile;
+            }
+            else
+            {
+                myLeftTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+                Destroy(myLeftTransitionTile);
+            }
+        }
+        //Affect Right Transition
+        if (myRoomData.myX < Data.myBiomeSideSize)
+        {
+            Room room = myBiome.GetRoom(myRoomData.myX + 1, myRoomData.myY);
+            if (room != null)
+            {
+                myRightTransitionTile.myNextTransition = room.myLeftTransitionTile;
+                myRightTransitionTile.myNextRoomTile = room.myLeftSpawningTile;
+            }
+            else
+            {
+                myRightTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+                Destroy(myRightTransitionTile);
+            }
+        }
+        //Affect Bottom Transition
+        if (myRoomData.myY > 0)
+        {
+            Room room = myBiome.GetRoom(myRoomData.myX, myRoomData.myY - 1);
+            if (room != null)
+            {
+                myBottomTransitionTile.myNextTransition = room.myTopTransitionTile;
+                myBottomTransitionTile.myNextRoomTile = room.myTopSpawningTile;
+            }
+            else
+            {
+                myBottomTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+                Destroy(myBottomTransitionTile);
+            }
+        }
+        //Affect Top Transition
+        if (myRoomData.myY < Data.myBiomeSideSize)
+        {
+            Room room = myBiome.GetRoom(myRoomData.myX, myRoomData.myY + 1);
+            if (room != null)
+            {
+                myTopTransitionTile.myNextTransition = room.myBottomTransitionTile;
+                myTopTransitionTile.myNextRoomTile = room.myBottomSpawningTile;
+            }
+            else
+            {
+                myTopTransitionTile.GetComponent<SpriteRenderer>().color = Color.white;
+                Destroy(myTopTransitionTile);
+            }
+        }
+    }
 
 
 

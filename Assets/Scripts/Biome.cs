@@ -19,7 +19,7 @@ public class Biome : MonoBehaviour
     private RoomData        myStartingRoomData;
     private Room            myStartingRoom;
     private const float     myGenerationRoomPercentage = 0.4f;
-    private const float     mySpriteSpace = 2;//2.5f;
+    private const float     mySpriteSpace = 1;//2.5f;
     private int             myBiomeSideSize = 10;
 
     public RoomData        myWestRoom;
@@ -98,7 +98,7 @@ public class Biome : MonoBehaviour
                 myWorld[i].myType = -1;
             }
 
-            Debug.Log("Try number to generate rooms : " + currentTryNumber);
+            //Debug.Log("Try number to generate rooms : " + currentTryNumber);
             myRoomsNumber = 0;
             currentTryNumber++;
 
@@ -106,13 +106,8 @@ public class Biome : MonoBehaviour
 
             if(startingPointIndex >= aStartingPointsIndex.Length)
             {
-                Debug.Log("BUG");
-                Debug.Log("BEFORE startingPointIndex:" + startingPointIndex);
                 startingPointIndex--;
             }
-
-            Debug.Log("startingPointIndex:" + startingPointIndex);
-            Debug.Log("aStartingPointsIndex.Length:" + aStartingPointsIndex.Length);
 
             myStartingRoomData = myWorld[startingPointIndex];
 
@@ -223,7 +218,7 @@ public class Biome : MonoBehaviour
                     myRooms.Add(room);
                     //room.ConstuctRoom(myRoomSideSize, this);
 
-                    room.GetSeedAndGenerate();
+                    room.GetSeedAndGenerate(this);
 
                     if (myStartingRoomData.myX == x && myStartingRoomData.myY == y)
                     {
@@ -258,7 +253,7 @@ public class Biome : MonoBehaviour
     {
         for (int i = 0; i < myRooms.Count; ++i)
         {
-            //myRooms[i].AffectTransitions();
+            myRooms[i].AffectTransitions();
         }
     }
 
@@ -385,7 +380,7 @@ public class Biome : MonoBehaviour
         {
             if (myWorld[i].myX == aX & myWorld[i].myY == aY)
             {
-                Debug.Log("GetRoomData returning a correct value");
+                //Debug.Log("GetRoomData returning a correct value");
                 return myWorld[i];
             }
         }

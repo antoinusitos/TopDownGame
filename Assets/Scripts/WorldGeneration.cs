@@ -21,10 +21,10 @@ public class WorldGeneration : MonoBehaviour
     public bool             myGenerationFinished = false;
 
     public Biome            myBiomePrefab = null;
-    private const int       myBiomesSideNumber = 1;
+    private int             myWorldSideNumber = 1;
     private Biome[]         myBiomes = null;
-    private const int       myBiomeSideSize = 10;
-    private const int       myRoomSideSize = 20;
+    private int             myBiomeSideSize = 10;
+    private int             myRoomSideSize = 20;
 
     private List<Room>      myRooms = new List<Room>();
     private Random.State    myCurrentSeedState; // *****To Serialize*****
@@ -54,7 +54,7 @@ public class WorldGeneration : MonoBehaviour
     {
         if (DEBUG)
         {
-            DEBUGCANVAS.Init(myBiomesSideNumber, myBiomeSideSize);
+            DEBUGCANVAS.Init(myWorldSideNumber, myBiomeSideSize);
         }
         else
         {
@@ -66,25 +66,13 @@ public class WorldGeneration : MonoBehaviour
 
     public void GenerateWorld()
     {
+        myWorldSideNumber = Data.myWorldSideSize;
+        myBiomeSideSize = Data.myBiomeSideSize;
+        myRoomSideSize = Data.myRoomSideSize;
+
         Data.myCurrentSeedRoom = GameInstance.GetInstance().GetSeed();
         myCurrentSeed = Data.myCurrentSeedRoom;
         Random.InitState(myCurrentSeed);
-
-        /*if (myUseSeed)
-        {
-            myGivenSeed = int.Parse(myInputFieldSeed.text);
-            myCurrentSeed = myGivenSeed;
-        }
-        else if(myRandomSeed)
-        {
-            myCurrentSeed = Random.Range(0, 9999999);
-        }
-        else
-        {
-            myCurrentSeed = myDefaultSeed;
-        }
-        Random.InitState(myCurrentSeed);
-        myCurrentSeedState = Random.state;*/
 
         if (DEBUG)
         {
@@ -106,7 +94,7 @@ public class WorldGeneration : MonoBehaviour
     // Step Way 1
     private IEnumerator DelayedGenerateBiomes()
     {
-        myBiomes = new Biome[myBiomesSideNumber * myBiomesSideNumber];
+        myBiomes = new Biome[myWorldSideNumber * myWorldSideNumber];
         int x = 0;
         int y = 0;
         for (int i = 0; i < myBiomes.Length; i++)
@@ -116,7 +104,7 @@ public class WorldGeneration : MonoBehaviour
             myBiomes[i].Init(x, y, 0);
             DEBUGCANVAS.HighlightMap(x, y);
             x++;
-            if (x >= myBiomesSideNumber)
+            if (x >= myWorldSideNumber)
             {
                 x = 0;
                 y++;
@@ -158,7 +146,7 @@ public class WorldGeneration : MonoBehaviour
     // Normal Way 1
     private void GenerateBiomes()
     {
-        myBiomes = new Biome[myBiomesSideNumber * myBiomesSideNumber];
+        myBiomes = new Biome[myWorldSideNumber * myWorldSideNumber];
         int x = 0;
         int y = 0;
         for (int i = 0; i < myBiomes.Length; i++)
@@ -168,7 +156,7 @@ public class WorldGeneration : MonoBehaviour
             myBiomes[i].transform.localPosition = new Vector3(x * myBiomeSideSize * myRoomSideSize, y * myBiomeSideSize * myRoomSideSize, 0);
             myBiomes[i].Init(x, y, 0);
             x++;
-            if(x >= myBiomesSideNumber)
+            if(x >= myWorldSideNumber)
             {
                 x = 0;
                 y++;
@@ -267,10 +255,10 @@ public class WorldGeneration : MonoBehaviour
                 myBiomes[i].SetRoomData(myBiomes[i].myWestRoom.myX, myBiomes[i].myWestRoom.myY, roomData);
             }
             // Affect Right transition
-            if (myBiomes[i].myX < myBiomesSideNumber - 1)
+            if (myBiomes[i].myX < myWorldSideNumber - 1)
             {
-                Debug.Log("Looking for X" + myBiomes[i].myEastRoom.myX + " : " + myBiomes[i].myEastRoom.myY);
-                Debug.Log("in biome " + myBiomes[i].gameObject.name);
+                //Debug.Log("Looking for X" + myBiomes[i].myEastRoom.myX + " : " + myBiomes[i].myEastRoom.myY);
+                //Debug.Log("in biome " + myBiomes[i].gameObject.name);
                 RoomData roomData = myBiomes[i].GetRoomData(myBiomes[i].myEastRoom.myX, myBiomes[i].myEastRoom.myY);
 
                 roomData.myTransitionDatas.Add(

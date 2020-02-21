@@ -31,7 +31,7 @@ public class LoadingManager : MonoBehaviour
         }
 
         myProgressSlider.value = (float)myCurrentNumberSpawned / myNumberToSpawn;
-        myTextProgressSlider.text = "Loading... (" + myCurrentNumberSpawned.ToString() + "/" + myNumberToSpawn.ToString() + ")";
+        myTextProgressSlider.text = "Loading... " + ((myCurrentNumberSpawned / (float)myNumberToSpawn) * 100).ToString() + "% (" + myCurrentNumberSpawned.ToString() + "/" + myNumberToSpawn.ToString() + ")";
 
         if(myProgressSlider.value >= 1)
         {
