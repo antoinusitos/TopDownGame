@@ -268,7 +268,6 @@ public class Room : MonoBehaviour
 
         //spawn object
         GameObject spawned = Instantiate(aToSpawn, transform);
-        //GameObject spawned = Instantiate(aToSpawn, spawnPos, Quaternion.identity);
         spawned.transform.localPosition = spawnPos;
         spawned.name = spawned.name + (aX * myRoomWidth + aY).ToString();
 
@@ -278,6 +277,7 @@ public class Room : MonoBehaviour
         Tile tile = spawned.GetComponent<Tile>();
         tile.myTileData.myX = (int)aX;
         tile.myTileData.myY = (int)aY;
+        tile.myTileData.myType = myRoomData.myType;
         tile.myTileType = aTileType;
         tile.myParentRoom = this;
 
@@ -286,6 +286,10 @@ public class Room : MonoBehaviour
             myMidTile = tile;
         }
 
+        if(aTileType == TileType.FLOOR)
+        {
+            myTiles.Add(tile);
+        }
     }
 
     private void CreateWalls()
