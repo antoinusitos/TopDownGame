@@ -123,6 +123,12 @@ public class Data : MonoBehaviour
 
     private static int myBiomeNameIndex = 0;
 
+    public static int myCurrentSeedRoom = 0;
+
+    public static int myWorldSideSize = 2; //number of biomes on the side
+    public static int myBiomeSideSize = 20; //number of room in a biome on the side
+    public static int myRoomSideSize = 30; //number of tile in a room on the side
+
     public static void ShuffleBiomesNames()
     {
         for(int i = 0; i < myBiomesNames.Length; i++)
