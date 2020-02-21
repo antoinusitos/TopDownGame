@@ -543,28 +543,35 @@ public class Room : MonoBehaviour
 
     public void SpawnResources()
     {
-        return;
-
         for(int i = 0; i < 3; ++i)
         {
             bool occupied = true;
 
-            int x = 0;
-            int y = 0;
+            int tries = 10;
+            int currentTries = 0;
+
+            Tile tile = null;
 
             while (occupied)
             {
-                x = Random.Range(2, myRoomSize - 1);
-                y = Random.Range(2, myRoomSize - 1);
+                tile = myTiles[Random.Range(0, myTiles.Count)];
 
-                occupied = myTiles[y * myRoomSize + x].myOccupied;
+                currentTries++;
+
+                occupied = tile.myOccupied;
+
+                if (currentTries >= tries)
+                    break;
             }
 
-            ResourceUsable resource = Instantiate(myResourcePrefab, transform);
-            resource.transform.localPosition = new Vector3(x, y, 0);
-            myResourceUsables.Add(resource);
+            if (tile != null)
+            {
+                ResourceUsable resource = Instantiate(myResourcePrefab, transform);
+                resource.transform.localPosition = tile.transform.localPosition;
+                myResourceUsables.Add(resource);
+                tile.myOccupied = true;
+            }
 
-            myTiles[y * myRoomSize + x].myOccupied = true;
         }
     }
 
