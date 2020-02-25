@@ -213,6 +213,8 @@ public class WorldGeneration : MonoBehaviour
 
         SpawnDecoration();
 
+        SpawnEnemies();
+
         for (int i = 0; i < myBiomes.Length; i++)
         {
             myBiomes[i].HideRooms();
@@ -315,6 +317,14 @@ public class WorldGeneration : MonoBehaviour
         for (int i = 0; i < myBiomes.Length; ++i)
         {
             myBiomes[i].SpawnDecoration();
+        }
+    }
+
+    private void SpawnEnemies()
+    {
+        for (int i = 0; i < myBiomes.Length; ++i)
+        {
+            myBiomes[i].SpawnEnemies();
         }
     }
 

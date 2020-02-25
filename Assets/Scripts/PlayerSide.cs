@@ -7,6 +7,11 @@ public class PlayerSide : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseManager.GetInstance().GetPauseMenuOpened())
+        {
+            return;
+        }
+
         Vector2 ret = Camera.main.ScreenToViewportPoint(Input.mousePosition);
 
         Vector3 dir = Vector3.one;

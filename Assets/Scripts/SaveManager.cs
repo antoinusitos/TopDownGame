@@ -42,6 +42,7 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.SetInt("PlayerBiomeY", myWorldGeneration.GetPlayerMovement().GetCurrentRoom().GetBiome().myY);
         PlayerPrefs.SetFloat("PlayerX", myWorldGeneration.GetPlayerMovement().transform.position.x);
         PlayerPrefs.SetFloat("PlayerY", myWorldGeneration.GetPlayerMovement().transform.position.y);
+        PlayerPrefs.SetInt("PlayerSouls", myWorldGeneration.GetPlayerMovement().GetComponent<PlayerData>().GetSoulsCollected());
 
         PlayerPrefs.SetInt("ResourceNum", resourceToSave.Count);
 

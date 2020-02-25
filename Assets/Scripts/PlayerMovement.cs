@@ -19,6 +19,11 @@ public class PlayerMovement : MonoBehaviour
     {
         myLastDirection = Vector2.zero;
 
+        if(PauseManager.GetInstance().GetPauseMenuOpened())
+        {
+            return;
+        }
+
         if (Input.GetKey(KeyCode.Q))
         {
             myLastDirection -= Vector2.right;

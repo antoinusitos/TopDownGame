@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -346,6 +346,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4023827623614138945}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1933599218 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3403699033455744877, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+    type: 3}
+  m_PrefabInstance: {fileID: 3403699033132775071}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eaf56a605df2024f9bbc750c15827bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1934427979
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +686,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43cd159c4a78de645a2e2983f8ad59a9, type: 3}
+--- !u!1001 &3403699033132775071
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744876, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403699033455744878, guid: 8e1e1e8d55b1e3547b69f412061b8d61,
+        type: 3}
+      propertyPath: m_Name
+      value: PauseManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8e1e1e8d55b1e3547b69f412061b8d61, type: 3}
 --- !u!1001 &4023827623614138945
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -681,25 +762,19 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 744760799, guid: 847eee8135870704ca06cc0c0805a641, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8361817422322646913}
     - target: {fileID: 4023827624201458560, guid: 847eee8135870704ca06cc0c0805a641,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 8361817422322646913}
+      objectReference: {fileID: 1933599218}
     - target: {fileID: 4023827624833025469, guid: 847eee8135870704ca06cc0c0805a641,
         type: 3}
       propertyPath: m_Name
       value: PauseMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 4023827624833025469, guid: 847eee8135870704ca06cc0c0805a641,
-        type: 3}
-      propertyPath: m_TagString
-      value: PauseMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 4023827624833025469, guid: 847eee8135870704ca06cc0c0805a641,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4023827624833030721, guid: 847eee8135870704ca06cc0c0805a641,
         type: 3}

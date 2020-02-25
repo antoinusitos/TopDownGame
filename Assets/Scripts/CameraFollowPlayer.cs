@@ -35,7 +35,12 @@ public class CameraFollowPlayer : MonoBehaviour
             return;
         }
 
-		myMousePos = CaptureMousePos();
+        if (PauseManager.GetInstance().GetPauseMenuOpened())
+        {
+            return;
+        }
+
+        myMousePos = CaptureMousePos();
         myShakeOffset = UpdateShake();
 		myTarget = UpdateTargetPos();
 		UpdateCameraPosition();

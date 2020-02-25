@@ -39,6 +39,9 @@ public class Room : MonoBehaviour
 
     private float                   myLastTime = 0;
 
+    private const int               myDecorationNumber = 15;
+    private const int               myEnemiesNumber = 3;
+
     private TileType[,]             myGrid;
     private int                     myRoomHeight;
     private int                     myRoomWidth;
@@ -569,6 +572,7 @@ public class Room : MonoBehaviour
                 resource.transform.localPosition = tile.transform.localPosition;
                 myResourceUsables.Add(resource);
                 tile.myOccupied = true;
+                resource.SetTile(tile);
             }
 
         }
@@ -576,7 +580,7 @@ public class Room : MonoBehaviour
 
     public void SpawnDecoration()
     {
-        for (int i = 0; i < 15; ++i)
+        for (int i = 0; i < myEnemiesNumber; ++i)
         {
             bool occupied = true;
 
@@ -603,6 +607,39 @@ public class Room : MonoBehaviour
                 resource.localPosition = tile.transform.localPosition;
 
                 tile.myOccupied = true;
+            }
+        }
+    }
+
+    public void SpawnEnemies()
+    {
+        for (int i = 0; i < myEnemiesNumber; ++i)
+        {
+            bool occupied = true;
+
+            int tries = 10;
+            int currentTries = 0;
+
+            Tile tile = null;
+
+            while (occupied)
+            {
+                tile = myTiles[Random.Range(0, myTiles.Count)];
+
+                currentTries++;
+
+                occupied = tile.myOccupied;
+
+                if (currentTries >= tries)
+                    break;
+            }
+
+            if (tile != null)
+            {
+                Enemy enemy = Instantiate(myEnemyPrefab, transform);
+                enemy.transform.localPosition = tile.transform.localPosition;
+
+                myEnemies.Add(enemy);
             }
         }
     }

@@ -24,6 +24,11 @@ public class PlayerShoot : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.GetInstance().GetPauseMenuOpened())
+        {
+            return;
+        }
+
         GetMouseInput();
 
         myCanShoot = (myLastShot + myCurrentWeapon.myTimeBetweenShots < Time.time);

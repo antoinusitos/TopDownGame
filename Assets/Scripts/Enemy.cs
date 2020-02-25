@@ -6,6 +6,9 @@ public class Enemy : LivingEntityData
     private Rigidbody2D myRigidbody2D = null;
     private float       mySpeed = 1.0f;
 
+    [SerializeField]
+    private int         mySoulsGiven = 10;
+
     private void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
@@ -13,8 +16,14 @@ public class Enemy : LivingEntityData
 
     private void Update()
     {
-        if(myLife <= 0)
+        if (PauseManager.GetInstance().GetPauseMenuOpened())
         {
+            return;
+        }
+
+        if (myLife <= 0)
+        {
+            FindObjectOfType<PlayerData>().AddSoulsCollected(mySoulsGiven);
             Destroy(gameObject);
         }
     }

@@ -98,6 +98,8 @@ public class LoadingManager : MonoBehaviour
             mapUI.SetRoomVisited(PlayerPrefs.GetInt("Visited" + i + "RoomX"), PlayerPrefs.GetInt("Visited" + i + "RoomY"), biome);
         }
 
+        myWorldGeneration.GetPlayerMovement().GetComponent<PlayerData>().SetSoulsCollected(PlayerPrefs.GetInt("PlayerSouls"));
+
         /*
         PlayerPrefs.SetInt("ResourceNum", resourceToSave.Count);
 

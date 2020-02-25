@@ -28,6 +28,11 @@ public class ResourceUsable : EntityData
 
     private void Update()
     {
+        if (PauseManager.GetInstance().GetPauseMenuOpened())
+        {
+            return;
+        }
+
         if (myLife <= 0)
         {
             if (myCanDropResources)
@@ -103,5 +108,10 @@ public class ResourceUsable : EntityData
     public Tile GetTile()
     {
         return myTile;
+    }
+
+    public void SetTile(Tile atile)
+    {
+        myTile = atile;
     }
 }
