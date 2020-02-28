@@ -6,7 +6,6 @@ public class Biome : MonoBehaviour
 {
     public int              myX;
     public int              myY;
-    public int              myType;
     public List<Room>       myRooms;
     public Room             myRoomPrefab = null;
 
@@ -31,11 +30,13 @@ public class Biome : MonoBehaviour
 
     public string           myName = "";
 
-    public void Init(int aX, int aY, int aType)
+    public RoomType         myBiomeType;
+
+    public void Init(int aX, int aY, RoomType aType)
     {
         myX = aX;
         myY = aY;
-        myType = aType;
+        myBiomeType = aType;
         myRooms = new List<Room>();
         myTransform = transform;
         myBiomeSideSize = Data.myBiomeSideSize;
@@ -56,7 +57,7 @@ public class Biome : MonoBehaviour
                 theRoom.Init();
                 theRoom.myX = x;
                 theRoom.myY = y;
-                theRoom.myType = -1;
+                theRoom.myType = myBiomeType;
                 myWorld[y * myBiomeSideSize + x] = theRoom;
             }
         }
@@ -95,7 +96,7 @@ public class Biome : MonoBehaviour
         {
             for (int i = 0; i < myWorld.Length; ++i)
             {
-                myWorld[i].myType = -1;
+                myWorld[i].myType = myBiomeType;
             }
 
             //Debug.Log("Try number to generate rooms : " + currentTryNumber);
@@ -130,27 +131,26 @@ public class Biome : MonoBehaviour
 
         if (!generate && !aStartingRoom)
         {
-            myWorld[aY * myBiomeSideSize + aX].myType = 0;
+            myWorld[aY * myBiomeSideSize + aX].myRoomUsed = true;
             return false;
         }
 
-        myWorld[aY * myBiomeSideSize + aX].myType = Random.Range(1, 6);
         myRoomsNumber++;
         LoadingManager.GetInstance().AddToSpawn();
 
-        if (aX - 1 > 0 && myWorld[aY * myBiomeSideSize + aX - 1].myType == -1)
+        if (aX - 1 > 0 && myWorld[aY * myBiomeSideSize + aX - 1].myRoomUsed == false)
         {
             FillRoom(aX - 1, aY);
         }
-        if (aX + 1 < myBiomeSideSize && myWorld[aY * myBiomeSideSize + aX + 1].myType == -1)
+        if (aX + 1 < myBiomeSideSize && myWorld[aY * myBiomeSideSize + aX + 1].myRoomUsed == false)
         {
             FillRoom(aX + 1, aY);
         }
-        if (aY - 1 > 0 && myWorld[(aY - 1) * myBiomeSideSize + aX].myType == -1)
+        if (aY - 1 > 0 && myWorld[(aY - 1) * myBiomeSideSize + aX].myRoomUsed == false)
         {
             FillRoom(aX, aY - 1);
         }
-        if (aY + 1 < myBiomeSideSize && myWorld[(aY + 1) * myBiomeSideSize + aX].myType == -1)
+        if (aY + 1 < myBiomeSideSize && myWorld[(aY + 1) * myBiomeSideSize + aX].myRoomUsed == false)
         {
             FillRoom(aX, aY + 1);
         }
@@ -164,31 +164,31 @@ public class Biome : MonoBehaviour
         {
             for (int x = 0; x < myBiomeSideSize; ++x)
             {
-                if (myWorld[y * myBiomeSideSize + x].myType > 0)
+                if (myWorld[y * myBiomeSideSize + x].myRoomUsed == true)
                 {
                     // Check left neighbour
-                    if (x > 0 && myWorld[y * myBiomeSideSize + x - 1].myType > 0)
+                    if (x > 0 && myWorld[y * myBiomeSideSize + x - 1].myRoomUsed == true)
                     {
                         myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
                             new TransitionData() { myRoomX = x - 1, myRoomY = y, myBiome = this, myTransitionDirection = TransitionDirection.LEFT }
                         );
                     }
                     // Check right neighbour
-                    if (x < myBiomeSideSize - 1 && myWorld[y * myBiomeSideSize + x + 1].myType > 0)
+                    if (x < myBiomeSideSize - 1 && myWorld[y * myBiomeSideSize + x + 1].myRoomUsed == true)
                     {
                         myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
                             new TransitionData() { myRoomX = x + 1, myRoomY = y, myBiome = this, myTransitionDirection = TransitionDirection.RIGHT }
                         );
                     }
                     // Check bottom neighbour
-                    if (y > 0 && myWorld[(y - 1) * myBiomeSideSize + x].myType > 0)
+                    if (y > 0 && myWorld[(y - 1) * myBiomeSideSize + x].myRoomUsed == true)
                     {
                         myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
                             new TransitionData() { myRoomX = x, myRoomY = y - 1, myBiome = this, myTransitionDirection = TransitionDirection.DOWN }
                         );
                     }
                     // Check top neighbour
-                    if (y < myBiomeSideSize - 1 && myWorld[(y + 1) * myBiomeSideSize + x].myType > 0)
+                    if (y < myBiomeSideSize - 1 && myWorld[(y + 1) * myBiomeSideSize + x].myRoomUsed == true)
                     {
                         myWorld[y * myBiomeSideSize + x].myTransitionDatas.Add(
                             new TransitionData() { myRoomX = x, myRoomY = y + 1, myBiome = this, myTransitionDirection = TransitionDirection.UP }
@@ -210,7 +210,7 @@ public class Biome : MonoBehaviour
         {
             for (int x = 0; x < myBiomeSideSize; ++x)
             {
-                if (myWorld[y * myBiomeSideSize + x].myType > 0)
+                if (myWorld[y * myBiomeSideSize + x].myRoomUsed == true)
                 {
                     Room room = Instantiate(myRoomPrefab, myTransform);
                     room.transform.localPosition = new Vector3(x * myRoomSideSize * mySpriteSpace, y * myRoomSideSize * mySpriteSpace, 0);
@@ -289,6 +289,14 @@ public class Biome : MonoBehaviour
         }
     }
 
+    public void CheckWallsSurrounding()
+    {
+        for (int i = 0; i < myRooms.Count; ++i)
+        {
+            myRooms[i].CheckWallsSurrounding();
+        }
+    }
+
     public void FindExtremeRooms()
     {
         myWestRoom = myWorld[0];
@@ -298,36 +306,36 @@ public class Biome : MonoBehaviour
 
         for (int i = 0; i < myWorld.Length; ++i)
         {
-            if(myWestRoom.myType == -1 && myWorld[i].myType > 0)
+            if(myWestRoom.myRoomUsed == false && myWorld[i].myRoomUsed == true)
             {
                 myWestRoom = myWorld[i];
             }
-            if (myNorthRoom.myType == -1 && myWorld[i].myType > 0)
+            if (myNorthRoom.myRoomUsed == false && myWorld[i].myRoomUsed == true)
             {
                 myNorthRoom = myWorld[i];
             }
-            if (mySouthRoom.myType == -1 && myWorld[i].myType > 0)
+            if (mySouthRoom.myRoomUsed == false && myWorld[i].myRoomUsed == true)
             {
                 mySouthRoom = myWorld[i];
             }
-            if (myEastRoom.myType == -1 && myWorld[i].myType > 0)
+            if (myEastRoom.myRoomUsed == false && myWorld[i].myRoomUsed == true)
             {
                 myEastRoom = myWorld[i];
             }
 
-            if (myWorld[i].myY >= myNorthRoom.myY && myWorld[i].myType > 0)
+            if (myWorld[i].myY >= myNorthRoom.myY && myWorld[i].myRoomUsed == true)
             {
                 myNorthRoom = myWorld[i];
             }
-            if (myWorld[i].myY <= mySouthRoom.myY && myWorld[i].myType > 0)
+            if (myWorld[i].myY <= mySouthRoom.myY && myWorld[i].myRoomUsed == true)
             {
                 mySouthRoom = myWorld[i];
             }
-            if (myWorld[i].myX <= myWestRoom.myX && myWorld[i].myType > 0)
+            if (myWorld[i].myX <= myWestRoom.myX && myWorld[i].myRoomUsed == true)
             {
                 myWestRoom = myWorld[i];
             }
-            if (myWorld[i].myX >= myEastRoom.myX && myWorld[i].myType > 0)
+            if (myWorld[i].myX >= myEastRoom.myX && myWorld[i].myRoomUsed == true)
             {
                 myEastRoom = myWorld[i];
             }

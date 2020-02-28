@@ -13,4 +13,9 @@ public class Tile : MonoBehaviour
     public RoomData     myTileData;
     public TileType     myTileType;
     public bool         myOccupied = false;
+
+    public bool         myHasLeftNeighbour = false;
+    public bool         myHasRightNeighbour = false;
+    public bool         myHasTopNeighbour = false;
+    public bool         myHasDownNeighbour = false;
 }

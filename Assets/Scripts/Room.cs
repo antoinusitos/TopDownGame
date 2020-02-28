@@ -30,6 +30,7 @@ public class Room : MonoBehaviour
 
     private Tile                    myMidTile = null;
     private List<Tile>              myTiles = new List<Tile>();
+    private List<Tile>              myWallTiles = new List<Tile>();
 
     private const float             mySpriteSpace = 1;//2.5f;
 
@@ -40,6 +41,7 @@ public class Room : MonoBehaviour
     private float                   myLastTime = 0;
 
     private const int               myDecorationNumber = 15;
+    private const int               myResourceNumber = 4;
     private const int               myEnemiesNumber = 3;
 
     private TileType[,]             myGrid;
@@ -49,9 +51,9 @@ public class Room : MonoBehaviour
     private float                   myWorldUnitsInOneGridCell = 1;
 
     private List<Walker>            myWalkers;
-    private float                   myChanceWalkerChangeDir = 0.5f;
-    private float                   myChangeWalkerSpawn = 0.05f;
-    private float                   myChanceWalkerDestroy = 0.05f;
+    private float                   myChanceWalkerChangeDir = 0.75f;//0.5f;
+    private float                   myChangeWalkerSpawn = 0.1f;//0.05f;
+    private float                   myChanceWalkerDestroy = 0.03f;//0.05f;
     private int                     myMaxWalkers = 10;
     private float                   myPercentToFill = 0.2f;
 
@@ -276,7 +278,7 @@ public class Room : MonoBehaviour
         Tile tile = spawned.GetComponent<Tile>();
         tile.myTileData.myX = (int)aX;
         tile.myTileData.myY = (int)aY;
-        tile.myTileData.myType = myRoomData.myType;
+        tile.myTileData.myType = myBiome.myBiomeType;
         tile.myTileType = aTileType;
         tile.myParentRoom = this;
 
@@ -288,6 +290,10 @@ public class Room : MonoBehaviour
         if(aTileType == TileType.FLOOR)
         {
             myTiles.Add(tile);
+        }
+        else if( aTileType == TileType.WALL)
+        {
+            myWallTiles.Add(tile);
         }
     }
 
@@ -317,6 +323,57 @@ public class Room : MonoBehaviour
                     if (myGrid[x - 1, y] == TileType.EMPTY)
                     {
                         myGrid[x - 1, y] = TileType.WALL;
+                    }
+                }
+            }
+        }
+    }
+
+    public void CheckWallsSurrounding()
+    {
+        for (int x = 0; x < myRoomWidth - 1; x++)
+        {
+            for (int y = 0; y < myRoomHeight - 1; y++)
+            {
+                if (myGrid[x, y] == TileType.WALL)
+                {
+                    Tile t = null;
+                    for (int i = 0; i < myWallTiles.Count; i++)
+                    {
+                        if (myWallTiles[i].myTileData.myX == x && myWallTiles[i].myTileData.myY == y)
+                        {
+                            t = myWallTiles[i];
+                            break;
+                        }
+                    }
+
+                    if (y < myRoomHeight - 2 && myGrid[x, y + 1] == TileType.WALL)
+                    {
+                        if(t != null)
+                        {
+                            t.myHasTopNeighbour = true;
+                        }
+                    }
+                    if (y > 0 && myGrid[x, y - 1] == TileType.WALL)
+                    {
+                        if (t != null)
+                        {
+                            t.myHasDownNeighbour = true;
+                        }
+                    }
+                    if (x < myRoomWidth - 2 && myGrid[x + 1, y] == TileType.WALL)
+                    {
+                        if (t != null)
+                        {
+                            t.myHasRightNeighbour = true;
+                        }
+                    }
+                    if (x > 0 && myGrid[x - 1, y] == TileType.WALL)
+                    {
+                        if (t != null)
+                        {
+                            t.myHasLeftNeighbour = true;
+                        }
                     }
                 }
             }
@@ -541,11 +598,15 @@ public class Room : MonoBehaviour
         {
             myTiles[i].GetComponent<TileRendererChanger>().ChangeRendering();
         }
+        for (int i = 0; i < myWallTiles.Count; i++)
+        {
+            myWallTiles[i].GetComponent<TileRendererChanger>().ChangeRendering();
+        }
     }
 
     public void SpawnResources()
     {
-        for(int i = 0; i < 3; ++i)
+        for(int i = 0; i < myResourceNumber; ++i)
         {
             bool occupied = true;
 
@@ -580,7 +641,7 @@ public class Room : MonoBehaviour
 
     public void SpawnDecoration()
     {
-        for (int i = 0; i < myEnemiesNumber; ++i)
+        for (int i = 0; i < myDecorationNumber; ++i)
         {
             bool occupied = true;
 

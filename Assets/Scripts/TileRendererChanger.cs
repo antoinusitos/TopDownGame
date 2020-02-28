@@ -2,19 +2,8 @@
 
 public class TileRendererChanger : MonoBehaviour
 {
-    /*GRASS = 1,
-    CITY,
-    ROCK,
-    DESERT,
-    MOUNTAIN*/
-
     public Sprite[] mySprites = null;
     public Sprite[] myWallSprites = null;
-
-    public bool top = false;
-    public bool bottom = false;
-    public bool left = false;
-    public bool right = false;
 
     public void ChangeRendering()
     {
@@ -25,7 +14,24 @@ public class TileRendererChanger : MonoBehaviour
             {
                 case TileType.FLOOR:
                     {
-                        GetComponent<SpriteRenderer>().sprite = mySprites[tile.myTileData.myType - 1];
+                        switch(tile.myTileData.myType)
+                        {
+                            case RoomType.FOREST:
+                                GetComponent<SpriteRenderer>().sprite = mySprites[0];
+                                break;
+                            case RoomType.DESERT:
+                                GetComponent<SpriteRenderer>().sprite = mySprites[3];
+                                break;
+                            case RoomType.MOUNTAIN:
+                                GetComponent<SpriteRenderer>().sprite = mySprites[2];
+                                break;
+                            case RoomType.ICE:
+                                GetComponent<SpriteRenderer>().sprite = mySprites[4];
+                                break;
+                            case RoomType.TRANSITION:
+                                GetComponent<SpriteRenderer>().sprite = mySprites[1];
+                                break;
+                        }
                         break;
                     }
                 case TileType.WALL:
@@ -47,65 +53,45 @@ public class TileRendererChanger : MonoBehaviour
                             break;
                         }
 
-                        top = false;
-                        bottom = false;
-                        left = false;
-                        right = false;
+                        if(tile.myHasTopNeighbour && tile.myHasDownNeighbour)
+                        {
+                            /* if (x == 0)
+                             {
+                                 GetComponent<SpriteRenderer>().sprite = myWallSprites[8];
+                             }
+                             else
+                             {
+                                 GetComponent<SpriteRenderer>().sprite = myWallSprites[9];
+                             }*/
 
-                        if (y > 0 && parentRoom.GetTile(x, y - 1).myTileType == TileType.WALL)
-                        {
-                            bottom = true;
+                            GetComponent<SpriteRenderer>().sprite = myWallSprites[8];
                         }
-                        if (y < roomSize - 1 && parentRoom.GetTile(x, y + 1).myTileType == TileType.WALL)
-                        {
-                            top = true;
-                        }
-                        if (x < roomSize - 1 && parentRoom.GetTile(x + 1, y).myTileType == TileType.WALL)
-                        {
-                            right = true;
-                        }
-                        if (x > 0 && parentRoom.GetTile(x - 1, y).myTileType == TileType.WALL)
-                        {
-                            left = true;
-                        }
-
-                        if(top && bottom)
-                        {
-                            if (x == 0)
-                            {
-                                GetComponent<SpriteRenderer>().sprite = myWallSprites[8];
-                            }
-                            else
-                            {
-                                GetComponent<SpriteRenderer>().sprite = myWallSprites[9];
-                            }
-                            //GetComponent<SpriteRenderer>().sprite = myWallSprites[0];
-                        }
-                        else if (top)
+                        else if (tile.myHasTopNeighbour)
                         {
                             GetComponent<SpriteRenderer>().sprite = myWallSprites[1];
                         }
-                        else if (bottom)
+                        else if (tile.myHasDownNeighbour)
                         {
                             GetComponent<SpriteRenderer>().sprite = myWallSprites[2];
                         }
-                        if (right && left)
+
+                        if (tile.myHasRightNeighbour && tile.myHasLeftNeighbour)
                         {
-                            if(y == 0)
+                           /* if(y == 0)
                             {
                                 GetComponent<SpriteRenderer>().sprite = myWallSprites[6];
                             }
                             else
                             {
                                 GetComponent<SpriteRenderer>().sprite = myWallSprites[7];
-                            }
-                            //GetComponent<SpriteRenderer>().sprite = myWallSprites[3];
+                            }*/
+                            GetComponent<SpriteRenderer>().sprite = myWallSprites[6];
                         }
-                        else if (right)
+                        else if (tile.myHasRightNeighbour)
                         {
                             GetComponent<SpriteRenderer>().sprite = myWallSprites[4];
                         }
-                        else if (left)
+                        else if (tile.myHasLeftNeighbour)
                         {
                             GetComponent<SpriteRenderer>().sprite = myWallSprites[5];
                         }

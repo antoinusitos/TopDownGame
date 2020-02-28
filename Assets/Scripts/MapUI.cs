@@ -91,25 +91,25 @@ public class MapUI : MonoBehaviour
         int x = aRoom.myRoomData.myX;
         int y = aRoom.myRoomData.myY;
 
-        if (aRoom.myRoomData.myType == 1)
+        if (aRoom.myRoomData.myType == RoomType.FOREST)
         {
             myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.green;
         }
-        else if (aRoom.myRoomData.myType == 2)
-        {
-            myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.grey;
-        }
-        else if (aRoom.myRoomData.myType == 3)
+        else if (aRoom.myRoomData.myType == RoomType.MOUNTAIN)
         {
             myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = new Color(0.62f, 0.32f, 0.17f);
         }
-        else if (aRoom.myRoomData.myType == 4)
+        else if (aRoom.myRoomData.myType == RoomType.DESERT)
         {
             myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.yellow;
         }
-        else if (aRoom.myRoomData.myType == 5)
+        else if (aRoom.myRoomData.myType == RoomType.ICE)
         {
             myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.white;
+        }
+        else if (aRoom.myRoomData.myType == RoomType.TRANSITION)
+        {
+            myRoomImages[y * myWorldGeneration.GetWorldSideSize() + x].color = Color.gray;
         }
     }
 
@@ -122,25 +122,25 @@ public class MapUI : MonoBehaviour
             room = aBiome.GetRoom(aX, aY);
         myVisitedRooms.Add(room);
 
-        if (room.myRoomData.myType == 1)
+        if (room.myRoomData.myType == RoomType.FOREST)
         {
             myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.green;
         }
-        else if (room.myRoomData.myType == 2)
-        {
-            myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.grey;
-        }
-        else if (room.myRoomData.myType == 3)
+        else if (room.myRoomData.myType == RoomType.MOUNTAIN)
         {
             myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = new Color(0.62f, 0.32f, 0.17f);
         }
-        else if (room.myRoomData.myType == 4)
+        else if (room.myRoomData.myType == RoomType.DESERT)
         {
             myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.yellow;
         }
-        else if (room.myRoomData.myType == 5)
+        else if (room.myRoomData.myType == RoomType.ICE)
         {
             myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.white;
+        }
+        else if (room.myRoomData.myType == RoomType.TRANSITION)
+        {
+            myRoomImages[aY * myWorldGeneration.GetWorldSideSize() + aX].color = Color.gray;
         }
 
         if (myCurrentRoom != null)

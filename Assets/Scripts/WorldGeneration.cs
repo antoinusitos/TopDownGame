@@ -162,6 +162,44 @@ public class WorldGeneration : MonoBehaviour
                 y++;
             }
         }
+
+        for (int i = 0; i < myBiomes.Length; i++)
+        {
+            if(myBiomes[i].myX < (Data.myWorldSideSize / 2))
+            {
+                if (myBiomes[i].myY < (Data.myWorldSideSize / 2))
+                {
+                    myBiomes[i].myBiomeType = RoomType.ICE;
+                }
+                else if (myBiomes[i].myY > (Data.myWorldSideSize / 2))
+                {
+                    myBiomes[i].myBiomeType = RoomType.MOUNTAIN;
+                }
+                else
+                {
+                    myBiomes[i].myBiomeType = RoomType.TRANSITION;
+                }
+            }
+            else if (myBiomes[i].myX > (Data.myWorldSideSize / 2))
+            {
+                if (myBiomes[i].myY < (Data.myWorldSideSize / 2))
+                {
+                    myBiomes[i].myBiomeType = RoomType.FOREST;
+                }
+                else if (myBiomes[i].myY > (Data.myWorldSideSize / 2))
+                {
+                    myBiomes[i].myBiomeType = RoomType.DESERT;
+                }
+                else
+                {
+                    myBiomes[i].myBiomeType = RoomType.TRANSITION;
+                }
+            }
+            else
+            {
+                myBiomes[i].myBiomeType = RoomType.TRANSITION;
+            }
+        }
     }
 
     // Normal Way 2
@@ -206,6 +244,8 @@ public class WorldGeneration : MonoBehaviour
 
         //Spawn NPC
         //Create Quests
+
+        CheckWallsSurrounding();
 
         ChangeTileRendering();
 
@@ -294,6 +334,14 @@ public class WorldGeneration : MonoBehaviour
     public void SetPlacePlayer(bool aNewState)
     {
         myPlacePlayer = aNewState;
+    }
+
+    private void CheckWallsSurrounding()
+    {
+        for (int i = 0; i < myBiomes.Length; ++i)
+        {
+            myBiomes[i].CheckWallsSurrounding();
+        }
     }
 
     private void ChangeTileRendering()

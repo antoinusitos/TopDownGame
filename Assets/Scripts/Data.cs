@@ -6,17 +6,19 @@ public struct RoomData
 {
     public int                  myX;
     public int                  myY;
-    public int                  myType;
+    public RoomType             myType;
+    public bool                 myRoomUsed;
 
     public List<TransitionData> myTransitionDatas;
 
 
-    public RoomData(int aX, int aY, int aType)
+    public RoomData(int aX, int aY, RoomType aType)
     {
         myX = aX;
         myY = aY;
         myType = aType;
         myTransitionDatas = new List<TransitionData>();
+        myRoomUsed = false;
     }
 
     public void Init()
@@ -45,7 +47,10 @@ public enum RoomType
     CITY,
     ROCK,
     DESERT,
-    MOUNTAIN
+    MOUNTAIN,
+    ICE,
+    TRANSITION,
+    FOREST,
 }
 
 public struct Walker
@@ -131,7 +136,7 @@ public class Data : MonoBehaviour
 
     public static int myCurrentSeedRoom = 0;
 
-    public static int myWorldSideSize = 2; //number of biomes on the side
+    public static int myWorldSideSize = 1; //number of biomes on the side
     public static int myBiomeSideSize = 10; //number of room in a biome on the side
     public static int myRoomSideSize = 30; //number of tile in a room on the side
 
