@@ -18,4 +18,6 @@ public class Tile : MonoBehaviour
     public bool         myHasRightNeighbour = false;
     public bool         myHasTopNeighbour = false;
     public bool         myHasDownNeighbour = false;
+
+    public int          myIndex = -1;
 }

@@ -5,6 +5,11 @@ public class TileRendererChanger : MonoBehaviour
     public Sprite[] mySprites = null;
     public Sprite[] myWallSprites = null;
 
+    public Tile down;
+    public Tile top;
+    public Tile right;
+    public Tile left;
+
     public void ChangeRendering()
     {
         Tile tile = GetComponent<Tile>();
@@ -41,6 +46,54 @@ public class TileRendererChanger : MonoBehaviour
 
                         Room parentRoom = tile.myParentRoom;
                         int roomSize = parentRoom.GetRoomSize();
+
+
+                        down = parentRoom.GetRealType(x, y - 1);
+                        if (down != null)
+                        {
+                            if (down.myTileType == TileType.FLOOR)
+                            {
+                                GetComponent<SpriteRenderer>().sprite = myWallSprites[7];
+                                //Debug.Log("down tile for " + x + ", " + y);
+                                //Debug.Log("check for " + x + ", " + (y - 1));
+                                break;
+                            }
+                        }
+
+                        top = parentRoom.GetRealType(x, y + 1);
+                        if (top != null)
+                        {
+                            if (top.myTileType == TileType.FLOOR)
+                            {
+                                GetComponent<SpriteRenderer>().sprite = myWallSprites[6];
+                                break;
+                            }
+                        }
+
+                        right = parentRoom.GetRealType(x + 1, y);
+                        if (right != null)
+                        {
+                            if (right.myTileType == TileType.FLOOR)
+                            {
+                                GetComponent<SpriteRenderer>().sprite = myWallSprites[8];
+                                //Debug.Log("down tile for " + x + ", " + y);
+                                //Debug.Log("check for " + x + ", " + (y - 1));
+                                break;
+                            }
+                        }
+
+                        left = parentRoom.GetRealType(x - 1, y);
+                        if (left != null)
+                        {
+                            if (left.myTileType == TileType.FLOOR)
+                            {
+                                GetComponent<SpriteRenderer>().sprite = myWallSprites[9];
+                                break;
+                            }
+                        }
+
+
+                        break;
 
                         if (x == 0 && (y == 0 || y == roomSize - 1))
                         {

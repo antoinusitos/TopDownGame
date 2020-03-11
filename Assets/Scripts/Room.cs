@@ -29,7 +29,7 @@ public class Room : MonoBehaviour
     private List<Enemy>             myEnemies = new List<Enemy>();
 
     private Tile                    myMidTile = null;
-    private List<Tile>              myTiles = new List<Tile>();
+    private List<Tile>              myFloorTiles = new List<Tile>();
     private List<Tile>              myWallTiles = new List<Tile>();
 
     private const float             mySpriteSpace = 1;//2.5f;
@@ -45,6 +45,7 @@ public class Room : MonoBehaviour
     private const int               myEnemiesNumber = 3;
 
     private TileType[,]             myGrid;
+    private Tile[]                  myGridBisBis;
     private int                     myRoomHeight;
     private int                     myRoomWidth;
     private Vector2                 myRoomSizeWorldUnits = Vector2.one * Data.myRoomSideSize;
@@ -101,6 +102,7 @@ public class Room : MonoBehaviour
 
         //create grid
         myGrid = new TileType[myRoomWidth, myRoomHeight];
+        myGridBisBis = new Tile[myRoomWidth * myRoomHeight];
 
         //set grid's default state
         for (int x = 0; x < myRoomWidth; x++)
@@ -278,9 +280,12 @@ public class Room : MonoBehaviour
         Tile tile = spawned.GetComponent<Tile>();
         tile.myTileData.myX = (int)aX;
         tile.myTileData.myY = (int)aY;
+        tile.myIndex = (int)aX * myRoomWidth + (int)aY;
         tile.myTileData.myType = myBiome.myBiomeType;
         tile.myTileType = aTileType;
         tile.myParentRoom = this;
+
+        myGridBisBis[(int)aX * myRoomWidth + (int)aY] = tile;
 
         if (aX == Data.myRoomSideSize / 2 && aY == Data.myRoomSideSize / 2)
         {
@@ -289,7 +294,7 @@ public class Room : MonoBehaviour
 
         if(aTileType == TileType.FLOOR)
         {
-            myTiles.Add(tile);
+            myFloorTiles.Add(tile);
         }
         else if( aTileType == TileType.WALL)
         {
@@ -594,9 +599,9 @@ public class Room : MonoBehaviour
 
     public void ChangeTileRendering()
     {
-        for(int i = 0; i < myTiles.Count; i++)
+        for(int i = 0; i < myFloorTiles.Count; i++)
         {
-            myTiles[i].GetComponent<TileRendererChanger>().ChangeRendering();
+            myFloorTiles[i].GetComponent<TileRendererChanger>().ChangeRendering();
         }
         for (int i = 0; i < myWallTiles.Count; i++)
         {
@@ -617,7 +622,7 @@ public class Room : MonoBehaviour
 
             while (occupied)
             {
-                tile = myTiles[Random.Range(0, myTiles.Count)];
+                tile = myFloorTiles[Random.Range(0, myFloorTiles.Count)];
 
                 currentTries++;
 
@@ -652,7 +657,7 @@ public class Room : MonoBehaviour
 
             while (occupied)
             {
-                tile = myTiles[Random.Range(0, myTiles.Count)];
+                tile = myFloorTiles[Random.Range(0, myFloorTiles.Count)];
 
                 currentTries++;
 
@@ -685,7 +690,7 @@ public class Room : MonoBehaviour
 
             while (occupied)
             {
-                tile = myTiles[Random.Range(0, myTiles.Count)];
+                tile = myFloorTiles[Random.Range(0, myFloorTiles.Count)];
 
                 currentTries++;
 
@@ -715,9 +720,27 @@ public class Room : MonoBehaviour
         return myRoomSize;
     }
 
-    public Tile GetTile(int aX, int aY)
+    public TileType GetTileType(int aX, int aY)
     {
-        return myTiles[aY * myRoomSize + aX];
+        if(aX < 0 || aX > myRoomWidth || aY < 0 || aY > myRoomHeight)
+        {
+            return TileType.EMPTY;
+        }
+
+        return myGrid[aX, aY];
+    }
+
+    public Tile GetRealType(int aX, int aY)
+    {
+        if (aX < 0 || aY < 0 || aX > myRoomWidth - 1 || aY > myRoomHeight - 1)
+            return null;
+
+        return myGridBisBis[aX * myRoomWidth + aY];
+    }
+
+    public Tile GetFloorTile(int aX, int aY)
+    {
+        return myFloorTiles[aY * myRoomSize + aX];
     }
 
     public void OnLeavingRoom()
